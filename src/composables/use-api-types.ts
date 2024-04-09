@@ -10,6 +10,7 @@ import type {
   VolunteerType, 
   VolunteerWhitelistState,
   IdCardType,
+  BannerTargetType,
 } from '@/constants/value-enum';
 
 export interface ILoginResult {
@@ -226,4 +227,11 @@ export interface ISignUpRecord {
     money: number;
     label: WorkTag;
   };
+};
+
+export interface IBanner {
+  id: number;
+  type: BannerTargetType;
+  targetId: number;
+  coverUrl: string;
 };

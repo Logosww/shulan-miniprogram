@@ -80,6 +80,11 @@ export enum IdCardType {
   passport = 2,
 };
 
+export enum BannerTargetType {
+  activity = 0,
+  live = 1,
+};
+
 export const activityTypeMap: Record<ActivityType, string> = {
   [ActivityType.concert]: '演唱会',
   [ActivityType.drama]: '话剧',

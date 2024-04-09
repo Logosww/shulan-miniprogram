@@ -1,21 +1,22 @@
 import { get, post, put, del } from '@/utils/http';
 
-import type { 
-  ISignUpPageData,
-  IActivityDetail,
-  IActivityPreview,
-  ICOSBucketCredentials,
-  ILoginResult, 
-  IPagingParams,
-  IUserProfile,
-  IVerifyForm,
-  IVolunteerWhitelistInfo,
-  IWorkData,
-  NullableFilter,
-  IPagingResult,
-  ISignUpDetail,
-  ISignUpRecord,
-  IVerifyData,
+import { 
+  type ISignUpPageData,
+  type IActivityDetail,
+  type IActivityPreview,
+  type ICOSBucketCredentials,
+  type ILoginResult, 
+  type IPagingParams,
+  type IUserProfile,
+  type IVerifyForm,
+  type IVolunteerWhitelistInfo,
+  type IWorkData,
+  type NullableFilter,
+  type IPagingResult,
+  type ISignUpDetail,
+  type ISignUpRecord,
+  type IVerifyData,
+  IBanner,
 } from './use-api-types';
 import type { ActivityType, VolunteerSignUpState } from '@/constants';
 
@@ -89,3 +90,5 @@ export const useCancelSignUp = (params: { id: number }) => put('/volunteer/wxmp/
 export const useShareActivity = (params: { id: number }) => get('/public/wxmp/index/activity/share', params);
 
 export const useCheckin = (params: { id: number }) => put('/superAdmin/volunteer/checkin', params);
+
+export const useGetBannerList = () => get<IBanner[]>('/wxmp/getBannerList');

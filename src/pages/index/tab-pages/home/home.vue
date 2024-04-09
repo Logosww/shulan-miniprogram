@@ -42,8 +42,8 @@
       @rerefresherrefresh="fetchActivityList(1)"
     >
       <nut-swiper class="h-[150px] rounded-[8px] bg-white" :auto-play="3000" pagination-visible @change="index => currBannerIndex = index">
-        <nut-swiper-item v-for="(_, index) in bannerList" :key="index">
-          <image class="w-full h-full" src="//common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/logo_gbg.jpg" mode="aspectFill" />
+        <nut-swiper-item v-for="(banner, index) in bannerList" :key="index">
+          <image class="w-full h-full" :src="banner.coverUrl" />
         </nut-swiper-item>
         <template #page>
           <div class="absolute w-full h-[3px] left-0 bottom-[8px] flex justify-center items-center">
@@ -104,13 +104,13 @@ import Taro, { useLoad } from '@tarojs/taro';
 import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useThrottleFn } from '@vueuse/core';
-import { ActivityType } from '@/constants';
+import { ActivityType, BannerTargetType } from '@/constants';
 import { useContentHeight, useGetPagingActivities, useDecodeGeography } from '@/composables';
 import Container from '@/components/container.vue';
 import Modal from '@/components/modal.vue';
 import ActivityCard from '@/components/activity-card.vue';
 
-import type { IActivityPreview } from '@/composables/use-api-types';
+import type { IActivityPreview, IBanner } from '@/composables/use-api-types';
 
 let current = 1;
 
@@ -124,7 +124,20 @@ const contentHeight = useContentHeight();
 
 const scrollViewStyle = computed(() => `height: ${contentHeight.value}px;`);
 
-const bannerList = [123,123,123,123];
+const bannerList = ref<IBanner[]>([
+  {
+    id: 0,
+    type: BannerTargetType.activity,
+    targetId: 0,
+    coverUrl: '//common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/logo_gbg.jpg',
+  },
+  {
+    id: 0,
+    type: BannerTargetType.activity,
+    targetId: 0,
+    coverUrl: '//common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/lookme.png',
+  }
+]);
 
 store.$onAction(({ name, args }) => name === 'selectCity' && fetchActivityList(1, args[0]));
 
