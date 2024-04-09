@@ -36,7 +36,7 @@ const handleTabChange = useThrottleFn(async (tabName: string) => {
     const _profile = await useGetUserProfile();
     setFormValues(profile, _profile, ['avatarUrl']);
     const key = new URL(_profile.avatarUrl).pathname;
-    if(key !== new URL(profile.avatarUrl).pathname) profile.avatarUrl = _profile.avatarUrl;
+    if(!profile.avatarUrl || (key !== new URL(profile.avatarUrl).pathname)) profile.avatarUrl = _profile.avatarUrl;
     store.whitelistState = profile.volunteerState;
   }
 }, 3000);

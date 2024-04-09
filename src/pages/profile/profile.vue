@@ -69,8 +69,8 @@ const handleSubmit = async () => {
     avatarPath, 
     nickname: profile.value.nickname,
   });
-  Taro.navigateBack();
   setTimeout(() => Taro.showToast({ icon: 'success', title: '保存成功' }), 300);
+  Taro.navigateBack();
 };
 
 useGetUserPartialProfile().then(_profile => {

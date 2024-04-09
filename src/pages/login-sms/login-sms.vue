@@ -99,7 +99,7 @@ const countdownTick = () => {
 const handleSendCode = async () => {
   if(!realPhone) return;
   
-  if(!/^(13[0-9]|14[5-9]|15[0-3,5-9]|16[6]|17[0-8]|18[0-9]|19[8,9])\d{8}$/.test(realPhone))
+  if(!/^(13[0-9]|14[5-9]|15[0-3,5-9]|16[6]|17[0-8]|18[0-9]|19[0-9])\d{8}$/.test(realPhone))
     return Taro.showToast({ icon: 'none', title: '无效手机号，请重新核对' });
 
   await useSendSmsCode({ purePhoneNumber: realPhone });
@@ -121,8 +121,8 @@ const doLogin = () => {
       store.$patch(result);
       Taro.hideLoading();
       const delta = Taro.getCurrentPages().length - 1;
-      Taro.navigateBack({ delta });
       setTimeout(() => Taro.showToast({ icon: 'success', title: '登录成功' }), 300);
+      Taro.navigateBack({ delta });
     },
     fail: () => Taro.showToast({ icon: 'error', title: '登录失败' }),
   })

@@ -55,8 +55,8 @@ const handleMobileLogin = ({ detail: { code: phoneCode } }) => {
       const result = await useMobileLogin({ phoneCode, wxmpCode });
       store.$patch(result);
       Taro.hideLoading();
-      Taro.navigateBack();
       setTimeout(() => Taro.showToast({ icon: 'success', title: '登录成功' }), 300);
+      Taro.navigateBack();
     },
     fail: () => Taro.showToast({ icon: 'error', title: '登录失败' }),
   });

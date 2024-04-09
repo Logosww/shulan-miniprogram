@@ -172,8 +172,8 @@ const handleSignUp = async () => {
   return useSignUp({ activityId, activityWorkIds, reason: reason.value })
     .then(() => {
       Taro.hideLoading();
-      Taro.navigateBack();
       setTimeout(() => Taro.showToast({ icon: 'success', title: '报名成功' }), 300);
+      Taro.navigateBack();
     })
     .catch(msg => {
       Taro.hideLoading();

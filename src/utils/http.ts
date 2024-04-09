@@ -10,7 +10,6 @@ interface ResData<T = void> {
   msg: string;
 };
 
-// const baseUrl = 'http://127.0.0.1:4523/m1/3959916-0-default';
 const baseUrl = 'https://api.admin.buhuishangshu.cn';
 const store = useStore();
 

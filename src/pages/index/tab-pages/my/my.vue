@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="mt-[10px]">
-        <image class="w-[25px] h-[25px] mr-[12px]" style="transform: translateY(2px);" src="@/assets/icon/my/scan.svg" :svg="true" @tap="handleCheckin" v-if="true || role && role >= Role.admin" />
+        <image class="w-[25px] h-[25px] mr-[12px]" style="transform: translateY(2px);" src="@/assets/icon/my/scan.svg" :svg="true" @tap="handleCheckin" v-if="role && role >= Role.admin" />
         <image class="w-[24px] h-[24px] mr-[5px]" src="@/assets/icon/home/notification.svg" :svg="true" />
       </div>
     </div>
@@ -233,7 +233,7 @@ const handleCheckin = async () => {
 useDidShow(() => isLogin.value && useGetUserProfile().then(_profile => {
   setFormValues(profile, _profile, ['avatarUrl']);
   const key = new URL(_profile.avatarUrl).pathname;
-  if(key !== new URL(profile.avatarUrl).pathname) profile.avatarUrl = _profile.avatarUrl;
+  if(!profile.avatarUrl || (key !== new URL(profile.avatarUrl).pathname)) profile.avatarUrl = _profile.avatarUrl;
   store.whitelistState = _profile.volunteerState;
 }));
 

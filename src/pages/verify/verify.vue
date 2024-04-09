@@ -103,8 +103,8 @@
           <div class="tab-pane">
             <div class="form-cell is-required">
               证件照片
-              <div class="flex text-[#404040] leading-[20px] items-center">
-                <div class="text-[#ccc]" v-show="!form.idPhotoPath" @tap="uploadImage(1, ([path], [key]) => (form.idPhotoPath = path) && (idPhotoKey = key))">请上传一寸人像照片原件</div>
+              <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(1, ([path], [key]) => (form.idPhotoPath = path) && (idPhotoKey = key))">
+                <div class="text-[#ccc]" v-show="!form.idPhotoPath">请上传一寸人像照片原件</div>
                 {{ form.idPhotoPath ? '已上传' : '' }}
                 <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
               </div>
@@ -138,8 +138,8 @@
               </picker>
               <div class="form-cell is-required">
                 学生证
-                <div class="flex text-[#404040] leading-[20px] items-center">
-                  <div class="text-[#ccc]" v-show="!form.studentCardPaths.length" @tap="uploadImage(5, (_, keys) => form.studentCardPaths = keys)">5张以内照片</div>
+                <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.studentCardPaths = keys)">
+                  <div class="text-[#ccc]" v-show="!form.studentCardPaths.length">5张以内照片</div>
                   {{ form.studentCardPaths.length ? '已上传' : '' }}
                   <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
                 </div>
@@ -164,8 +164,8 @@
               </div>
               <div class="form-cell is-required">
                 入职单位证明
-                <div class="flex text-[#404040] leading-[20px] items-center">
-                  <div class="text-[#ccc]" v-show="!form.joinUnitPaths.length" @tap="uploadImage(5, (_, keys) => form.joinUnitPaths = keys)">5张以内照片，选填</div>
+                <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.joinUnitPaths = keys)">
+                  <div class="text-[#ccc]" v-show="!form.joinUnitPaths.length">5张以内照片，选填</div>
                   {{ form.joinUnitPaths.length ? '已上传' : '' }}
                   <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
                 </div>
@@ -181,8 +181,8 @@
             </div>
             <div class="form-cell">
               相关经历证明
-              <div class="flex text-[#404040] leading-[20px] items-center">
-                <div class="text-[#ccc]" v-show="!form.experiencePaths.length" @tap="uploadImage(5, (_, keys) => form.experiencePaths = keys)">5张以内照片，选填</div>
+              <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.experiencePaths = keys)">
+                <div class="text-[#ccc]" v-show="!form.experiencePaths.length">5张以内照片，选填</div>
                 {{ form.experiencePaths.length ? '已上传' : '' }}
                 <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
               </div>
@@ -260,7 +260,7 @@ const emptyForm: IVerifyForm = {
   // @ts-ignore
   sex: void 0,
   // @ts-ignore
-  age: 0,
+  age: void 0,
 };
 const initialValues: IVerifyForm = {...emptyForm};
 
@@ -358,14 +358,14 @@ const handleModify = async () => {
   await useVerifyVolunteer(transform());
   Taro.hideLoading();
   store.role = Role.volunteer;
-  Taro.navigateBack();
   setTimeout(() => Taro.showToast({ icon: 'success', title: '修改成功' }), 300);
+  Taro.navigateBack();
 };
 
 const handleCancel = () => useCancelVerify().then(() => {
   store.role = Role.user;
-  Taro.navigateBack();
   setTimeout(() => Taro.showToast({ icon: 'success', title: '取消成功' }), 300);
+  Taro.navigateBack();
 }).catch(msg => {
     notifyContent.value = msg;
     notifyModalVisible.value = true;
@@ -383,8 +383,8 @@ const handleSubmit = async () => {
     .then(() => {
       store.role = Role.volunteer;
       Taro.hideLoading();
-      Taro.navigateBack();
       setTimeout(() => Taro.showToast({ icon: 'success', title: '认证成功' }), 300);
+      Taro.navigateBack();
     })
     .catch(msg => {
       Taro.hideLoading();
