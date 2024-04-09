@@ -1,0 +1,8 @@
+.popup-content {
+  position: relative;
+  overflow: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

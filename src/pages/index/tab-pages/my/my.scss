@@ -1,0 +1,41 @@
+.banner {
+  position: relative;
+  margin-top: 32px;
+  background: linear-gradient( 92deg, #A6FF4C 0%, #41D96B 70%, #50FE82 100%);
+  border-radius: 16px 16px 16px 16px;
+  overflow: visible;
+  height: 72px;
+  box-sizing: border-box;
+}
+
+.whitelist-modal-body {
+  text-align: center;
+  padding: 0 16px;
+  padding-top: 24px;
+  padding-bottom: 36px;
+
+  .state {
+    color: #0D0F02;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+  }
+
+  .expire {
+    color: #41CC68;
+    font-size: 32px;
+    line-height: 46px;
+    font-weight: 800;
+    margin-bottom: 16px;
+
+    &.is-forbidden {
+      color: #FFC626;
+    }
+  }
+
+  .info {
+    color: #0D0F02;
+    font-size: 12px;
+    line-height: 17px;
+  }
+}

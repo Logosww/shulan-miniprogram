@@ -1,0 +1,32 @@
+.swiper-indicator-item {
+  background-color: #fff;
+  opacity: .6;
+  width: 3px;
+  height: 100%;
+  border-radius: 50%;
+  transition: all .2s;
+  margin-right: 4px;
+  
+  &.is-active {
+    opacity: 1;
+    width: 16px;
+    border-radius: 19px;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.nut-checkbox {
+  --nut-checkbox-margin-right: 0;
+  --nut-checkbox-label-margin-left: 4px;
+  
+  .nut-icon {
+    --nut-icon-line-height: 14px;
+  }
+
+  .nut-checkbox__label {
+    line-height: 9px;
+  }
+}

@@ -1,0 +1,102 @@
+.id-card {
+  overflow: hidden;
+  position: relative;
+  margin-top: 16px;
+  background: #F5F9F6;
+  border-radius: 16px 16px 16px 16px;
+  border: 3px solid #45E571;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .id-card__circle {
+    width: 125px;
+    height: 125px;
+    border: 3px dashed #45E571;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    .id-card__icon-plus {
+      width: 44px;
+      height: 44px;
+    }
+  }
+
+  .picture {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border-radius: 50%;
+  border: 1px solid #41CC68;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: #41CC68;
+  }
+}
+
+.tabs {
+  line-height: 44px;
+  display: flex;
+  background-color: #51fe811a;
+
+  .tabs-item {
+    font-size: 16px;
+    color: #666;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+    border-radius: 16px 16px 0 0;
+    transition: all .2s;
+
+    &.is-active {
+      font-weight: bold;
+      color: #0D0F02;
+      background-color: #fff;
+    }
+  }
+}
+
+.tab-pane {
+  padding: 8px 16px;
+
+  .form-cell {
+    padding: 12px 0;
+    padding-left: 20px;
+    display: flex;
+    line-height: 22px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    color: #262626;
+    font-size: 16px;
+
+    &.is-required {
+      &::after {
+        content: '*';
+        position: absolute;
+        left: 0;
+        top: 14px;
+        width: 12px;
+        height: 12px;
+        font-size: 16px;
+        color: #FFC626;
+      }
+    }
+  }
+}

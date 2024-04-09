@@ -1,0 +1,64 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.nut-button--primary {
+  font-weight: bold;
+}
+
+.nut-tabs__titles-item__line {
+  bottom: 5px !important;
+}
+
+.nut-tabs__titles-item__text {
+  position: absolute;
+  top: 8px;
+}
+
+.nut-tab-pane {
+  padding: 0 !important;
+}
+
+.modal {
+  &-enter {
+    transition: all .3s ease-out;
+  }
+  &-leave {
+    transition: all .2s ease-in;
+  }
+  &-enter-from, &-leave-to {
+    opacity: 0;
+    transform: translate(-50%, -47%) scale(.95) !important;
+  }
+  &-enter-to, &-leave-from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.action-bar {
+  position: relative;
+  padding: 16px;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+
+  &.is-hidden {
+    visibility: hidden;
+  }
+}
+
+.animation-fade-in {
+  animation: fade-in .3s;
+}

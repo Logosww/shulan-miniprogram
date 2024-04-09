@@ -1,0 +1,12 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon_daohang ">
+<circle id="Ellipse 73" cx="14" cy="14" r="14" fill="url(#paint0_linear_599_7674)"/>
+<path id="Polygon 11" d="M20.4692 8.58193C20.7305 7.92889 20.0824 7.28082 19.4293 7.54204L6.89352 12.5564C6.21818 12.8265 6.22457 13.7847 6.90345 14.0458L11.3816 15.7682C11.7777 15.9205 12.0907 16.2336 12.2431 16.6297L13.9654 21.1078C14.2266 21.7867 15.1848 21.7931 15.4549 21.1178L20.4692 8.58193Z" fill="#39B35B"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_599_7674" x1="14" y1="-26.6" x2="14" y2="22.68" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C0F500"/>
+<stop offset="1" stop-color="#51FE81"/>
+</linearGradient>
+</defs>
+</svg>

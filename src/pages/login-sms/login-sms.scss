@@ -1,0 +1,63 @@
+.input-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 52px;
+
+  .input-label {
+    position: relative;
+    flex: 90px 1 1;
+    font-weight: bold;
+    font-size: 18px;
+    color: #0D0F02;
+    line-height: 21px;
+
+    &::after {
+      position: absolute;
+      content: '';
+      right: 0;
+      top: -5px;
+      width: 1px;
+      height: 30px;
+      background-color: #E6E6E6;
+    }
+  }
+
+  .nut-input {
+    --nut-input-font-size: 16px;
+    background-color: transparent;
+    padding-left: 24px;
+    padding-right: 0;
+
+    .nut-input-inner {
+      color: #404040;
+    }
+  }
+
+  .send-code-btn {
+    width: 70px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #404040;
+    line-height: 16px;
+    text-align: center;
+  }
+}
+
+.input-wrapper + .input-wrapper {
+  margin-bottom: 12px;
+}
+
+.nut-checkbox {
+  --nut-checkbox-margin-right: 0;
+  --nut-checkbox-label-margin-left: 4px;
+  
+  .nut-icon {
+    --nut-icon-line-height: 14px;
+  }
+
+  .nut-checkbox__label {
+    line-height: 9px;
+  }
+}

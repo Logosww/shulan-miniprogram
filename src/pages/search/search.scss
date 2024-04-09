@@ -1,0 +1,22 @@
+.search-box__original {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  height: 100%;
+  min-height: unset;
+  line-height: 100%;
+  color: #0D0F02;
+  font-size: 12px;
+}
+
+.search-history-wrapper {
+  position: absolute;
+  background-color: #fff;
+  top: 56px;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 56px);
+  animation: fade-in .2s;
+}
