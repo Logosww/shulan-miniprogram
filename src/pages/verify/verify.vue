@@ -355,11 +355,18 @@ const handleModify = async () => {
   }
 
   Taro.showLoading({ title: '提交中' });
-  await useVerifyVolunteer(transform());
-  Taro.hideLoading();
-  store.role = Role.volunteer;
-  setTimeout(() => Taro.showToast({ icon: 'success', title: '修改成功' }), 300);
-  Taro.navigateBack();
+  return useVerifyVolunteer(transform())
+    .then(() => {
+      Taro.hideLoading();
+      store.role = Role.volunteer;
+      setTimeout(() => Taro.showToast({ icon: 'success', title: '修改成功' }), 300);
+      Taro.navigateBack();
+    })
+    .catch(msg => {
+      Taro.hideLoading();
+      notifyContent.value = msg;
+      notifyModalVisible.value = true;
+    });
 };
 
 const handleCancel = () => useCancelVerify().then(() => {

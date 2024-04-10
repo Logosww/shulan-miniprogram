@@ -176,7 +176,7 @@ const whiltelistInfo = ref<IVolunteerWhitelistInfo>();
 
 const store = useStore();
 
-const isLogin = computed(() => store.token);
+const isLogin = computed(() => !!store.token);
 const role = computed(() => store.role);
 
 const profile = inject(profileKey)!;

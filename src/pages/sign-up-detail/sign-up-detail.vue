@@ -86,7 +86,7 @@
                 <image class="w-[5px] h-[10px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
               </div>
             </div>
-            <div class="bg-white py-[20px] px-[16px] mb-[16px]" v-if="!data?.checkin.isChecked">
+            <div class="bg-white py-[20px] px-[16px] mb-[16px]" v-if="data?.checkin && !data?.checkin.isChecked">
               <image class="w-[92px] h-[15px] mb-[12px]" src="@/assets/icon/sign-up-detail/check-in.svg" :svg="true" />
               <div class="mt-[8px] mb-[12px] text-[#B3B3B3] text-[12px] leading-[17px]">请在参加给活动工作人员核销</div>
               <div class="text-center text-[#0D0F02] text-[20px] font-bold leading-[28px] mb-[16px]">志愿者二维码核销</div>
@@ -126,7 +126,7 @@
             </div>
             <div id="detail" class="bg-white px-[16px] py-[20px] mb-[16px]">
               <div class="py-[12px] text-[#0D0F02] text-[16px] leading-[19px] font-bold">演出描述</div>
-              <div class="text-[#0D0F02] text-[14px] leading-[16px]">{{ data?.activity.description }}</div>
+              <div class="text-[#0D0F02] text-[14px] leading-[16px] whitespace-pre-line">{{ data?.activity.description }}</div>
               <div class="my-[12px] text-[#0D0F02] text-[16px] leading-[19px] font-bold">工作介绍</div>
               <div class="pl-[16px] text-[#666] text-[14px] leading-[16px]">
                 <div class="text-[#0D0F02] space-y-[8px] mt-[12px]">
@@ -246,7 +246,7 @@ const handleOpenLocation = () => Taro.openLocation({
 useLoad<{ id: number }>(({ id: _id }: { id: number }) => id = _id);
 useReady(() => useGetSignUpDetail({ id }).then(detail => {
   data.value = detail;
-  setTimeout(() => isLoading.value = false, 800);
+  setTimeout(() => isLoading.value = false, 600);
 }));
 
 </script>

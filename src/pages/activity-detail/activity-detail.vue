@@ -118,7 +118,7 @@
             </div>
             <div id="detail" class="bg-white px-[16px] pb-[16px] mb-[16px]">
               <div class="py-[12px] text-[#0D0F02] text-[16px] leading-[19px] font-bold">演出描述</div>
-              <div class="text-[#0D0F02] text-[14px] leading-[16px]">{{ data?.description }}</div>
+              <div class="text-[#0D0F02] text-[14px] leading-[16px] whitespace-pre-line">{{ data?.description }}</div>
               <div class="my-[12px] text-[#0D0F02] text-[16px] leading-[19px] font-bold">工作介绍</div>
               <div class="pl-[16px] text-[#666] text-[14px] leading-[16px]">
                 <div class="text-[#0D0F02] space-y-[8px] mt-[12px]" v-for="(work, index) in data?.workList" :key="index">
@@ -174,7 +174,7 @@
           <button class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[38px] border-[#41CC68] border-[1px] border-solid bg-white" open-type="share">分享</button>
           <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[72px]" @tap="handleToSignUp(activityId)" v-if="data?.state === ActivityState.activated">立即报名</div>
           <div class="text-[#B3B3B3] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#F2F2F2] px-[64px]" v-else-if="data?.state === ActivityState.auditPassed">报名待开启</div>
-          <div class="text-[#51FE81] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#0D0F02] px-[72px]" @tap="Taro.showToast({ icon: 'none', title: '功能暂未开放' })" v-else>现场回顾</div>
+          <!-- <div class="text-[#51FE81] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#0D0F02] px-[72px]" v-else>现场回顾</div> -->
         </div>
         <Popup title="工作须知" :content-height="500" v-model="noticePopupVisible">
           <ul class="space-y-[12px] px-[8px]">
@@ -295,7 +295,7 @@ useLoad(async ({ id }: { id: number }) => {
 });
 useReady(() => useGetActivityDetail({ id: activityId }).then(detail => {
   data.value = detail;
-  setTimeout(() => isLoading.value = false, 800);
+  setTimeout(() => isLoading.value = false, 600);
 }));
 useShareAppMessage(() => useShareActivity({ id: activityId }).then(() => ({})));
 

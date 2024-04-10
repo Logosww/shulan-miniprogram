@@ -203,13 +203,13 @@ useReady(() => {
   };
   useGetSignUpPageData({ activityId, activityWorkIds }).then(_data => {
     data.value = _data;
-    setTimeout(() => isLoading.value = false, 800);
+    setTimeout(() => isLoading.value = false, 600);
   });
 });
 
 useDidShow(() => store.role !== Role.user && useGetSignUpPageData({ activityId, activityWorkIds }).then(_data => {
   data.value = _data;
-  setTimeout(() => isLoading.value = false, 800);
+  setTimeout(() => isLoading.value = false, 600);
 }));
 
 </script>
