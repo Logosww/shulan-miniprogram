@@ -1,22 +1,23 @@
 import { get, post, put, del } from '@/utils/http';
 
-import { 
-  type ISignUpPageData,
-  type IActivityDetail,
-  type IActivityPreview,
-  type ICOSBucketCredentials,
-  type ILoginResult, 
-  type IPagingParams,
-  type IUserProfile,
-  type IVerifyForm,
-  type IVolunteerWhitelistInfo,
-  type IWorkData,
-  type NullableFilter,
-  type IPagingResult,
-  type ISignUpDetail,
-  type ISignUpRecord,
-  type IVerifyData,
+import type { 
+  ISignUpPageData,
+  IActivityDetail,
+  IActivityPreview,
+  ICOSBucketCredentials,
+  ILoginResult, 
+  IPagingParams,
+  IUserProfile,
+  IVerifyForm,
+  IVolunteerWhitelistInfo,
+  IWorkData,
+  NullableFilter,
+  IPagingResult,
+  ISignUpDetail,
+  ISignUpRecord,
+  IVerifyData,
   IBanner,
+  ILive,
 } from './use-api-types';
 import type { ActivityType, VolunteerSignUpState } from '@/constants';
 
@@ -41,7 +42,7 @@ export const useGetPagingActivities = (params: IPagingParams & NullableFilter<{
   keyword: string;
 }>) => post<IPagingResult<IActivityPreview>>('/public/wxmp/index/activity/search', params);
 
-export const useGetActivitiesByType = (params: IPagingParams & NullableFilter<{
+export const useSearchPagingActivities = (params: IPagingParams & NullableFilter<{
   city: string;
   type: ActivityType;
   activityAt: [string, string];
@@ -91,4 +92,15 @@ export const useShareActivity = (params: { id: number }) => get('/public/wxmp/in
 
 export const useCheckin = (params: { id: number }) => put('/superAdmin/volunteer/checkin', params);
 
-export const useGetBannerList = () => get<IBanner[]>('/wxmp/getBannerList');
+export const useGetBannerList = () => get<IBanner[]>('/public/wxmp/index/banner/list');
+
+export const useGetPagingLives = (params: IPagingParams & NullableFilter<{
+  city: string;
+  keyword: string;
+  activityType: ActivityType;
+  activityAt: [string, string];
+}>) => post<IPagingResult<ILive>>('/public/wxmp/history/activity/search', params);
+
+export const useGetLiveArticleUrl = (params: { id: number }) => get<string>('/public/wxmp/history/activity/detail', params);
+
+export const useSearchActivities = (params: { keyword: string }) => post<IActivityPreview[]>('/public/wxmp/index/activity/searchList', params);

@@ -140,7 +140,7 @@
               <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[4px]">工作须知</div>
               <ul class="space-y-[12px] px-[8px]">
                 <li class="text-[14px] leading-[18px]">
-                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">自愿加入演唱会志愿者团队，配合演唱会的管理安排。</div>
+                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">自愿加入活动志愿者团队，配合活动的管理安排。</div>
                 </li>
                 <li class="text-[14px] leading-[18px]">
                   <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">请确保能按时到岗并全程参与志愿者服务，我们只接受全程参与的志愿者。</div>
@@ -149,7 +149,7 @@
                   <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">志愿者录取情况我们会以短信或电话等方式逐一通知所有录取者，报名后请保持通讯畅通。</div>
                 </li>
                 <li class="text-[14px] leading-[18px]">
-                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">演唱会期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
+                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">活动期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
                 </li>
                 <li class="text-[14px] leading-[18px]">
                   <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">须服从组织安排，按时到岗。</div>
@@ -174,12 +174,12 @@
           <button class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[38px] border-[#41CC68] border-[1px] border-solid bg-white" open-type="share">分享</button>
           <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[72px]" @tap="handleToSignUp(activityId)" v-if="data?.state === ActivityState.activated">立即报名</div>
           <div class="text-[#B3B3B3] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#F2F2F2] px-[64px]" v-else-if="data?.state === ActivityState.auditPassed">报名待开启</div>
-          <!-- <div class="text-[#51FE81] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#0D0F02] px-[72px]" v-else>现场回顾</div> -->
+          <div class="text-[#51FE81] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#0D0F02] px-[72px]" @tap="Taro.navigateTo({ url: `/pages/live-detail/live-detail?id=${activityId}` })" v-else-if="data?.hasLive">现场回顾</div>
         </div>
         <Popup title="工作须知" :content-height="500" v-model="noticePopupVisible">
           <ul class="space-y-[12px] px-[8px]">
             <li class="text-[14px] leading-[18px]">
-              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">自愿加入演唱会志愿者团队，配合演唱会的管理安排。</div>
+              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">自愿加入活动志愿者团队，配合活动的管理安排。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">请确保能按时到岗并全程参与志愿者服务，我们只接受全程参与的志愿者。</div>
@@ -188,13 +188,13 @@
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">志愿者录取情况我们会以短信或电话等方式逐一通知所有录取者，报名后请保持通讯畅通。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
-              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">演唱会期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
+              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">活动期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">须服从组织安排，按时到岗。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
-              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">珍惜和维护演唱会的声誉，不得利用志愿者身份从事与演唱会活动宗旨、目的不符的行为。</div>
+              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">珍惜和维护活动的声誉，不得利用志愿者身份从事与活动活动宗旨、目的不符的行为。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">有责任感、团队精神，积极主动与人沟通交流，良好的心理素质及执行能力。</div>

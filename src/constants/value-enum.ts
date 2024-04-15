@@ -27,6 +27,7 @@ export enum ActivityType {
   drama = 1,
   talkshow = 2,
   musicFesitival = 3,
+  sports = 4,
 };
 
 export enum ActivityState {
@@ -80,9 +81,10 @@ export enum IdCardType {
   passport = 2,
 };
 
-export enum BannerTargetType {
+export enum BannerType {
   activity = 0,
   live = 1,
+  none = 2,
 };
 
 export const activityTypeMap: Record<ActivityType, string> = {
@@ -90,6 +92,7 @@ export const activityTypeMap: Record<ActivityType, string> = {
   [ActivityType.drama]: '话剧',
   [ActivityType.talkshow]: '脱口秀',
   [ActivityType.musicFesitival]: '音乐节',
+  [ActivityType.sports]: '体育',
 };
 
 export const workTagMap: Record<WorkTag, { class: string; text: string } | undefined> = {
@@ -131,4 +134,10 @@ export const idCardTypeMap: Record<IdCardType, string> = {
   [IdCardType.mainlandIdCard]: '中国大陆居民身份证',
   [IdCardType.HTMPass]: '港澳台通行证',
   [IdCardType.passport]: '护照',
+};
+
+export const bannerTypePathnameMap: Record<BannerType, string | undefined> = {
+  [BannerType.activity]: 'activity-detail',
+  [BannerType.live]: 'live-detail',
+  [BannerType.none]: void 0,
 };

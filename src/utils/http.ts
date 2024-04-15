@@ -33,6 +33,7 @@ const request = <T = void>(
       method,
       data,
       header,
+      timeout: 120000,
       // @ts-ignore
       useHighPerformanceMode: true,
       fail: e => {

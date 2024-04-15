@@ -10,7 +10,7 @@ import type {
   VolunteerType, 
   VolunteerWhitelistState,
   IdCardType,
-  BannerTargetType,
+  BannerType,
 } from '@/constants/value-enum';
 
 export interface ILoginResult {
@@ -48,6 +48,7 @@ export interface IActivityPreview {
   startAt: string;
   endAt: string;
   label: WorkTag;
+  hasLive: boolean;
   avatarNameList: {
     avatarUrl: string;
     name: string;
@@ -231,7 +232,19 @@ export interface ISignUpRecord {
 
 export interface IBanner {
   id: number;
-  type: BannerTargetType;
+  type: BannerType;
   targetId: number;
   coverUrl: string;
+};
+
+export interface ILive {
+  id: number;
+  title: string;
+  coverUrl: string;
+  digest: string;
+  activity: {
+    city: string;
+    type: ActivityType;
+    name: string;
+  };
 };

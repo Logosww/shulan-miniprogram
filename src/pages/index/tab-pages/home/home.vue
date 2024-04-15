@@ -23,9 +23,8 @@
           <image class="w-[16px] h-[16px] mr-[4px]" src="@/assets/icon/home/position.svg" :svg="true" />
           <div class="text-[#0D0F02] font-[500] text-[14px] leading-[20px] max-w-[48px] truncate">{{ store.city || '杭州' }}</div>
         </div>
-        <div class="py-[7px] pl-[10px] ml-[16px] mr-[15px] flex bg-white border-[#8ECCA0] border-[1px] border-solid rounded-[20px] flex-[1]">
+        <div class="py-[7px] pl-[10px] flex ml-[16px] mr-[15px] bg-white border-[#8ECCA0] border-[1px] border-solid rounded-[20px] flex-[1]" @tap="Taro.navigateTo({ url: '/pages/search/search' })">
           <image class="w-[16px] h-[16px] mr-[12px]" src="@/assets/icon/home/search.svg" :svg="true" />
-          <div class="text-[#7DB28C] text-[12px]">周杰伦</div>
         </div>
         <image class="w-[20px] h-[20px]" src="@/assets/icon/home/notification.svg" :svg="true" @tap="Taro.showToast({ title: '功能暂未开放', icon: 'none' })" />
       </div>
@@ -42,8 +41,8 @@
       @rerefresherrefresh="fetchActivityList(1)"
     >
       <nut-swiper class="h-[150px] rounded-[8px] bg-white" :auto-play="3000" pagination-visible @change="index => currBannerIndex = index">
-        <nut-swiper-item v-for="(banner, index) in bannerList" :key="index">
-          <image class="w-full h-full" :src="banner.coverUrl" />
+        <nut-swiper-item v-for="(banner, index) in bannerList" :key="index" @tap="handleBannerTap(banner)">
+          <image class="w-full h-full" :src="banner.coverUrl" mode="aspectFill" />
         </nut-swiper-item>
         <template #page>
           <div class="absolute w-full h-[3px] left-0 bottom-[8px] flex justify-center items-center">
@@ -67,6 +66,10 @@
         <div @tap="Taro.navigateTo({ url: `/pages/activity-list/activity-list?type=${ActivityType.musicFesitival}` })">
           <image class="w-[40px] h-[40px] mb-[4px]" src="@/assets/icon/home/music_festival.svg" :svg="true" />
           <div class="text-center text-black text-[14px] font-[500] leading-[16px]">音乐节</div>
+        </div>
+        <div @tap="Taro.navigateTo({ url: `/pages/activity-list/activity-list?type=${ActivityType.sports}` })">
+          <image class="w-[40px] h-[40px] mb-[4px]" src="@/assets/icon/home/sports.svg" :svg="true" />
+          <div class="text-center text-black text-[14px] font-[500] leading-[16px]">体育</div>
         </div>
       </div>
       <div class="text-black text-[20px] mb-[10px] font-bold before:absolute">
@@ -104,8 +107,8 @@ import Taro, { useLoad } from '@tarojs/taro';
 import { ref, computed } from 'vue';
 import { useStore } from '@/store';
 import { useThrottleFn } from '@vueuse/core';
-import { ActivityType, BannerTargetType } from '@/constants';
-import { useContentHeight, useGetPagingActivities, useDecodeGeography } from '@/composables';
+import { ActivityType, BannerType, bannerTypePathnameMap } from '@/constants';
+import { useContentHeight, useGetPagingActivities, useDecodeGeography, useGetBannerList } from '@/composables';
 import Container from '@/components/container.vue';
 import Modal from '@/components/modal.vue';
 import ActivityCard from '@/components/activity-card.vue';
@@ -124,20 +127,9 @@ const contentHeight = useContentHeight();
 
 const scrollViewStyle = computed(() => `height: ${contentHeight.value}px;`);
 
-const bannerList = ref<IBanner[]>([
-  {
-    id: 0,
-    type: BannerTargetType.activity,
-    targetId: 0,
-    coverUrl: '//common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/logo_gbg.jpg',
-  },
-  {
-    id: 0,
-    type: BannerTargetType.activity,
-    targetId: 0,
-    coverUrl: '//common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/lookme.png',
-  }
-]);
+const bannerList = ref<IBanner[]>([]);
+
+useGetBannerList().then(list => bannerList.value = list);
 
 store.$onAction(({ name, args }) => name === 'selectCity' && fetchActivityList(1, args[0]));
 
@@ -186,6 +178,14 @@ const handleAuthLocation = () => {
         },
       });
     });
+};
+
+const handleBannerTap = (banner: IBanner) => {
+  const { type, targetId } = banner;
+  if(type === BannerType.none) return;
+
+  const pathname = bannerTypePathnameMap[type]!;
+  Taro.navigateTo({ url: `/pages/${pathname}/${pathname}?id=${targetId}` });
 };
 
 useLoad(() => {

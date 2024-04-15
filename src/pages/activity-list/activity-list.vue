@@ -28,7 +28,7 @@
 import { ref, computed, shallowRef } from 'vue';
 import Taro, { useLoad } from '@tarojs/taro';
 import { useThrottleFn } from '@vueuse/core';
-import { IActivityPreview, useContentHeight, useGetActivitiesByType } from '@/composables';
+import { IActivityPreview, useContentHeight, useSearchPagingActivities } from '@/composables';
 import { activityFilterConfig } from '@/constants';
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
@@ -55,7 +55,7 @@ const fetchActivityList = async (page?: number) => {
   const { city, type, activityAt } = fetchParams;
   if(page) current = page;
   Taro.showLoading({ title: '加载中' });
-  const { records } = await useGetActivitiesByType({ 
+  const { records } = await useSearchPagingActivities({ 
     type,
     size: 6,
     page: current,

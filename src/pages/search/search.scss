@@ -12,11 +12,18 @@
 .search-history-wrapper {
   position: absolute;
   background-color: #fff;
-  top: 56px;
   padding-left: 16px;
   padding-right: 16px;
   box-sizing: border-box;
+  top: 0;
   width: 100%;
-  height: calc(100% - 56px);
+  height: 100%;
+  padding-top: 8px;
   animation: fade-in .2s;
+}
+
+.container-content {
+  .overflow-y-auto::-webkit-scrollbar {
+    display: none;
+  }
 }

@@ -31,14 +31,14 @@ export const tabbarList: ITabbarItemConfig[] = [
     activeIcon: indexActiveIcon,
     pageComponent: Home,
   },
-  // {
-  //   name: 'live',
-  //   title: '现场回顾',
-  //   route: '/live',
-  //   icon: liveIcon,
-  //   activeIcon: liveActiveIcon,
-  //   pageComponent: Live,
-  // },
+  {
+    name: 'live',
+    title: '现场回顾',
+    route: '/live',
+    icon: liveIcon,
+    activeIcon: liveActiveIcon,
+    pageComponent: Live,
+  },
   // {
   //   name: 'welfare',
   //   title: '福利中心',

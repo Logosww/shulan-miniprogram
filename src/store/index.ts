@@ -28,7 +28,7 @@ const useStore = defineStore('shulan-miniprogram', {
     role: getInitialValue('role'),
     city: getInitialValue('city', '杭州'),
     showLocationAuthModal: getInitialValue('showLocationAuthModal', true),
-    searchHistory: getInitialValue('searchHistory'),
+    searchHistory: getInitialValue('searchHistory', []),
     notificationCount: getInitialValue('notificationCount'),
     whitelistState: getInitialValue('whitelistState'),
   }),

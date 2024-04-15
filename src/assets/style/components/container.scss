@@ -82,5 +82,9 @@
     &::-webkit-scrollbar {
       display: none;
     }
+
+    scroll-view::-webkit-scrollbar {
+      display: none;
+    }
   }
 }

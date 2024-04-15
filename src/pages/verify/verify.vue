@@ -270,10 +270,7 @@ const idCardTypeRange = Object.values(idCardTypeMap), genderRange = Object.value
 
 let thisYear = moment().year() - (moment().month() >= 9 ? 2000 : 2001);
 const gradeRange: string[] = [];
-for(let i = 0; i < 4; i++) {
-  gradeRange.push(`${thisYear}级`);
-  thisYear--;
-};
+for(let i = 16; i <= thisYear; i++) gradeRange.push(`${i}级`);
 
 const notifyContent = ref('');
 const notifyModalVisible = ref(false);

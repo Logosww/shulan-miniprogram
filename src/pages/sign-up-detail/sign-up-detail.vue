@@ -86,11 +86,15 @@
                 <image class="w-[5px] h-[10px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
               </div>
             </div>
-            <div class="bg-white py-[20px] px-[16px] mb-[16px]" v-if="data?.checkin && !data?.checkin.isChecked">
+            <div class="bg-white py-[20px] px-[16px] mb-[16px]">
               <image class="w-[92px] h-[15px] mb-[12px]" src="@/assets/icon/sign-up-detail/check-in.svg" :svg="true" />
-              <div class="mt-[8px] mb-[12px] text-[#B3B3B3] text-[12px] leading-[17px]">请在参加给活动工作人员核销</div>
-              <div class="text-center text-[#0D0F02] text-[20px] font-bold leading-[28px] mb-[16px]">志愿者二维码核销</div>
-              <image class="block mx-auto w-[200px] h-[200px]" mode="aspectFill" :src="data?.checkin.qrCodeUrl" />
+              <div class="mb-[4px] text-[#0D0F02] text-[16px] leading-[22px] font-bold">志愿者编号</div>
+              <div class="text-[#0D0F02] text-[24px] leading-[34px] font-bold">{{ data?.id }}</div>
+              <div class="mt-[4px]" v-if="data?.checkin && !data?.checkin.isChecked">
+                <div class="mb-[12px] text-[#B3B3B3] text-[12px] leading-[17px]">请在参加给活动工作人员核销</div>
+                <div class="text-center text-[#0D0F02] text-[20px] font-bold leading-[28px] mb-[16px]">志愿者二维码核销</div>
+                <image class="block mx-auto w-[200px] h-[200px]" mode="aspectFill" :src="data?.checkin.qrCodeUrl" />
+              </div>
             </div>
             <div class="p-[16px] bg-white mb-[16px]">
               <div class="flex items-end mb-[12px]">
@@ -148,7 +152,7 @@
               <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[4px]">工作须知</div>
               <ul class="space-y-[12px] px-[8px]">
                 <li class="text-[14px] leading-[18px]">
-                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">自愿加入演唱会志愿者团队，配合演唱会的管理安排。</div>
+                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">自愿加入活动志愿者团队，配合活动的管理安排。</div>
                 </li>
                 <li class="text-[14px] leading-[18px]">
                   <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">请确保能按时到岗并全程参与志愿者服务，我们只接受全程参与的志愿者。</div>
@@ -157,7 +161,7 @@
                   <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">志愿者录取情况我们会以短信或电话等方式逐一通知所有录取者，报名后请保持通讯畅通。</div>
                 </li>
                 <li class="text-[14px] leading-[18px]">
-                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">演唱会期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
+                  <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">活动期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
                 </li>
                 <li class="text-[14px] leading-[18px]">
                   <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#D9D9D9] before:rounded-full">须服从组织安排，按时到岗。</div>
@@ -168,10 +172,10 @@
           </div>
           <div class="h-[32px]"></div>
         </scroll-view>
-        <Popup title="工作须知" :content-height="400" v-model="noticePopupVisible">
+        <Popup title="工作须知" :content-height="500" v-model="noticePopupVisible">
           <ul class="space-y-[12px] px-[8px]">
             <li class="text-[14px] leading-[18px]">
-              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">自愿加入演唱会志愿者团队，配合演唱会的管理安排。</div>
+              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">自愿加入活动志愿者团队，配合活动的管理安排。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">请确保能按时到岗并全程参与志愿者服务，我们只接受全程参与的志愿者。</div>
@@ -180,13 +184,13 @@
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">志愿者录取情况我们会以短信或电话等方式逐一通知所有录取者，报名后请保持通讯畅通。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
-              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">演唱会期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
+              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">活动期间工作期间表现不佳、中途退出或请假将被取消志愿者资格，无法获得福利。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">须服从组织安排，按时到岗。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
-              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">珍惜和维护演唱会的声誉，不得利用志愿者身份从事与演唱会活动宗旨、目的不符的行为。</div>
+              <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">珍惜和维护活动的声誉，不得利用志愿者身份从事与活动活动宗旨、目的不符的行为。</div>
             </li>
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">有责任感、团队精神，积极主动与人沟通交流，良好的心理素质及执行能力。</div>
