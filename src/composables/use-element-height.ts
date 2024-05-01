@@ -1,7 +1,7 @@
 import { ref, onMounted } from 'vue';
 import Taro, { useReady } from '@tarojs/taro';
 
-import { BoundingClientRectCallbackResult } from '@babel/core';
+import type { BoundingClientRectCallbackResult } from '@babel/core';
 
 interface IUseElementHeightOption {
   selector: string;

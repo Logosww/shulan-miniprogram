@@ -43,6 +43,11 @@ export default defineConfig(async (merge) => {
       optimizeMainPackage: {
         enable: true,
       },
+      // @ts-ignore
+      prerender: {
+        match: 'pages/login**',
+        include: ['pages/index/index'],
+      },
       postcss: {
         pxtransform: {
           enable: true,

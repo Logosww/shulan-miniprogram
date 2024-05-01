@@ -18,6 +18,8 @@ import type {
   IVerifyData,
   IBanner,
   ILive,
+  IVolunteerHistoryItem,
+  IVolunteerCertificate,
 } from './use-api-types';
 import type { ActivityType, VolunteerSignUpState } from '@/constants';
 
@@ -90,7 +92,7 @@ export const useCancelSignUp = (params: { id: number }) => put('/volunteer/wxmp/
 
 export const useShareActivity = (params: { id: number }) => get('/public/wxmp/index/activity/share', params);
 
-export const useCheckin = (params: { id: number }) => put('/superAdmin/volunteer/checkin', params);
+export const useCheckin = (params: { id: number }) => put('/wxmp/my/signupRecord/checkin', params);
 
 export const useGetBannerList = () => get<IBanner[]>('/public/wxmp/index/banner/list');
 
@@ -104,3 +106,7 @@ export const useGetPagingLives = (params: IPagingParams & NullableFilter<{
 export const useGetLiveArticleUrl = (params: { id: number }) => get<string>('/public/wxmp/history/activity/detail', params);
 
 export const useSearchActivities = (params: { keyword: string }) => post<IActivityPreview[]>('/public/wxmp/index/activity/searchList', params);
+
+export const useGetVolunteerHistory = () => get<IVolunteerHistoryItem[]>('/volunteer/my/volunteerRecord/list');
+
+export const useGetCertificate = (params: { id: number }) => get<IVolunteerCertificate>('/volunteer/my/volunteerRecord/detail', params);

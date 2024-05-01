@@ -60,5 +60,13 @@
 }
 
 .animation-fade-in {
-  animation: fade-in .3s;
+  animation: fade-in .4s;
+}
+
+scroll-view ::-webkit-scrollbar {
+  appearance: none;
+  color: transparent;
+  display: none;
+  width: 0;
+  height: 0;
 }

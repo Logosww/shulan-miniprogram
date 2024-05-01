@@ -22,17 +22,9 @@
             <nut-skeleton row="3" height="16px" width="398px" animated round />
           </div>
         </div>
-        <scroll-view
-          id="scrollview"
+        <my-scroll-view
           class="bg-[#F7F7F7] animation-fade-in"
-          :style="scrollViewStyle"
-          :enhanced="true"
-          :enable-passive="true"
-          :scroll-y="true"
-          :show-scrollbar="false"
-          :fast-deceleration="true"
-          :scroll-with-animation="true"
-          :using-sticky="true"
+          :height="scrollViewHeight"
           v-else
         >
           <div class="bg-white py-[14px] px-[16px]">
@@ -66,7 +58,7 @@
               <div class="text-[#0D0F02] font-[500]">证件照片</div>已上传
             </div>
             <div class="flex justify-between py-[10px]">
-              <div class="text-[#0D0F02] font-[500]">身份证号</div>{{ data?.volunteer.desensitizedIdCard }}
+              <div class="text-[#0D0F02] font-[500]">证件号码</div>{{ data?.volunteer.desensitizedIdCard }}
             </div>
             <div class="flex justify-between py-[10px]" v-if="data?.volunteer.experienceUrls.length">
               <div class="text-[#0D0F02] font-[500]">相关经历证明</div>已上传
@@ -85,7 +77,7 @@
               <image class="w-[12px] h-[12px] mr-[8px] flex-shrink-0" src="@/assets/icon/verify/tip.svg" :svg="true" />
               <text class="text-[#404040] text-[12px] font-[500] leading-[18px]">
                 本活动取消报名截止时间为 
-                <text class="text-[13px] font-extrabold">{{ moment(data?.cancelAt.time).format('YYYY.MM.DD HH:mm') }}</text>，即报名截止前 <text class="text-[13px] font-extrabold">{{ data?.cancelAt.deadline || 1 }}</text> 天。 超时取消报名将被视为违规取消。
+                <text class="text-[13px] font-extrabold">{{ moment(data?.cancelAt.time).format('YYYY.MM.DD HH:mm') }}</text>，即报名截止前 <text class="text-[13px] font-extrabold">{{ data?.cancelAt.deadline }}</text> 天。 超时取消报名将被视为违规取消。
               </text>
             </div>
             <div>本次活动由组织方「不会上树的树懒」发起，请勿轻信非官方渠道的虚假信息，谨防您的利益受损。</div>
@@ -93,7 +85,7 @@
             <div>最终解释权归「不会上树的树懒」所有。</div>
           </div>
           <div class="h-[32px]"></div>
-        </scroll-view>
+        </my-scroll-view>
         <div class="action-bar" :class="[isLoading ? 'is-hidden' : '']">
           <div 
             class="w-full text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] text-center"
@@ -128,6 +120,7 @@ import { useContentHeight, useElementHeight, useGetSignUpPageData, useSignUp } f
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
 import ConfirmModal from '@/components/confirm-modal.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { ISignUpPageData } from '@/composables/use-api-types';
 
@@ -144,7 +137,7 @@ const store = useStore();
 const contentHeight = useContentHeight();
 const actionBarHeight = useElementHeight('.action-bar');
 
-const scrollViewStyle = computed(() => ({ height: `${contentHeight.value - actionBarHeight.value}px` }));
+const scrollViewHeight = computed(() => contentHeight.value - actionBarHeight.value);
 
 const handleInputReason = () => handleFieldInput({
   receiver: reason,
@@ -185,7 +178,7 @@ const handleSignUp = async () => {
 const handleNotifyConfirm = () => {
   if(store.role !== Role.user) return;
 
-  Taro.navigateTo({ url: '/pages/verify/verify' });
+  Taro.navigateTo({ url: '/packageB/pages/verify/verify' });
 };
 
 useLoad<{ 

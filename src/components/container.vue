@@ -2,7 +2,14 @@
   <div :class="['container', shouldDisableBg ? '' : 'is-bg', props.disableSafeBottom ? '' : 'is-safe-bottom']" :style="style">
     <div class="container-mask-left" v-if="background"></div>
     <div class="container-mask-right" v-if="background"></div>
-    <nut-navbar class="fixed top-0 w-full z-10" :title="navbarTitle" :style="{ '--nut-navbar-height': `${navbarHeight}px`, paddingTop: `${statusBarHeight}px` }" :left-show="isShowBackBtn" @click-back="Taro.navigateBack()">
+    <nut-navbar 
+        class="fixed top-0 w-full z-10"
+        :title="navbarTitle"
+        :style="{ '--nut-navbar-height': `${navbarHeight}px`, paddingTop: `${statusBarHeight}px` }"
+        :left-show="isShowBackBtn"
+        :placeholder="false"
+        @click-back="Taro.navigateBack()"
+      >
       <template #left-show>
         <image class="w-[9px] h-[17px]" src="@/assets/icon/left.svg" :svg="true" />
       </template>

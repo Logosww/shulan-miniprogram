@@ -38,9 +38,6 @@ import Elevator from '@/components/elevator.vue';
 
 import type { IElevatorDataItem } from '@/components/elevator.vue';
 
-// const isSearchboxFocused = ref(false);
-// const searchContent = ref('');
-
 const currentCity = ref('');
 const cityList = ref<IElevatorDataItem[]>([]);
 const recommendCity = [
@@ -57,11 +54,12 @@ const recommendCity = [
 
 
 const store = useStore();
-const { download } = useCOS();
+const { downloadAndRead } = useCOS();
 
 const initialize = async () => {
   Taro.showLoading({ title: '加载中' });
-  cityList.value = await download<IElevatorDataItem[]>({ key: 'cityList.json' })
+  cityList.value = await downloadAndRead<IElevatorDataItem[]>({ key: 'cityList.json', jsonParse: true })
+    .then(({ data: cityList }) => cityList)
     .finally(() => Taro.nextTick(
       () => setTimeout(() => Taro.hideLoading())
     ));

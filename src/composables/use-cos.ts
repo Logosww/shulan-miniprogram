@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro';
+import Taro, { options } from '@tarojs/taro';
 import COS from 'cos-wx-sdk-v5';
 import { nanoid } from '@/utils';
 import { COSBucketBaseUrl } from '@/constants';
@@ -14,6 +14,7 @@ type ProgressInfo = {
 type DownloadOption = {
   key: string;
   filePath?: string;
+  jsonParse?: boolean;
   disableCache?: boolean;
 };
 
@@ -73,13 +74,14 @@ export const useCOS = (
     });
   };
 
-  const download = <T>({ key, filePath: _filePath, disableCache }: DownloadOption) => {
+  const download = (options: Omit<DownloadOption, 'jsonParse'>) => {
+    const { key, filePath: _filePath, disableCache } = options;
     const filePath = `${Taro.env.USER_DATA_PATH}/${_filePath || key}`;
     const fs = Taro.getFileSystemManager();
 
-    return new Promise<T>((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
 
-      const downloadAndCache = () => cos.getObjectUrl({
+      const downloadAndCache = (): void => cos.getObjectUrl({
         Bucket: config.bucketName,
         Region: config.bucketRegion,
         Key: key,
@@ -89,22 +91,22 @@ export const useCOS = (
           
           const res = await Taro.downloadFile({
             url: data.Url,
+            // @ts-ignore
+            useHighPerformanceMode: true,
             fail: err => reject(err),
           });
           const { statusCode, tempFilePath } = res;
           if(statusCode !== 200) return reject(res);
 
+          if(disableCache) return resolve(tempFilePath);
+
           fs.readFile({
             filePath: tempFilePath,
-            encoding: 'utf8',
             success: ({ data }) => {
-              if(disableCache) return JSON.parse(data as string) as T;
-
               fs.writeFile({
                 data,
                 filePath,
-                encoding: 'utf8',
-                success: () => resolve(JSON.parse(data as string) as T),
+                success: () => resolve(filePath),
                 fail: e => reject(e),
               });
             },
@@ -113,17 +115,56 @@ export const useCOS = (
       });
 
       if(!disableCache) {
-        return fs.readFile({ 
-          filePath, 
-          encoding: 'utf8',
-          success: ({ data }) => resolve(JSON.parse(data as string) as T),
-          fail: downloadAndCache,
+        return cos.headObject({
+          Bucket: config.bucketName,
+          Region: config.bucketRegion,
+          Key: key,
+        }, (err, data) => {
+          if(err) {
+            console.error(err);
+            try {
+              fs.accessSync(filePath);
+              return resolve(filePath);
+            } catch {
+              return downloadAndCache();
+            }
+          };
+
+          const { ETag } = data;
+          const md5 = ETag.slice(1, ETag.length - 2);
+          fs.getFileInfo({
+            filePath,
+            digestAlgorithm: 'md5',
+            success: ({ digest: cacheMd5 }) => {
+              md5 === cacheMd5 ? resolve(filePath) : downloadAndCache();
+            },
+            fail: downloadAndCache,
+          });
         });
       }
 
       downloadAndCache();
-    })
+    });
   };
 
-  return { upload, download };
+  const downloadAndRead = <T = ArrayBuffer>(options: DownloadOption) => {
+    const fs = Taro.getFileSystemManager();
+    const { jsonParse } = options;
+
+    const getFileData = (filePath: string) => new Promise<{ filePath: string, data: T }>((resolve, reject) => {
+      fs.readFile({
+        filePath,
+        encoding: jsonParse ? 'utf8' : void 0,
+        success: ({ data }) => resolve({
+          filePath,
+          data: jsonParse ? (JSON.parse(data as string) as T) : (data as T),
+        }),
+        fail: e => reject(e),
+      })
+    });
+
+    return download(options).then(filePath => getFileData(filePath));
+  };
+
+  return { upload, download, downloadAndRead };
 };

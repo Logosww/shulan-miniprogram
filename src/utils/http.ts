@@ -50,7 +50,7 @@ const request = <T = void>(
           if(!code) return reject(msg);
           
           resolve(data);
-        } 
+        }
         else {
           switch(statusCode) {
             case 401: {
@@ -61,7 +61,7 @@ const request = <T = void>(
               Taro.showToast({ icon: 'error', title: '你未被授权' });
               return reject('Unauthenticated');
             }
-            default: reject(res)
+            default: reject(res.data);
           }
         }
       }

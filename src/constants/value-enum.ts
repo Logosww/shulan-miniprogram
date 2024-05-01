@@ -1,7 +1,3 @@
-import { h } from 'vue';
-
-import type { VNode } from 'vue';
-
 export enum Role {
   user = 0,
   volunteer = 1,
@@ -85,6 +81,7 @@ export enum BannerType {
   activity = 0,
   live = 1,
   none = 2,
+  miniprogram = 3,
 };
 
 export const activityTypeMap: Record<ActivityType, string> = {
@@ -127,7 +124,7 @@ export const volunteerSignUpStateMap: Record<VolunteerSignUpState, string> = {
 export const volunteerTypeMap: Record<VolunteerType, string> = {
   [VolunteerType.normal]: '正常',
   [VolunteerType.temporary]: '临时',
-  [VolunteerType.personInCharge]: '组长',
+  [VolunteerType.personInCharge]: '负责人',
 };
 
 export const idCardTypeMap: Record<IdCardType, string> = {
@@ -140,4 +137,5 @@ export const bannerTypePathnameMap: Record<BannerType, string | undefined> = {
   [BannerType.activity]: 'activity-detail',
   [BannerType.live]: 'live-detail',
   [BannerType.none]: void 0,
+  [BannerType.miniprogram]: void 0,
 };

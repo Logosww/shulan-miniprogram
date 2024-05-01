@@ -19,26 +19,22 @@
     <template #navbar-left><image class="h-full" src="@/assets/image/logo_home.png" mode="heightFix" /></template>
     <template #navbar-bottom>
       <div class="w-full h-[42px] pt-[4px] pb-[8px] px-[16px] left-0 flex items-center box-border">
-        <div class="flex items-center" @tap="Taro.navigateTo({ url: '/pages/select-city/select-city' })">
+        <div class="flex items-center" @tap="Taro.navigateTo({ url: '/packageB/pages/select-city/select-city' })">
           <image class="w-[16px] h-[16px] mr-[4px]" src="@/assets/icon/home/position.svg" :svg="true" />
           <div class="text-[#0D0F02] font-[500] text-[14px] leading-[20px] max-w-[48px] truncate">{{ store.city || '杭州' }}</div>
         </div>
-        <div class="py-[7px] pl-[10px] flex ml-[16px] mr-[15px] bg-white border-[#8ECCA0] border-[1px] border-solid rounded-[20px] flex-[1]" @tap="Taro.navigateTo({ url: '/pages/search/search' })">
+        <div class="py-[7px] pl-[10px] flex ml-[16px] mr-[15px] bg-white border-[#8ECCA0] border-[1px] border-solid rounded-[20px] flex-[1]" @tap="Taro.navigateTo({ url: '/packageB/pages/search/search' })">
           <image class="w-[16px] h-[16px] mr-[12px]" src="@/assets/icon/home/search.svg" :svg="true" />
         </div>
         <image class="w-[20px] h-[20px]" src="@/assets/icon/home/notification.svg" :svg="true" @tap="Taro.showToast({ title: '功能暂未开放', icon: 'none' })" />
       </div>
     </template>
-    <scroll-view
-      refresher-default-style="none"
-      :style="scrollViewStyle"
-      :enhanced="true"
-      :enable-passive="true"
-      :scroll-y="true"
-      :show-scrollbar="false"
-      :fast-deceleration="true"
+    <my-scroll-view
+      :lowerThreshold="0"
+      :height="contentHeight"
+      :refresh-handler="() => fetchActivityList(1)"
       @scrolltolower="getMoreActivities()"
-      @rerefresherrefresh="fetchActivityList(1)"
+      refresher
     >
       <nut-swiper class="h-[150px] rounded-[8px] bg-white" :auto-play="3000" pagination-visible @change="index => currBannerIndex = index">
         <nut-swiper-item v-for="(banner, index) in bannerList" :key="index" @tap="handleBannerTap(banner)">
@@ -51,23 +47,23 @@
         </template>
       </nut-swiper>
       <div class="pt-[13px] pb-[9px] px-[19px] my-[16px] bg-white rounded-[12px] flex justify-between">
-        <div @tap="Taro.navigateTo({ url: `/pages/activity-list/activity-list?type=${ActivityType.concert}` })">
+        <div @tap="Taro.navigateTo({ url: `/packageB/pages/activity-list/activity-list?type=${ActivityType.concert}` })">
           <image class="w-[40px] h-[40px] mb-[4px]" src="@/assets/icon/home/concert.svg" :svg="true" />
           <div class="text-center text-black text-[14px] font-[500] leading-[16px]">演唱会</div>
         </div>
-        <div @tap="Taro.navigateTo({ url: `/pages/activity-list/activity-list?type=${ActivityType.drama}` })">
+        <div @tap="Taro.navigateTo({ url: `/packageB/pages/activity-list/activity-list?type=${ActivityType.drama}` })">
           <image class="w-[40px] h-[40px] mb-[4px]" src="@/assets/icon/home/drama.svg" :svg="true" />
           <div class="text-center text-black text-[14px] font-[500] leading-[16px]">话剧</div>
         </div>
-        <div @tap="Taro.navigateTo({ url: `/pages/activity-list/activity-list?type=${ActivityType.talkshow}` })">
+        <div @tap="Taro.navigateTo({ url: `/packageB/pages/activity-list/activity-list?type=${ActivityType.talkshow}` })">
           <image class="w-[40px] h-[40px] mb-[4px]" src="@/assets/icon/home/talkshow.svg" :svg="true" />
           <div class="text-center text-black text-[14px] font-[500] leading-[16px]">脱口秀</div>
         </div>
-        <div @tap="Taro.navigateTo({ url: `/pages/activity-list/activity-list?type=${ActivityType.musicFesitival}` })">
+        <div @tap="Taro.navigateTo({ url: `/packageB/pages/activity-list/activity-list?type=${ActivityType.musicFesitival}` })">
           <image class="w-[40px] h-[40px] mb-[4px]" src="@/assets/icon/home/music_festival.svg" :svg="true" />
           <div class="text-center text-black text-[14px] font-[500] leading-[16px]">音乐节</div>
         </div>
-        <div @tap="Taro.navigateTo({ url: `/pages/activity-list/activity-list?type=${ActivityType.sports}` })">
+        <div @tap="Taro.navigateTo({ url: `/packageB/pages/activity-list/activity-list?type=${ActivityType.sports}` })">
           <image class="w-[40px] h-[40px] mb-[4px]" src="@/assets/icon/home/sports.svg" :svg="true" />
           <div class="text-center text-black text-[14px] font-[500] leading-[16px]">体育</div>
         </div>
@@ -81,9 +77,10 @@
           :key="index"
           :data="item"
         />
+        <div class="h-[50px]"></div>
       </div>
       <nut-empty description="暂无活动" v-else />
-    </scroll-view>
+    </my-scroll-view>
   </Container>
   <Modal title="还不知道您在哪里" v-model="locationAuthModalVisible" :close-on-click-overlay="false" @close="store.showLocationAuthModal = !showLocationAuthModal">
     <div class="text-center text-[#0D0F02] text-[16px] leading-[19px] mb-[12px]">开启定位权限后，树懒将为您精准推荐附近的演出活动</div>
@@ -104,7 +101,7 @@
 
 <script lang="ts" setup>
 import Taro, { useLoad } from '@tarojs/taro';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useStore } from '@/store';
 import { useThrottleFn } from '@vueuse/core';
 import { ActivityType, BannerType, bannerTypePathnameMap } from '@/constants';
@@ -112,6 +109,7 @@ import { useContentHeight, useGetPagingActivities, useDecodeGeography, useGetBan
 import Container from '@/components/container.vue';
 import Modal from '@/components/modal.vue';
 import ActivityCard from '@/components/activity-card.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { IActivityPreview, IBanner } from '@/composables/use-api-types';
 
@@ -125,8 +123,6 @@ const activityList = ref<IActivityPreview[]>([]);
 const store = useStore();
 const contentHeight = useContentHeight();
 
-const scrollViewStyle = computed(() => `height: ${contentHeight.value}px;`);
-
 const bannerList = ref<IBanner[]>([]);
 
 useGetBannerList().then(list => bannerList.value = list);
@@ -135,7 +131,7 @@ store.$onAction(({ name, args }) => name === 'selectCity' && fetchActivityList(1
 
 const fetchActivityList = async (page?: number, city?: string) => {
   if(page) current = page;
-  Taro.showLoading({ title: '加载中' });
+  current !== 1 && Taro.showLoading({ title: '加载中' });
   const { records } = await useGetPagingActivities({ 
     size: 6,
     type: null,
@@ -143,7 +139,7 @@ const fetchActivityList = async (page?: number, city?: string) => {
     keyword: null,
     city: city ?? store.city ?? null,
   });
-  Taro.hideLoading();
+  current !== 1 && Taro.hideLoading();
   if(!records.length && current > 1) return;
 
   current === 1 ? (activityList.value = records) : activityList.value.push(...records);
@@ -154,7 +150,7 @@ const getMoreActivities = useThrottleFn(fetchActivityList, 2000);
 
 const handleManuallySelectCity = () => {
   locationAuthModalVisible.value = false;
-  Taro.navigateTo({ url: '/pages/select-city/select-city' });
+  Taro.navigateTo({ url: '/packageB/pages/select-city/select-city' });
 };
 
 const handleAuthLocation = () => {
@@ -183,6 +179,17 @@ const handleAuthLocation = () => {
 const handleBannerTap = (banner: IBanner) => {
   const { type, targetId } = banner;
   if(type === BannerType.none) return;
+  if(type === BannerType.miniprogram) {
+    const { 
+      miniProgramAppid: appId,
+      miniProgramPagePath: path,
+    } = banner;
+
+    return Taro.navigateToMiniProgram({
+      appId,
+      path
+    });
+  }
 
   const pathname = bannerTypePathnameMap[type]!;
   Taro.navigateTo({ url: `/pages/${pathname}/${pathname}?id=${targetId}` });

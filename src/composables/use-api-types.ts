@@ -60,6 +60,7 @@ export interface IActivityDetail extends Omit<IActivityPreview, 'avatarNameList'
   description: string;
   signupStartAt: string;
   signupEndAt: string;
+  isWorkInstruction: boolean;
   features: ActivityFeature[];
   workList: {
     name: string;
@@ -200,11 +201,12 @@ export interface ISignUpDetail {
     | 'type'
     | 'addressDetailVo'
     | 'features'
+    | 'isWorkInstruction'
   >;
   work: Omit<IWork, 'isFull'> & { description: string };
   checkin: {
     isChecked: boolean;
-    qrCodeUrl?: string;
+    qrCodeBase64?: string;
   };
 };
 
@@ -235,6 +237,8 @@ export interface IBanner {
   type: BannerType;
   targetId: number;
   coverUrl: string;
+  miniProgramAppid: string;
+  miniProgramPagePath: string;
 };
 
 export interface ILive {
@@ -247,4 +251,27 @@ export interface ILive {
     type: ActivityType;
     name: string;
   };
+};
+
+export interface IVolunteerHistoryItem {
+  year: number;
+  records: Array<{
+    month: number;
+    records: Array<{
+      id: number;
+      coverUrl: string;
+      name: string;
+      monthDay: string;
+      hasCertificate: string;
+    }>;
+  }>;
+}
+
+export interface IVolunteerCertificate {
+  id: number;
+  volunteerName: string;
+  title: string;
+  coverUrl: string;
+  digest: string;
+  yearMonth: string;
 };

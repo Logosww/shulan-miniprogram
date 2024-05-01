@@ -16,18 +16,13 @@
         {{ title }}
         <image class="absolute w-[24px] h-[24px] right-0 my-[2px]" src="@/assets/icon/popup_close.svg" :svg="true" @tap="popupVisible = false" />
       </div>
-      <scroll-view
+      <my-scroll-view
         class="popup-content"
-        :style="{ height: `${contentHeight}px` }"
-        :enhanced="true"
-        :enable-passive="true"
-        :scroll-y="true"
-        :show-scrollbar="false"
-        :fast-deceleration="true"
+        :height="contentHeight"
         v-if="contentHeight"
       >
         <slot></slot>
-      </scroll-view>
+      </my-scroll-view>
       <div class="popup-content" v-else>
         <slot></slot>
       </div>
@@ -38,6 +33,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useLoad, nextTick } from '@tarojs/taro';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { CSSProperties } from 'vue';
 

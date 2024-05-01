@@ -73,7 +73,8 @@
             cancelDeadline: data.activity.signupCancelAt,
           })"
           v-if="
-            (
+            data.activityWorkVolunteerIdentity === VolunteerType.normal
+            && (
               data.activityWorkVolunteerState < VolunteerSignUpState.auditFailed
               || data.activityWorkVolunteerState === VolunteerSignUpState.atWork
             )
@@ -84,14 +85,14 @@
         </div>
         <div 
           class="inline-block px-[16px] text-center bg-[#0D0F02] text-[#51FE81]  rounded-[42px]"
-          @tap="Taro.navigateTo({ url: `/pages/sign-up/sign-up?activityId=${data.activity.id}&activityWorkIds=${data.work.id}` })"
+          @tap="Taro.navigateTo({ url: `/packageA/pages/sign-up/sign-up?activityId=${data.activity.id}&activityWorkIds=${data.work.id}` })"
           v-if="[VolunteerSignUpState.cancelled, VolunteerSignUpState.auditFailed].includes(data.activityWorkVolunteerState)"
         >
           再次提交
         </div>
         <div 
           class="inline-block px-[16px] text-center bg-[#51FE81] text-[#0D0F02]  rounded-[42px]"
-          @tap="Taro.navigateTo({ url: `/pages/sign-up-detail/sign-up-detail?id=${data.id}` })"
+          @tap="Taro.navigateTo({ url: `/packageA/pages/sign-up-detail/sign-up-detail?id=${data.id}` })"
         >
           查看详情
         </div>

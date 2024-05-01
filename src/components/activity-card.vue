@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white flex border-0" :class="[block ? 'py-[12px]' : 'p-[12px] rounded-[8px]']" @tap="Taro.navigateTo({ url: `/pages/activity-detail/activity-detail?id=${data.id}` })">
     <div class="relative w-[88px] h-[120px] rounded-[4px] mr-[10px] overflow-hidden flex-shrink-0">
-      <image class="w-full h-full bg-slate-100" mode="aspectFill" :src="data.coverUrl" />
+      <image class="w-full h-full bg-slate-100" mode="aspectFill" :src="data.coverUrl" :lazy-load="true" />
       <div class="absolute w-[48px] right-0 top-[10px] text-[#0D0F02] text-center text-[12px] font-bold leading-[20px] bg-[#51FE81]">{{ activityTypeMap[data.type] }}</div>
     </div>
     <div class="flex-[1] flex flex-col justify-between">
@@ -51,11 +51,13 @@
             >
               报名待开启
             </div>
-            <div 
-              class="py-[2px] w-[120px] text-center leading-[24px] text-[#51FE81] text-[14px] font-bold rounded-[42px] bg-[#0D0F02]"
-              v-if="data.state === ActivityState.finished && data.hasLive"
-            >
-              现场回顾
+            <div v-if="data.state === ActivityState.finished">
+              <div class="py-[2px] w-[120px] text-center leading-[24px] text-[#51FE81] text-[14px] font-bold rounded-[42px] bg-[#0D0F02]" v-if="data.hasLive">
+                现场回顾
+              </div>
+              <div class="py-[2px] w-[120px] text-center leading-[24px] text-[#B3B3B3] text-[14px] font-bold rounded-[42px] bg-[#F2F2F2]" v-else>
+                已结束
+              </div>
             </div>
           </div>
         </div>

@@ -1,3 +1,7 @@
 .nut-tabs {
   --nut-tabs-horizontal-titles-item-min-width: 64px;
+
+  .nut-tabs__titles::-webkit-scrollbar {
+    display: none;
+  }
 }

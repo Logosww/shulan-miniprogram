@@ -22,25 +22,20 @@
             <nut-skeleton row="3" height="16px" width="398px" animated round />
           </div>
         </div>
-        <scroll-view
+        <my-scroll-view
           id="scrollview"
           class="bg-[#F7F7F7] animation-fade-in"
-          :style="scrollViewStyle"
-          :enhanced="true"
-          :enable-passive="true"
-          :scroll-y="true"
+          :height="scrollViewHeight"
           :scroll-into-view="currentId"
-          :show-scrollbar="false"
-          :fast-deceleration="true"
-          :scroll-with-animation="true"
-          :using-sticky="true"
+          :refresh-handler="getPageData"
           @scroll="anchorRef?.scrollHandler"
+          refresher
           v-else
         >
           <div>
             <div class="px-[16px] py-[20px] bg-white mb-[16px]">
               <div class="flex">
-                <image class="w-[94px] h-[128px] rounded-[12px] mr-[12px] flex-shrink-0" mode="aspectFill" :src="data?.coverUrl" />
+                <image class="w-[94px] h-[128px] rounded-[12px] mr-[12px] flex-shrink-0" mode="aspectFill" :src="data?.coverUrl" @tap="coverPreviewerVisible = true" />
                 <div class="flex flex-col justify-between">
                   <div class="text-[#0D0F02] text-[14px] font-bold leading-[16px]">
                     {{ data?.city }} |【{{ data && activityTypeMap[data.type] }}】{{ data?.name }}
@@ -136,7 +131,7 @@
                 </div>
               </div>
             </div>
-            <div id="notice" class="bg-white p-[16px] mb-[16px]">
+            <div id="notice" class="bg-white p-[16px] mb-[16px]" v-if="data?.isWorkInstruction">
               <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[4px]">工作须知</div>
               <ul class="space-y-[12px] px-[8px]">
                 <li class="text-[14px] leading-[18px]">
@@ -169,14 +164,17 @@
               </div>
             </div>
           </div>
-        </scroll-view>
+        </my-scroll-view>
         <div class="action-bar" :class="[isLoading ? 'is-hidden' : '']">
           <button class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[38px] border-[#41CC68] border-[1px] border-solid bg-white" open-type="share">分享</button>
           <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[72px]" @tap="handleToSignUp(activityId)" v-if="data?.state === ActivityState.activated">立即报名</div>
           <div class="text-[#B3B3B3] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#F2F2F2] px-[64px]" v-else-if="data?.state === ActivityState.auditPassed">报名待开启</div>
-          <div class="text-[#51FE81] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#0D0F02] px-[72px]" @tap="Taro.navigateTo({ url: `/pages/live-detail/live-detail?id=${activityId}` })" v-else-if="data?.hasLive">现场回顾</div>
+          <div v-else-if="data?.state === ActivityState.finished">
+            <div class="text-[#51FE81] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#0D0F02] px-[72px]" @tap="Taro.navigateTo({ url: `/pages/live-detail/live-detail?id=${activityId}` })" v-if="data?.hasLive">现场回顾</div>
+            <div class="text-[#B3B3B3] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#F2F2F2] px-[64px]" v-else>活动已结束</div>
+          </div>
         </div>
-        <Popup title="工作须知" :content-height="500" v-model="noticePopupVisible">
+        <Popup title="工作须知" :content-height="500" v-model="noticePopupVisible" v-if="data?.isWorkInstruction">
           <ul class="space-y-[12px] px-[8px]">
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">自愿加入活动志愿者团队，配合活动的管理安排。</div>
@@ -217,6 +215,7 @@
         <ConfirmModal title="活动公告" v-model="anouncementModalVisible" just-notify v-if="data?.announcement">
           <div class="text-[#666] text-[12px] leading-[17px] whitespace-pre-line">{{ data?.announcement }}</div>
         </ConfirmModal>
+        <nut-image-preview :show="coverPreviewerVisible" :images="[{ src: data?.coverUrl ?? '' }]" @close="coverPreviewerVisible = false" />
       </div>
     </Container>
   </ConfigProvider>
@@ -235,24 +234,10 @@ import Popup from '@/components/popup.vue';
 import ActivityCard from '@/components/activity-card.vue';
 import SignUpPopup from '@/components/sign-up-popup.vue';
 import ConfirmModal from '@/components/confirm-modal.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { IAnchorItemConfig } from '@/components/anchor.vue';
 import type { IWorkData, IActivityDetail, IActivityPreview } from '@/composables/use-api-types';
-
-const anchorConfig: IAnchorItemConfig[] = [
-  {
-    id: 'detail',
-    title: '详情'
-  },
-  {
-    id: 'notice',
-    title: '须知'
-  },
-  {
-    id: 'recommend',
-    title: '推荐'
-  },
-];
 
 let activityId: number;
 
@@ -261,6 +246,7 @@ const isLoading = ref(true);
 const noticePopupVisible = ref(false);
 const signUpPopupVisible = ref(false);
 const anouncementModalVisible = ref(false);
+const coverPreviewerVisible = ref(false);
 const data = ref<IActivityDetail>();
 const anchorRef = ref<InstanceType<typeof Anchor>>();
 const workData = ref<IWorkData>();
@@ -269,7 +255,22 @@ const activityList = ref<IActivityPreview[]>([]);
 const contentHeight = useContentHeight();
 const actionBarHeight = useElementHeight('.action-bar');
 
-const scrollViewStyle = computed(() => ({ height: `${contentHeight.value - actionBarHeight.value}px` }));
+const scrollViewHeight = computed(() => contentHeight.value - actionBarHeight.value);
+const anchorConfig = computed<IAnchorItemConfig[]>(() => ([
+  {
+    id: 'detail',
+    title: '详情'
+  },
+  {
+    id: 'notice',
+    title: '须知',
+    hide: !data.value?.isWorkInstruction
+  },
+  {
+    id: 'recommend',
+    title: '推荐'
+  },
+]));
 
 const handleOpenLocation = () => Taro.openLocation({
   name: `${data.value!.address} | ${data.value!.addressDetailVo.detail}`,
@@ -285,18 +286,24 @@ const handleToSignUp = async (id: number) => {
 };
 
 const handleSignUp = (workIds: number[]) => Taro.navigateTo({
-  url: `/pages/sign-up/sign-up?activityId=${activityId}&activityWorkIds=${workIds.join(',')}`,
+  url: `/packageA/pages/sign-up/sign-up?activityId=${activityId}&activityWorkIds=${workIds.join(',')}`,
   success: () => signUpPopupVisible.value = false,
 });
+
+const getPageData = async () => {
+  const detail = await useGetActivityDetail({ id: activityId });
+  data.value = detail;
+  setTimeout(() => {
+    isLoading.value && (anouncementModalVisible.value = true);
+    isLoading.value = false;
+  }, 600);
+};
 
 useLoad(async ({ id }: { id: number }) => {
   activityId = id;
   activityList.value = await useGetRecommendedActivities({ id });
 });
-useReady(() => useGetActivityDetail({ id: activityId }).then(detail => {
-  data.value = detail;
-  setTimeout(() => isLoading.value = false, 600);
-}));
+useReady(getPageData);
 useShareAppMessage(() => useShareActivity({ id: activityId }).then(() => ({})));
 
 </script>

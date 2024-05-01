@@ -18,13 +18,13 @@ export type FieldInputOption = {
 export const handleFieldInput = (option: FieldInputOption) => {
   const { max, type, title, receiver, isShortField } = option;
   Taro.navigateTo({
-    url: '/pages/input/input',
+    url: '/packageB/pages/input/input',
     success: res => {
-      let content = '';
-      if(isRef(receiver)) content = receiver.value;
+      let content: string;
+      if(isRef(receiver)) content = receiver.value ?? '';
       else {
         const { form, field } = receiver;
-        content = form[field];
+        content = form[field] ?? '';
       }
       res.eventChannel.emit('initialize', { title, content, max, type, isShortField })
     },

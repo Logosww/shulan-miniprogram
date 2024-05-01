@@ -1,6 +1,6 @@
 <template>
   <Popup title="立即报名" v-model="popupVisible" :pop-style="{ backgroundColor: '#FAFAFA'}" @close="selectedWorks = []">
-    <div class="space-y-[16px]">
+    <div class="job-list space-y-[16px]">
       <div 
         :class="['job-card', item.isFull ? 'is-disabled' : '', selectedWorks.includes(item.id) ? 'is-active' : '']"
         v-for="item in data?.workList" :key="item.id"
@@ -27,7 +27,7 @@
       <div class="action-btn__extra" v-if="isAvailable">（{{ moment(data?.signupEndAt).format(' YYYY 年 MM 月 DD 日') }}截止）</div>
     </div>
   </Popup>
-  <ConfirmModal title="温馨提示" v-model="verifyModalVisible" just-notify @confirm="Taro.navigateTo({ url: '/pages/verify/verify' })" v-if="store.role === Role.user">
+  <ConfirmModal title="温馨提示" v-model="verifyModalVisible" just-notify @confirm="Taro.navigateTo({ url: '/packageB/pages/verify/verify' })" v-if="store.role === Role.user">
     <div class="text-[#666] text-[12px] leading-[17px] text-center whitespace-pre-line">
       您还没完成志愿者认证，请先前往进行认证  
     </div>

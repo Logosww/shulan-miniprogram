@@ -12,18 +12,21 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import Taro, { useUnload } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import { useElementHeight } from '@/composables';
+import { throttleByRaf } from '@/utils';
 
 import type { BoundingClientRectCallbackResult } from '@babel/core';
 
 export interface IAnchorItemConfig {
   id: string;
   title: string;
+  hide?: boolean;
 };
 
 const props = defineProps<{ config: IAnchorItemConfig[]; container: string; }>();
 const emit = defineEmits<{ scrollTo: [id: string] }>();
+const config = props.config.filter(({ hide }) => !hide);
 const ids = props.config.map(({ id }) => `#${id}`);
 
 const currentAnchorIndex = ref(0);
@@ -31,27 +34,6 @@ const currentAnchorIndex = ref(0);
 const anchorHeight = useElementHeight('.anchor');
 
 let containerTop: number;
-
-const throttleByRaf = (callback: (...args: any[]) => void) => {
-  let timer = 0;
-
-  const throttle = (...args: any[]): void => {
-    if(timer) cancelAnimationFrame(timer);
-    timer = requestAnimationFrame(() => {
-      callback(...args);
-      timer = 0;
-    })
-  };
-
-  throttle.cancel = () => {
-    cancelAnimationFrame(timer);
-    timer = 0;
-  };
-
-  useUnload(throttle.cancel);
-
-  return throttle;
-};
 
 const scrollHandler = throttleByRaf(() => {
   let index: number;

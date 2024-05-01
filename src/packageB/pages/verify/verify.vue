@@ -1,16 +1,9 @@
 <template>
   <ConfigProvider>
     <Container navbar-title="志愿者认证" disable-safe-bottom>
-      <scroll-view
+      <my-scroll-view
         class="bg-[#F7F7F7] px-[16px] box-border"
-        :style="scrollViewStyle"
-        :enhanced="true"
-        :enable-passive="true"
-        :scroll-y="true"
-        :show-scrollbar="false"
-        :fast-deceleration="true"
-        :scroll-with-animation="true"
-        :using-sticky="true"
+        :height="scrollViewHeight"
       >
         <div class="mt-[24px] text-[#0D0F02] text-[20px] leading-[28px] font-bold">请扫描身份证件的正反面</div>
         <div class="mt-[4px] mb-[10px] text-[#0D0F02] leading-[20px] font-bold">正面为头像面</div>
@@ -41,7 +34,7 @@
             <div class="text-[#0D0F02] font-bold">姓名</div>
             <!-- <div class="text-[#ccc]">待证件扫描后自动录入</div> -->
             <div class="flex text-[#404040] items-center" @tap="handleFieldInput({ title: '姓名', isShortField: true, max: 20, receiver: { form, field: 'name' }})">
-              <div class="text-[#ccc]" v-show="!form.name">请输入</div>
+              <div class="text-[#ccc]" v-show="!form.name">请输入中文</div>
               {{ form.name }}
               <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
             </div>
@@ -154,7 +147,7 @@
                   <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
                 </div>
               </div>
-              <div class="form-cell is-required">
+              <div class="form-cell">
                 入职单位
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="handleFieldInput({ title: '单位名称', isShortField: true, max: 30, receiver: { form, field: 'jobUnit' }})">
                   <div class="text-[#ccc]" v-show="!form.jobUnit">请填写您的入职单位，选填</div>
@@ -162,7 +155,7 @@
                   <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
                 </div>
               </div>
-              <div class="form-cell is-required">
+              <div class="form-cell">
                 入职单位证明
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.joinUnitPaths = keys)">
                   <div class="text-[#ccc]" v-show="!form.joinUnitPaths.length">5张以内照片，选填</div>
@@ -190,7 +183,7 @@
           </div>
         </div>
         <div class="h-[32px]"></div>
-      </scroll-view>
+      </my-scroll-view>
       <div class="action-bar" v-if="store.role === Role.user">
         <div class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[23px] border-[#41CC68] border-[1px] border-solid" @tap="setFormValues(form, initialValues)">清空填写信息</div>
         <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[74px]" @tap="handleSubmit">
@@ -234,6 +227,7 @@ import { useStore } from '@/store';
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
 import ConfirmModal from '@/components/confirm-modal.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { IVerifyForm as _IVerifyForm } from '@/composables/use-api-types';
 
@@ -283,7 +277,7 @@ const contentHeight = useContentHeight();
 const actionBarHeight = useElementHeight('.action-bar');
 const { upload } = useCOS();
 
-const scrollViewStyle = computed(() => ({ height: `${contentHeight.value - actionBarHeight.value}px` }));
+const scrollViewHeight = computed(() => contentHeight.value - actionBarHeight.value);
 
 store.role === Role.volunteer && useGetVerifyData().then(data => {
   setFormValues(form, data);
@@ -336,12 +330,12 @@ const transform = () => {
 };
 
 const validate = () => {
-  if(!(form.name && form.idCard && form.idPhotoPath && (form.idCardType !== void 0) && form.idCardNationalPath && form.idCardPortraitPath)) return false;
+  if(!(form.name && form.idCard && form.experience && form.idPhotoPath && (form.idCardType !== void 0) && form.idCardNationalPath && form.idCardPortraitPath)) return false;
 
   if(form.identity === VolunteerIdentity.student) {
     if(!(form.school && form.grade && form.major && form.studentCardPaths.length)) return false;
     return true;
-  }
+  } else if(!form.graduateSchool) return false;
   return true;
 };
 

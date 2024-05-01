@@ -3,8 +3,8 @@
   "projectname": "shulan-miniprogram",
   "setting": {
     "compileHotReLoad": true,
-    "skylineRenderEnable": false,
+    "skylineRenderEnable": true,
     "urlCheck": false
   },
-  "libVersion": "3.3.5"
+  "libVersion": "3.4.2"
 }

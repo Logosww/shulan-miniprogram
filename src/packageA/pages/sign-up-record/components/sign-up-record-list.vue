@@ -1,20 +1,16 @@
 <template>
-  <scroll-view 
-    class="bg-[#F7F7F7] pt-[16px]"
-    :style="{ height: `${height}px` }"
-    :enhanced="true"
-    :enable-passive="true"
-    :scroll-y="true"
-    :show-scrollbar="false"
-    :fast-deceleration="true"
+  <my-scroll-view 
+    class="bg-[#F7F7F7]"
+    :height="height"
+    :refresh-handler="() => fetchSignUpRecordList(1)"
     @scrolltolower="getMoreRecords()"
+    refresher
   >
-    <div class="space-y-[12px]" v-if="recordList.length">
+    <div class="py-[16px] space-y-[12px]" v-if="recordList.length">
       <SignUpRecordCard v-for="(record, index) in recordList" :key="index" :data="record" @cancel="info => emit('cancel', info)" />
     </div>
     <nut-empty description="暂无数据" v-else />
-    <div class="h-[20px]"></div>
-  </scroll-view>
+  </my-scroll-view>
 </template>
 
 <script lang="ts" setup>
@@ -24,6 +20,7 @@ import { useThrottleFn, useEventBus } from '@vueuse/core';
 import { useGetSignUpRecords } from '@/composables/use-api';
 import { setSignUpRecordStateEventBusKey } from '@/constants/token';
 import SignUpRecordCard from './sign-up-record-card.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { ISignUpRecord } from '@/composables/use-api-types';
 import type { VolunteerSignUpState } from '@/constants';
@@ -43,13 +40,13 @@ const eventBus = useEventBus(setSignUpRecordStateEventBusKey);
 
 const fetchSignUpRecordList = async (page?: number) => {
   if(page) current = page;
-  Taro.showLoading({ title: '加载中' });
+  current !== 1 && Taro.showLoading({ title: '加载中' });
   const { records } = await useGetSignUpRecords({ 
     size: 6,
     page: current,
     activityWorkVolunteerState: props.state ?? null,
   });
-  Taro.hideLoading();
+  current !== 1 && Taro.hideLoading();
   if(!records.length && current > 1) return;
 
   current === 1 ? (recordList.value = records) : recordList.value.push(...records);

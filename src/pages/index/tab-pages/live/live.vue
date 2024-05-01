@@ -1,17 +1,13 @@
 <template>
   <Container content-id="live-content" navbar-title="现场回顾" tabbar-page>
     <FilterMenu :config="liveFilterConfig" @change="handleFilter" />
-    <scroll-view
+    <my-scroll-view
       class="box-border p-[16px] bg-[#F7F7F7]"
-      :style="scrollViewStyle"
-      :enhanced="true"
-      :enable-passive="true"
-      :scroll-y="true"
-      :show-scrollbar="false"
-      :fast-deceleration="true"
-      :scroll-with-animation="true"
-      :using-sticky="true"
+      :lowerThreshold="0"
+      :height="contentHeight - 48"
+      :refresh-handler="() => fetchLiveList(1)"
       @scrolltolower="getMoreActivities()"
+      refresher
     >
       <div class="space-y-[12px]" v-if="liveList.length">
         <div
@@ -32,18 +28,19 @@
         </div>
       </div>
       <nut-empty description="暂无现场回顾" v-else />
-    </scroll-view>
+    </my-scroll-view>
   </Container>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useThrottleFn } from '@vueuse/core';
 import { liveFilterConfig, activityTypeMap } from '@/constants';
 import { useContentHeight, useGetPagingLives } from '@/composables';
 import Taro from '@tarojs/taro';
 import Container from '@/components/container.vue';
 import FilterMenu from '@/components/filter-menu.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { ActivityType } from '@/constants';
 import type { ILive } from '@/composables/use-api-types';
@@ -60,12 +57,11 @@ let current = 1, fetchParams: FetchParams = {};
 const liveList = ref<ILive[]>([]);
 
 const contentHeight = useContentHeight();
-const scrollViewStyle = computed(() => ({ height: `${contentHeight.value - 48}px` }));
 
 const fetchLiveList = async (page?: number) => {
   const { city, type, activityAt, keyword } = fetchParams;
   if(page) current = page;
-  Taro.showLoading({ title: '加载中' });
+  current !== 1 && Taro.showLoading({ title: '加载中' });
   const { records } = await useGetPagingLives({ 
     size: 6,
     page: current,
@@ -74,7 +70,7 @@ const fetchLiveList = async (page?: number) => {
     activityAt: activityAt ?? null,
     keyword: keyword ?? null,
   });
-  Taro.hideLoading();
+  current !== 1 && Taro.hideLoading();
   if(!records.length && current > 1) return;
 
   current === 1 ? (liveList.value = records) : liveList.value.push(...records);

@@ -16,7 +16,7 @@
   >
     <div class="flex justify-between">
       <div class="flex items-center">
-        <div class="relative w-[60px] h-[60px] mr-[12px]" @tap="isLogin ? Taro.navigateTo({ url: '/pages/profile/profile' }) : void 0">
+        <div class="relative w-[60px] h-[60px] mr-[12px]" @tap="isLogin ? Taro.navigateTo({ url: '/packageB/pages/profile/profile' }) : void 0">
           <image class="w-full h-full rounded-full overflow-hidden" mode="aspectFill" :src="profile?.avatarUrl" />
           <image class="absolute right-0 bottom-0 w-[16px] h-[16px]" src="@/assets/icon/my/modify.svg" :svg="true" />
         </div>
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="mt-[10px]">
-        <image class="w-[25px] h-[25px] mr-[12px]" style="transform: translateY(2px);" src="@/assets/icon/my/scan.svg" :svg="true" @tap="handleCheckin" v-if="role && role >= Role.admin" />
+        <image class="w-[25px] h-[25px] mr-[12px]" style="transform: translateY(2px);" src="@/assets/icon/my/scan.svg" :svg="true" @tap="handleCheckin" />
         <image class="w-[24px] h-[24px] mr-[5px]" src="@/assets/icon/home/notification.svg" :svg="true" />
       </div>
     </div>
@@ -63,13 +63,14 @@
       <div 
         class="absolute right-[20px] top-[50%] w-[72px] h-[30px] leading-[30px] bg-white text-center text-[#0D0F02] text-[16px] font-bold rounded-[34px]"
         style="transform: translateY(-50%);"
+        @tap="handleToHistory"
         v-if="isLogin && profile?.activityCompleteCount"
       >
         去回顾
       </div>
     </div>
     <div class="my-[16px] px-[27px] py-[14px] bg-white flex items-center rounded-[8px] divide-x divide-[#E6E6E6] divide-solid">
-      <div class="flex items-center py-[6px] pr-[26px] border-0" @tap="Taro.navigateTo({ url: '/pages/sign-up-record/sign-up-record' })">
+      <div class="flex items-center py-[6px] pr-[26px] border-0" @tap="Taro.navigateTo({ url: '/packageA/pages/sign-up-record/sign-up-record' })">
         <image class="w-[28px] h-[28px] mr-[16px]" src="@/assets/icon/my/record.svg" :svg="true" />
         <div>
           <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[2px]">报名记录</div>
@@ -163,7 +164,7 @@ import { ref, inject, computed } from 'vue';
 import { useStore } from '@/store';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { Role, VolunteerWhitelistState, profileKey, volunteerWhitelistStateMap } from '@/constants';
-import { useCheckin, useGetUserProfile, useGetWhitelistInfo, useLogout } from '@/composables';
+import { useCheckin, useGetUserProfile, useGetVolunteerHistory, useGetWhitelistInfo, useLogout } from '@/composables';
 import Modal from '@/components/modal.vue';
 import Container from '@/components/container.vue';
 import ConfirmModal from '@/components/confirm-modal.vue';
@@ -188,7 +189,7 @@ const handleCellTap = (key: string) => {
 
   switch(key) {
     case 'verify': {
-      Taro.navigateTo({ url: '/pages/verify/verify' });
+      Taro.navigateTo({ url: '/packageB/pages/verify/verify' });
       break;
     }
     case 'money': {
@@ -222,12 +223,39 @@ const handleLogout = () => {
 };
 
 const handleCheckin = async () => {
-  const { result } = await Taro.scanCode({ scanType: ['qrCode'], onlyFromCamera: true });
+  const res = await Taro.scanCode({ scanType: ['qrCode'], onlyFromCamera: true }).catch(console.error);
   Taro.showLoading({ title: '签到中' });
-  const signUpRecordId = parseInt(result);
-  await useCheckin({ id: signUpRecordId });
+  if(!res) {
+    Taro.hideLoading();
+    return Taro.showToast({ icon: 'error', title: '无效二维码' });
+  }
+
+  const { result } = res;
+  const isMatched = result.match(/^id:\$%(\d+)%/);
+  if(!(result && isMatched)) {
+    Taro.hideLoading();
+    return Taro.showToast({ icon: 'error', title: '无效二维码' });
+  }
+
+  const signUpRecordId = parseInt(isMatched[1]);
+  useCheckin({ id: signUpRecordId })
+    .then(() => {
+      Taro.hideLoading();
+      Taro.showToast({ icon: 'success', title: '签到成功' });
+    })
+    .catch(err => {
+      if(err === 'Unauthenticated') return;
+      console.error(err)
+      Taro.hideLoading();
+      Taro.showToast({ icon: 'none', title: err.msg ? err.msg : err });
+    });
+};
+
+const handleToHistory = async () => {
+  Taro.showLoading({ title: '加载中' });
+  Taro.preload('history', await useGetVolunteerHistory());
   Taro.hideLoading();
-  Taro.showToast({ icon: 'success', title: '签到成功' });
+  Taro.navigateTo({ url: '/packageB/pages/history/history' });
 };
 
 useDidShow(() => isLogin.value && useGetUserProfile().then(_profile => {

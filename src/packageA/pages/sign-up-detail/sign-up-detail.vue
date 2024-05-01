@@ -22,23 +22,17 @@
             <nut-skeleton row="3" height="16px" width="398px" animated round />
           </div>
         </div>
-        <scroll-view
-          id="scrollview"
+        <my-scroll-view
           class="bg-[#F7F7F7] animation-fade-in"
-          :style="scrollViewStyle"
-          :enhanced="true"
-          :enable-passive="true"
-          :scroll-y="true"
-          :show-scrollbar="false"
-          :fast-deceleration="true"
-          :scroll-with-animation="true"
-          :using-sticky="true"
+          :height="contentHeight"
+          :refresh-handler="getPageData"
+          refresher
           v-else
         >
           <div>
             <div class="px-[16px] py-[20px] bg-white mb-[16px]">
               <div class="flex">
-                <image class="w-[94px] h-[128px] rounded-[12px] mr-[12px] flex-shrink-0" mode="aspectFill" :src="data?.activity.coverUrl" />
+                <image class="w-[94px] h-[128px] rounded-[12px] mr-[12px] flex-shrink-0" mode="aspectFill" :src="data?.activity.coverUrl" @tap="coverPreviewerVisible = true" />
                 <div class="flex flex-col justify-between">
                   <div class="text-[#0D0F02] text-[14px] font-bold leading-[16px]">
                     {{ data?.activity.city }} |【{{ data && activityTypeMap[data.activity.type] }}】{{ data?.activity.name }}
@@ -89,11 +83,11 @@
             <div class="bg-white py-[20px] px-[16px] mb-[16px]">
               <image class="w-[92px] h-[15px] mb-[12px]" src="@/assets/icon/sign-up-detail/check-in.svg" :svg="true" />
               <div class="mb-[4px] text-[#0D0F02] text-[16px] leading-[22px] font-bold">志愿者编号</div>
-              <div class="text-[#0D0F02] text-[24px] leading-[34px] font-bold">{{ data?.id }}</div>
+              <div class="text-[#0D0F02] text-[24px] leading-[34px] font-bold">{{ data?.id }}{{ data?.checkin && data?.checkin.isChecked ? '（已签到）' : '' }}</div>
               <div class="mt-[4px]" v-if="data?.checkin && !data?.checkin.isChecked">
-                <div class="mb-[12px] text-[#B3B3B3] text-[12px] leading-[17px]">请在参加给活动工作人员核销</div>
-                <div class="text-center text-[#0D0F02] text-[20px] font-bold leading-[28px] mb-[16px]">志愿者二维码核销</div>
-                <image class="block mx-auto w-[200px] h-[200px]" mode="aspectFill" :src="data?.checkin.qrCodeUrl" />
+                <div class="mb-[12px] text-[#B3B3B3] text-[12px] leading-[17px]">请在给活动工作人员进行扫码签到</div>
+                <div class="text-center text-[#0D0F02] text-[20px] font-bold leading-[28px] mb-[8px]">志愿者二维码签到</div>
+                <image class="block mx-auto w-[200px] h-[200px]" mode="aspectFill" :src="data?.checkin.qrCodeBase64" />
               </div>
             </div>
             <div class="p-[16px] bg-white mb-[16px]">
@@ -148,7 +142,7 @@
                 </div>
               </div>
             </div>
-            <div id="notice" class="bg-white p-[16px] mb-[16px]">
+            <div id="notice" class="bg-white p-[16px] mb-[16px]" v-if="data?.activity.isWorkInstruction">
               <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[4px]">工作须知</div>
               <ul class="space-y-[12px] px-[8px]">
                 <li class="text-[14px] leading-[18px]">
@@ -171,8 +165,8 @@
             </div>
           </div>
           <div class="h-[32px]"></div>
-        </scroll-view>
-        <Popup title="工作须知" :content-height="500" v-model="noticePopupVisible">
+        </my-scroll-view>
+        <Popup title="工作须知" :content-height="500" v-model="noticePopupVisible" v-if="data?.activity.isWorkInstruction">
           <ul class="space-y-[12px] px-[8px]">
             <li class="text-[14px] leading-[18px]">
               <div class="text-[#0D0F02] mb-[4px] relative before:absolute before:content-[''] before:left-[-8px] before:my-[6px] before:w-[4px] before:h-[4px] before:bg-[#51FE81] before:rounded-full">自愿加入活动志愿者团队，配合活动的管理安排。</div>
@@ -210,8 +204,9 @@
           </ul>
         </Popup>
         <ConfirmModal title="活动公告" v-model="anouncementModalVisible" just-notify v-if="data?.activity.announcement">
-          <div class="text-[#666] text-[12px] leading-[17px] text-center whitespace-pre-line">{{ data?.activity.announcement }}</div>
+          <div class="text-[#666] text-[12px] leading-[17px] whitespace-pre-line">{{ data?.activity.announcement }}</div>
         </ConfirmModal>
+        <nut-image-preview :show="coverPreviewerVisible" :images="[{ src: data?.activity.coverUrl ?? '' }]" @close="coverPreviewerVisible = false" />
       </div>
     </Container>
   </ConfigProvider>
@@ -220,13 +215,14 @@
 <script lang="ts" setup>
 import moment from 'moment';
 import Taro from '@tarojs/taro';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useReady, useLoad } from '@tarojs/taro';
 import { ActivityFeature, activityTypeMap, VolunteerType } from '@/constants/value-enum';
 import { useContentHeight, useGetSignUpDetail } from '@/composables';
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
 import Popup from '@/components/popup.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { ISignUpDetail } from '@/composables/use-api-types';
 
@@ -235,11 +231,10 @@ let id: number;
 const isLoading = ref(true);
 const data = ref<ISignUpDetail>();
 const noticePopupVisible = ref(false);
+const coverPreviewerVisible = ref(false);
 const anouncementModalVisible = ref(false);
 
 const contentHeight = useContentHeight();
-
-const scrollViewStyle = computed(() => ({ height: `${contentHeight.value}px` }));
 
 const handleOpenLocation = () => Taro.openLocation({
   name: `${data.value!.activity.address} | ${data.value!.activity.addressDetailVo.detail}`,
@@ -247,11 +242,14 @@ const handleOpenLocation = () => Taro.openLocation({
   longitude: parseFloat(data.value!.activity.addressDetailVo.longitude),
 });
 
-useLoad<{ id: number }>(({ id: _id }: { id: number }) => id = _id);
-useReady(() => useGetSignUpDetail({ id }).then(detail => {
+const getPageData = async () => {
+  const detail = await useGetSignUpDetail({ id });
   data.value = detail;
   setTimeout(() => isLoading.value = false, 600);
-}));
+};
+
+useLoad<{ id: number }>(({ id: _id }: { id: number }) => id = _id);
+useReady(getPageData);
 
 </script>
 
