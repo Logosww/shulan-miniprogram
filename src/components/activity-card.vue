@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white flex border-0" :class="[block ? 'py-[12px]' : 'p-[12px] rounded-[8px]']" @tap="Taro.navigateTo({ url: `/pages/activity-detail/activity-detail?id=${data.id}` })">
     <div class="relative w-[88px] h-[120px] rounded-[4px] mr-[10px] overflow-hidden flex-shrink-0">
-      <image class="w-full h-full bg-slate-100" mode="aspectFill" :src="data.coverUrl" :lazy-load="true" />
+      <image class="w-full h-full bg-slate-100" mode="aspectFill" :src="data.coverUrl" :lazy-load="true" :fade-in="true" />
       <div class="absolute w-[48px] right-0 top-[10px] text-[#0D0F02] text-center text-[12px] font-bold leading-[20px] bg-[#51FE81]">{{ activityTypeMap[data.type] }}</div>
     </div>
     <div class="flex-[1] flex flex-col justify-between">
@@ -18,11 +18,11 @@
       <div>
         <div class="text-[#666] text-[12px] leading-[16px] mb-[10px]">
           <div class="flex items-center mb-[5px]">
-            <image class="w-[14px] h-[14px] mr-[4px]" src="@/assets/icon/home/time.svg" :svg="true" />
+            <image class="w-[14px] h-[14px] mr-[4px]" src="@/assets/icon/home/time.svg" mode="aspectFit" :svg="true" />
             {{ moment(data.startAt).format('YYYY.MM.DD') }} - {{ moment(data.endAt).format('YYYY.MM.DD') }}
           </div>
           <div class="flex items-center">
-            <image class="w-[14px] h-[14px] mr-[4px] flex-shrink-0" src="@/assets/icon/home/position_1.svg" :svg="true" />
+            <image class="w-[14px] h-[14px] mr-[4px] flex-shrink-0" src="@/assets/icon/home/position_1.svg" mode="aspectFit" :svg="true" />
             <div class="line-clamp-1 text-ellipsis">{{ data.city }} | {{ data.address }}</div>
           </div>
         </div>

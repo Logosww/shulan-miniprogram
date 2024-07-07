@@ -1,0 +1,55 @@
+.payroll-record-item-year {
+
+  .payroll-record-item-year__title {
+    font-size: 18px;
+    line-height: 25px;
+    color: #0D0F02;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .payroll-record-item-year__arrow-icon {
+      margin-left: 10px;
+      width: 10px;
+      height: 10px;
+      transition: transform .2s;
+
+      &.is-collapsed {
+        transform: rotateZ(-90deg);
+      }
+    }
+  }
+  
+  .payroll-record-item-month {
+
+    .payroll-record-item-month__title {
+      font-size: 16px;
+      line-height: 22px;
+      color: #0D0F02;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .payroll-record-item-card {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 16px 10px;
+      display: flex;
+
+      .payroll-record-item-card__cover {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 8px;
+        flex-shrink: 0;
+      }
+
+      .payroll-record-item-card__right {
+        padding: 3px 0;
+        flex: 1;
+      }
+    }
+  }
+}

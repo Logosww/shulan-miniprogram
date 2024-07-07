@@ -7,53 +7,63 @@
     width: 40%;
   }
 }
-
-.notification-item {
-  padding: 12px 0;
-  display: flex;
-
-  .notification-item__avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    margin-right: 20px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-
-  .notification-item__content {
-    position: relative;
-    flex: 1;
-    overflow: hidden;
-
-    .notification-item__content-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-
-      .notification-item__title {
-        font-weight: 500;
-        font-size: 14px;
-        color: #0D0F02;
-      }
-
-      .notification-item__time {
-        font-size: 12px;
-        color: #999;
-      }
-    }
-
-    .notification-item__content-bottom {
-      font-size: 14px;
-      color: #808080;
-      white-space: nowrap;
+.notification-item__wrapper {
+  .notification-item {
+    padding: 12px 0;
+    display: flex;
+  
+    .notification-item__avatar {
+      width: 44px;
+      height: 44px;
+      border: 2px solid #41CC68;
+      border-radius: 50%;
+      margin: 0 8px;
       overflow: hidden;
-      text-overflow: ellipsis;
+      flex-shrink: 0;
+    }
+  
+    .notification-item__content {
+      position: relative;
+      flex: 1 1 auto;
+      overflow: hidden;
+  
+      .notification-item__content-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 4px;
+        margin-bottom: 8px;
+  
+        .notification-item__title {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 14px;
+          color: #0D0F02;
+          flex: 1 1 auto;
+  
+          &.is-read {
+            font-weight: 400;
+          }
+        }
+  
+        .notification-item__time {
+          font-size: 9px;
+          line-height: 9px;
+          color: #999;
+          flex-shrink: 0;
+          margin-left: 16px;
+        }
+      }
+  
+      .notification-item__content-bottom {
+        font-size: 14px;
+        line-height: 14px;
+        color: #808080;
+      }
     }
   }
 }
 
-.notification-item + .notification-item {
+.notification-item__wrapper + .notification-item__wrapper {
   border-top: 1px solid #E6E6E6;
 }

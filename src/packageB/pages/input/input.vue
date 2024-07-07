@@ -15,11 +15,13 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useLoad, getCurrentInstance, navigateBack } from '@tarojs/taro';
+import Taro, { useLoad, getCurrentInstance, navigateBack } from '@tarojs/taro';
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
 
-let channel: Record<string, any>;
+import type { FieldInputOption } from '@/utils/input';
+
+let channel: Record<string, any>, validator: undefined | ((value: string) => Promise<void>);
 
 const title = ref('');
 const content = ref('');
@@ -27,7 +29,12 @@ const max = ref(0);
 const type = ref('');
 const isShortField = ref(true);
 
-const handleInput = () => {
+const handleInput = async () => {
+  if(validator) {
+    let err: Error | undefined;
+    await validator(content.value).catch<Error>(e => err = e);
+    if(err) return Taro.showToast({ icon: 'none', title: err.message });
+  }
   channel.emit('input', content.value);
   navigateBack();
 };
@@ -35,18 +42,13 @@ const handleInput = () => {
 useLoad(() => {
   const { page } = getCurrentInstance();
   channel = page?.getOpenerEventChannel?.()!;
-  channel.on('initialize', (payload: { 
-    title: string;
-    content: string;
-    max?: number;
-    type?: string;
-    isShortField?: boolean;
-  }) => {
+  channel.on('initialize', (payload: Omit<FieldInputOption, 'receiver'> & { content: string }) => {
     title.value = payload.title;
     content.value = payload.content;
     max.value = payload.max ?? 50;
     type.value = payload.type ? payload.type : 'text';
     isShortField.value = payload.isShortField ?? false;
+    validator = payload?.validator;
   });
 });
 </script>

@@ -1,4 +1,4 @@
-import type { InjectionKey } from 'vue';
+import type { Ref, InjectionKey } from 'vue';
 import type { IUserProfile } from '@/composables/use-api-types';
 import type { EventBusKey } from '@vueuse/core'
 import type { VolunteerSignUpState } from './value-enum';

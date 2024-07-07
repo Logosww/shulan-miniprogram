@@ -29,12 +29,15 @@ const useStore = defineStore('shulan-miniprogram', {
     city: getInitialValue('city', '杭州'),
     showLocationAuthModal: getInitialValue('showLocationAuthModal', true),
     searchHistory: getInitialValue('searchHistory', []),
-    notificationCount: getInitialValue('notificationCount'),
+    notificationCount: getInitialValue('notificationCount', 0),
     whitelistState: getInitialValue('whitelistState'),
   }),
   actions: {
     selectCity(city: string) {
       this.city = city;
+    },
+    readNotification() {
+      this.notificationCount > 0 && this.notificationCount--;
     },
   }
 });

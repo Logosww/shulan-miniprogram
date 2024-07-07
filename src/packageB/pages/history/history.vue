@@ -1,22 +1,26 @@
 <template>
   <ConfigProvider>
-    <Container navbar-title="活动纪念" content-class="pt-[16px] px-[16px]" :bg-style="{ backgroundColor: '#F7F7F7' }" background>
+    <Container navbar-title="活动纪念" content-class="pt-[16px] px-[16px] overflow-y-auto" :bg-style="{ backgroundColor: '#F7F7F7' }" background>
       <div class="space-y-[16px]" v-if="history.length">
         <div class="history-item-year" v-for="(yearItem, yearIndex) in history" :key="yearIndex">
           <div class="history-item-year__title" @tap="yearItemCollapsedMap[yearIndex] = !yearItemCollapsedMap[yearIndex]">
             {{ yearItem.year }} 年
-            <image class="history-item-year__arrow-icon" :class="yearItemCollapsedMap[yearIndex] ? 'is-collapsed' : ''" src="@/assets/icon/history/arrow.svg" :svg="true" />
+            <image class="history-item-year__arrow-icon" :class="yearItemCollapsedMap[yearIndex] ? 'is-collapsed' : ''" src="@/assets/icon/history/arrow.svg" mode="aspectFit" :svg="true" />
           </div>
-          <div class="space-y-[8px]">
-            <div class="history-item-month" v-for="(monthItem, monthIndex) in yearItem.records" :key="monthIndex" v-show="!yearItemCollapsedMap[yearIndex]">
+          <div class="space-y-[8px]" v-show="!yearItemCollapsedMap[yearIndex]">
+            <div class="history-item-month" v-for="(monthItem, monthIndex) in yearItem.records" :key="monthIndex">
               <div class="history-item-month__title">{{ monthItem.month }} 月</div>
               <div class="space-y-[8px]">
-                <div class="history-item-card" v-for="(item, index) in monthItem.records" :key="index" @tap="item.hasCertificate && handleToCertificate(item.id)">
-                  <image class="history-item-card__cover" mode="aspectFill" :src="item.coverUrl" />
-                  <div class="history-item-card__right overflow-hidden">
-                    <div class="text-[#333] text-[20px] leading-[28px] font-bold mb-[4px] truncate">{{ item.name }}</div>
-                    <div class="text-[#666] text-[16px] leading-[22px]">{{ item.monthDay }}</div>
-                  </div>
+                <div class="rounded-[8px] overflow-hidden" v-for="(item, index) in monthItem.records" :key="index">
+                  <open-container @tap="item.hasCertificate && handleToCertificate(item.id)">
+                    <div class="history-item-card">
+                      <image class="history-item-card__cover" mode="aspectFill" :src="item.coverUrl" :fade-in="true" />
+                      <div class="history-item-card__right overflow-hidden">
+                        <div class="text-[#333] text-[20px] leading-[28px] font-bold mb-[4px] truncate">{{ item.name }}</div>
+                        <div class="text-[#666] text-[16px] leading-[22px]">{{ item.monthDay }}</div>
+                      </div>
+                    </div>
+                  </open-container>
                 </div>
               </div>
             </div>

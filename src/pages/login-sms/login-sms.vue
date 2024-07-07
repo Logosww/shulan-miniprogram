@@ -120,9 +120,8 @@ const doLogin = () => {
       });
       store.$patch(result);
       Taro.hideLoading();
-      const delta = Taro.getCurrentPages().length - 1;
       setTimeout(() => Taro.showToast({ icon: 'success', title: '登录成功' }), 300);
-      Taro.navigateBack({ delta });
+      Taro.navigateBack({ delta: 2 });
     },
     fail: () => Taro.showToast({ icon: 'error', title: '登录失败' }),
   })

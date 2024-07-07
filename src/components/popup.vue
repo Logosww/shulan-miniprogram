@@ -4,7 +4,7 @@
     pop-class="px-[16px] pt-[16px] bg-white box-border"
     v-model:visible="popupVisible"
     :style="popStyle"
-    :overlay-style="{ backgroundColor: 'rgba(0, 0, 0, .6)' }"
+    :overlay-style="{ backgroundColor: 'rgba(0, 0, 0, .6)', backdropFilter: 'blur(2px)' }"
     :destroy-on-close="destroyOnClose"
     :safe-area-inset-bottom="safeAreaInsetBottom"
     @open="!rendered && (rendered = true)"
@@ -12,9 +12,9 @@
     round
   >
     <div class="popup-container" v-if="rendered">
-      <div class="text-[#0D0F02] text-[20px] leading-[28px] font-bold relative text-center mb-[12px]">
+      <div class="text-[#0D0F02] text-[20px] leading-[28px] font-bold relative text-center mb-[12px]" v-if="title">
         {{ title }}
-        <image class="absolute w-[24px] h-[24px] right-0 my-[2px]" src="@/assets/icon/popup_close.svg" :svg="true" @tap="popupVisible = false" />
+        <image class="absolute w-[24px] h-[24px] right-0 my-[2px]" src="@/assets/icon/popup_close.svg" mode="aspectFit" :svg="true" @tap="popupVisible = false" />
       </div>
       <my-scroll-view
         class="popup-content"
@@ -38,7 +38,7 @@ import MyScrollView from '@/components/my-scroll-view.vue';
 import type { CSSProperties } from 'vue';
 
 const props = withDefaults(defineProps<{
-  title: string;
+  title?: string;
   closeIcon?: boolean;
   contentHeight?: number;
   safeAreaInsetBottom?: boolean;

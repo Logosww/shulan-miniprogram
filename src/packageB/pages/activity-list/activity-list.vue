@@ -6,7 +6,7 @@
         class="box-border px-[16px] pt-[12px] bg-[#F7F7F7]"
         :height="contentHeight - 48"
         :refresh-handler="() => fetchActivityList(1)"
-        @scrolltolower="getMoreActivities()"
+        @scrolltolower="fetchActivityList()"
         refresher
       >
         <div class="space-y-[16px]" v-if="activityList.length">
@@ -46,7 +46,7 @@ const filterMenuRef = shallowRef<InstanceType<typeof FilterMenu>>();
 
 const contentHeight = useContentHeight();
 
-const fetchActivityList = async (page?: number) => {
+const fetchActivityList = useThrottleFn(async (page?: number) => {
   const { city, type, activityAt } = fetchParams;
   if(page) current = page;
   current !== 1 && Taro.showLoading({ title: '加载中' });
@@ -62,9 +62,7 @@ const fetchActivityList = async (page?: number) => {
 
   current === 1 ? (activityList.value = records) : activityList.value.push(...records);
   current++;
-};
-
-const getMoreActivities = useThrottleFn(fetchActivityList, 2000);
+}, 2000);
 
 const handleFilter = (values : FetchParams) => (fetchParams = values) && fetchActivityList(1);
 

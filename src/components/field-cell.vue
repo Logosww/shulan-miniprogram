@@ -3,7 +3,7 @@
     <div class="text-[#262626] text-[14px] font-[500] leading-[16px]">{{ label }}</div>
     <div class="text-[#262626] text-[14px] leading-[16px] flex items-center">
       <div class="mr-[8px]">{{ (formatter ? formatter(value) : value) || (required ? '' : '非必填') }}</div>
-      <image class="w-[5px] h-[10px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+      <image class="w-[5px] h-[10px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
     </div>
   </div>
 </template>

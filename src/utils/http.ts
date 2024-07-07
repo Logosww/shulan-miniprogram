@@ -10,7 +10,7 @@ interface ResData<T = void> {
   msg: string;
 };
 
-const baseUrl = 'https://api.admin.buhuishangshu.cn';
+const baseUrl = 'https://api.test.buhuishangshu.cn';
 const store = useStore();
 
 const request = <T = void>(

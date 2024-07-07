@@ -18,7 +18,7 @@
       <div class="flex items-center">
         <div class="relative w-[60px] h-[60px] mr-[12px]" @tap="isLogin ? Taro.navigateTo({ url: '/packageB/pages/profile/profile' }) : void 0">
           <image class="w-full h-full rounded-full overflow-hidden" mode="aspectFill" :src="profile?.avatarUrl" />
-          <image class="absolute right-0 bottom-0 w-[16px] h-[16px]" src="@/assets/icon/my/modify.svg" :svg="true" />
+          <image class="absolute right-0 bottom-0 w-[16px] h-[16px]" src="@/assets/icon/my/modify.svg" mode="aspectFit" :svg="true" />
         </div>
         <div>
           <div class="text-[#0D0F02] text-[18px] leading-[21px] font-bold flex items-center mb-[4px]" @tap="!isLogin && Taro.navigateTo({ url: '/pages/login/login' })">
@@ -28,7 +28,7 @@
           <div v-if="isLogin && role !== Role.user" @tap="handleShowWhitelistModal">
             <div 
               class="inline-block px-[14px] py-[6px] text-[12px] font-[700] text-[#36b23b] bg-[#B0F3B0] rounded-[31px]" 
-              v-if="state === VolunteerWhitelistState.normal"
+              v-if="state === VolunteerWhitelistState.normal || state === VolunteerWhitelistState.ignore"
             >
               正常
             </div>
@@ -47,15 +47,15 @@
           </div>
         </div>
       </div>
-      <div class="mt-[10px]">
-        <image class="w-[25px] h-[25px] mr-[12px]" style="transform: translateY(2px);" src="@/assets/icon/my/scan.svg" :svg="true" @tap="handleCheckin" />
-        <image class="w-[24px] h-[24px] mr-[5px]" src="@/assets/icon/home/notification.svg" :svg="true" />
+      <div class="mt-[10px] flex items-baseline">
+        <image class="w-[25px] h-[25px] mr-[12px]" style="transform: translateY(3px);" src="@/assets/icon/my/scan.svg" mode="aspectFit" :svg="true" @tap="handleCheckin" />
+        <NotificationButton :size="24" />
       </div>
     </div>
     <div class="banner">
       <image class="w-[97px] h-[60px] absolute bottom-0 left-0 rounded-[16px] overflow-hidden" src="//common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/look_activity_history.png" />
       <image class="w-[76px] h-[49px] absolute top-[-22px] left-[37px]" src="//common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/wow.png" />
-      <div class="absolute top-[8px] left-[102px] text-white leading-[16px] font-[500]">您已累计参加活动</div>
+      <div class="absolute top-[8px] left-[102px] text-white leading-[20px] font-[500]">您已累计参加活动</div>
       <div class="absolute bottom-[1px] left-[102px] text-white flex items-baseline">
         <text class="text-[36px] font-[800] leading-[52px] mr-[4px]">{{ isLogin ? profile?.activityCompleteCount : 0 }}</text>
         <text class="font-[500]">次</text>
@@ -71,51 +71,51 @@
     </div>
     <div class="my-[16px] px-[27px] py-[14px] bg-white flex items-center rounded-[8px] divide-x divide-[#E6E6E6] divide-solid">
       <div class="flex items-center py-[6px] pr-[26px] border-0" @tap="Taro.navigateTo({ url: '/packageA/pages/sign-up-record/sign-up-record' })">
-        <image class="w-[28px] h-[28px] mr-[16px]" src="@/assets/icon/my/record.svg" :svg="true" />
+        <image class="w-[28px] h-[28px] mr-[16px]" src="@/assets/icon/my/record.svg" mode="aspectFit" :svg="true" />
         <div>
           <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[2px]">报名记录</div>
-          <div class="text-[#666] text-[12px] leading-[14px]">查看最近的报名</div>
+          <div class="text-[#666] text-[12px] leading-[14px] whitespace-nowrap">查看最近的报名</div>
         </div>
       </div>
       <div class="flex items-center py-[6px] pl-[26px] border-0">
-        <image class="w-[28px] h-[28px] mr-[16px]" src="@/assets/icon/my/address.svg" :svg="true" />
+        <image class="w-[28px] h-[28px] mr-[16px]" src="@/assets/icon/my/address.svg" mode="aspectFit" :svg="true" />
         <div>
           <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[2px]">地址管理</div>
-          <div class="text-[#666] text-[12px] leading-[14px]">共 0 个地址</div>
+          <div class="text-[#666] text-[12px] leading-[14px] whitespace-nowrap">共 0 个地址</div>
         </div>
       </div>
     </div>
     <div class="bg-white p-[12px] rounded-[8px]">
       <div class="flex items-center text-[#0D0F02] font-[500] justify-between" @tap="handleCellTap('verify')">
         <div class="flex items-center">
-          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/verify.svg" :svg="true" />
+          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/verify.svg" mode="aspectFit" :svg="true" />
           认证信息
         </div>
-        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" :svg="true" />
+        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" mode="aspectFit" :svg="true" />
       </div>
       <div class="h-[1px] my-[8px] bg-[#E6E6E6]"></div>
-      <div class="flex items-center text-[#0D0F02] font-[500]  justify-between" @tap="handleCellTap('money')">
+      <div class="flex items-center text-[#0D0F02] font-[500]  justify-between" @tap="handleCellTap('payroll')">
         <div class="flex items-center">
-          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/money.svg" :svg="true"/>
+          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/money.svg" mode="aspectFit" :svg="true"/>
           酬金情况
         </div>
-        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" :svg="true" />
+        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" mode="aspectFit" :svg="true" />
       </div>
       <div class="h-[1px] my-[8px] bg-[#E6E6E6]"></div>
       <div class="flex items-center text-[#0D0F02] font-[500]  justify-between" @tap="handleCellTap('feedback')">
         <div class="flex items-center">
-          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/feedback.svg" :svg="true" />
+          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/feedback.svg" mode="aspectFit" :svg="true" />
           问题反馈
         </div>
-        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" :svg="true" />
+        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" mode="aspectFit" :svg="true" />
       </div>
       <div class="h-[1px] my-[8px] bg-[#E6E6E6]" v-if="isLogin"></div>
       <div class="flex items-center text-[#0D0F02] font-[500]  justify-between" @tap="handleCellTap('logout')" v-if="isLogin">
         <div class="flex items-center">
-          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/logout.svg" :svg="true" />
+          <image class="w-[24px] h-[24px] mr-[6px]" src="@/assets/icon/my/logout.svg" mode="aspectFit" :svg="true" />
           退出登录
         </div>
-        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" :svg="true" />
+        <image class="w-[9px] h-[9px]" src="@/assets/icon/my/right.svg" mode="aspectFit" :svg="true" />
       </div>
     </div>
     <ConfirmModal title="退出登录" v-model="logoutModalVisible" @confirm="handleLogout" v-if="isLogin">
@@ -130,7 +130,7 @@
           </div>
         </div>
       </template>
-      <div class="whitelist-modal-body" v-if="state === VolunteerWhitelistState.normal">
+      <div class="whitelist-modal-body" v-if="state === VolunteerWhitelistState.normal || state === VolunteerWhitelistState.ignore">
         <div class="state">违规次数</div>
         <div class="expire">{{ whiltelistInfo?.normal.currentViolateCount }}</div>
         <div class="info">
@@ -162,14 +162,15 @@
 import moment from 'moment';
 import { ref, inject, computed } from 'vue';
 import { useStore } from '@/store';
-import Taro, { useDidShow } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import { Role, VolunteerWhitelistState, profileKey, volunteerWhitelistStateMap } from '@/constants';
-import { useCheckin, useGetUserProfile, useGetVolunteerHistory, useGetWhitelistInfo, useLogout } from '@/composables';
+import { useCheckin, useGetPayrollRecords, useGetVolunteerHistory, useGetWhitelistInfo, useLogout } from '@/composables';
 import Modal from '@/components/modal.vue';
 import Container from '@/components/container.vue';
+import NotificationButton from '@/components/notification-button.vue';
 import ConfirmModal from '@/components/confirm-modal.vue';
-import { IVolunteerWhitelistInfo } from '@/composables/use-api-types';
-import { setFormValues } from '@/utils';
+
+import type { IVolunteerWhitelistInfo } from '@/composables/use-api-types';
 
 const logoutModalVisible = ref(false);
 const whitelistModalVisible = ref(false);
@@ -184,7 +185,7 @@ const profile = inject(profileKey)!;
 
 const state = computed(() => profile.volunteerState ?? 0);
 
-const handleCellTap = (key: string) => {
+const handleCellTap = async (key: string) => {
   if(!isLogin.value) return Taro.showToast({ icon: 'error', title: '你还未登录' });
 
   switch(key) {
@@ -192,8 +193,10 @@ const handleCellTap = (key: string) => {
       Taro.navigateTo({ url: '/packageB/pages/verify/verify' });
       break;
     }
-    case 'money': {
-      Taro.navigateTo({ url: '/pages/money/money' });
+    case 'payroll': {
+      const payrollRecords = await useGetPayrollRecords();
+      Taro.preload({ payrollRecords });
+      Taro.navigateTo({ url: '/packageC/pages/payroll/payroll' });
       break;
     }
     case 'feedback': {
@@ -224,12 +227,9 @@ const handleLogout = () => {
 
 const handleCheckin = async () => {
   const res = await Taro.scanCode({ scanType: ['qrCode'], onlyFromCamera: true }).catch(console.error);
-  Taro.showLoading({ title: '签到中' });
-  if(!res) {
-    Taro.hideLoading();
-    return Taro.showToast({ icon: 'error', title: '无效二维码' });
-  }
+  if(!res) return;
 
+  Taro.showLoading({ title: '签到中' });
   const { result } = res;
   const isMatched = result.match(/^id:\$%(\d+)%/);
   if(!(result && isMatched)) {
@@ -257,13 +257,6 @@ const handleToHistory = async () => {
   Taro.hideLoading();
   Taro.navigateTo({ url: '/packageB/pages/history/history' });
 };
-
-useDidShow(() => isLogin.value && useGetUserProfile().then(_profile => {
-  setFormValues(profile, _profile, ['avatarUrl']);
-  const key = new URL(_profile.avatarUrl).pathname;
-  if(!profile.avatarUrl || (key !== new URL(profile.avatarUrl).pathname)) profile.avatarUrl = _profile.avatarUrl;
-  store.whitelistState = _profile.volunteerState;
-}));
 
 </script>
 

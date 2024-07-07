@@ -17,6 +17,7 @@ declare module 'vue' {
     FilterMenu: typeof import('./src/components/filter-menu.vue')['default']
     Modal: typeof import('./src/components/modal.vue')['default']
     MyScrollView: typeof import('./src/components/my-scroll-view.vue')['default']
+    NotificationButton: typeof import('./src/components/notification-button.vue')['default']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutCalendarCard: typeof import('@nutui/nutui-taro')['CalendarCard']
     NutCheckbox: typeof import('@nutui/nutui-taro')['Checkbox']

@@ -4,7 +4,7 @@
       <div class="w-full px-[16px] py-[8px] bg-white box-border">
         <div class="flex items-center">
           <div class="relative box-border h-[32px] pl-[10px] pr-[8px] py-[8px] flex items-center flex-[1] rounded-[20px] border-[1px] border-solid border-[#8ECCA0] bg-gradient-to-r from-[rgba(192,245,0,0.1)] from-0% to-[rgba(81,254,129,0.1)] to-100%">
-            <image class="w-[16px] h-[16px]" src="@/assets/icon/search/search.svg" :svg="true" />
+            <image class="w-[16px] h-[16px]" src="@/assets/icon/search/search.svg" mode="aspectFit" :svg="true" />
             <div class="relative flex-[1] h-[16px] ml-[14px]">
               <input ref="inputRef" class="search-box__original" type="text" confirm-type="search" :focus="true" v-model="searchContent" @focus="isSearchboxFocused = true" @blur="isSearchboxFocused = false" @confirm="handleSearch" />
             </div>
@@ -24,7 +24,7 @@
         <div class="search-history-wrapper" v-show="isSearchboxFocused">
           <div class="flex justify-between mb-[10px]">
             <div class="text-[#0D0F02] text-[14px] leading-[16px] font-[500]">搜索历史</div>
-            <image class="w-[12px] h-[12px]" src="@/assets/icon/search/delete.svg" :svg="true" @tap="store.searchHistory = []" v-if="store.searchHistory?.length" />
+            <image class="w-[12px] h-[12px]" src="@/assets/icon/search/delete.svg" mode="aspectFit" :svg="true" @tap="store.searchHistory = []" v-if="store.searchHistory?.length" />
           </div>
           <div class="flex flex-wrap" v-if="store.searchHistory?.length">
             <div 

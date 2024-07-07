@@ -24,6 +24,7 @@ const themeVars = {
   navbarMarginBottom: '0',
   navbarBackground: 'transparent',
   navbarBoxShadow: 'none',
+  navbarColor: '#000',
   overlayBgColor: 'rgba(0, 0, 0, .6)',
   tabbarHeight: '77px',
   tabbarBorderTop: 'none',

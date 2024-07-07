@@ -11,7 +11,7 @@
       >
         {{ item.filterKey && item.filterType === 'option' &&  typeof values[item.filterKey!] !== 'undefined' ? titles[item.filterKey!] : item.title }}
       </div>
-      <image class="menu-item__icon" src="@/assets/icon/live/down.svg" :svg="true" v-if="item.filterType !== 'all' || item.hideIcon" />
+      <image class="menu-item__icon" src="@/assets/icon/live/down.svg" mode="aspectFit" :svg="true" v-if="item.filterType !== 'all' || item.hideIcon" />
     </div>
     <div class="menu-item-popup" v-for="(item, index) in config" :key="index" v-show="popupWrapperVisible[index]">
       <nut-popup

@@ -1,6 +1,6 @@
 import { get, post, put, del } from '@/utils/http';
 
-import type { 
+import { 
   ISignUpPageData,
   IActivityDetail,
   IActivityPreview,
@@ -20,6 +20,9 @@ import type {
   ILive,
   IVolunteerHistoryItem,
   IVolunteerCertificate,
+  IPayrollRecordYearItem,
+  INotification,
+  INotificationDetail,
 } from './use-api-types';
 import type { ActivityType, VolunteerSignUpState } from '@/constants';
 
@@ -110,3 +113,13 @@ export const useSearchActivities = (params: { keyword: string }) => post<IActivi
 export const useGetVolunteerHistory = () => get<IVolunteerHistoryItem[]>('/volunteer/my/volunteerRecord/list');
 
 export const useGetCertificate = (params: { id: number }) => get<IVolunteerCertificate>('/volunteer/my/volunteerRecord/detail', params);
+
+export const useGetPayrollRecords = () => get<IPayrollRecordYearItem[]>('/payroll/record/list');
+
+export const useGetPagingNotifications = (params: IPagingParams) => post<IPagingResult<INotification>>('/wxmp/notice/pageSearch', params);
+
+export const useGetNotificationDetail = (params: { id: number }) => get<INotificationDetail>('/wxmp/notice/detail', params);
+
+export const useReadNotification = (params: { id: number }) => put('/wxmp/notice/read', params);
+
+export const useGetNotificationCount = () => get<number>('/wxmp/notice/redDot');

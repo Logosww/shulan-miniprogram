@@ -29,6 +29,7 @@ export default defineAppConfig({
         'pages/input/input',
         'pages/history/history',
         'pages/certificate/certificate',
+        'pages/notification-detail/notification-detail',
       ],
     },
     {
@@ -36,6 +37,9 @@ export default defineAppConfig({
       name: 'others',
       pages: [
         'pages/statement/statement',
+        'pages/payroll/payroll',
+        'pages/address-manage/address-manage',
+        'pages/product-detail/product-detail',
       ]
     }
   ],

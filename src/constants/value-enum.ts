@@ -84,6 +84,15 @@ export enum BannerType {
   miniprogram = 3,
 };
 
+export enum NotificationState {
+  unread = 0,
+  read = 1,
+};
+
+export enum NotificationType {
+  activityAudit = 1,
+};
+
 export const activityTypeMap: Record<ActivityType, string> = {
   [ActivityType.concert]: '演唱会',
   [ActivityType.drama]: '话剧',
@@ -99,7 +108,7 @@ export const workTagMap: Record<WorkTag, { class: string; text: string } | undef
 
 export const volunteerWhitelistStateMap: Record<VolunteerWhitelistState, string> = {
   [VolunteerWhitelistState.normal]: '正常状态',
-  [VolunteerWhitelistState.ignore]: '黑名单状态',
+  [VolunteerWhitelistState.ignore]: '正常状态', // 回显用户不感知
   [VolunteerWhitelistState.whitelist]: '白名单状态',
   [VolunteerWhitelistState.forbidden]: '封禁状态',
 };
@@ -113,7 +122,7 @@ export const genderMap: Record<Gender, string> = {
 export const volunteerSignUpStateMap: Record<VolunteerSignUpState, string> = {
   [VolunteerSignUpState.awaitingAudit]: '审核中',
   [VolunteerSignUpState.auditPassed]: '报名成功',
-  [VolunteerSignUpState.auditFailed]: '报名失败',
+  [VolunteerSignUpState.auditFailed]: '报名结束',
   [VolunteerSignUpState.cancelled]: '主动取消',
   [VolunteerSignUpState.cancelledOutOfIllegal]: '违规取消',
   [VolunteerSignUpState.atWork]: '进行中',
@@ -138,4 +147,8 @@ export const bannerTypePathnameMap: Record<BannerType, string | undefined> = {
   [BannerType.live]: 'live-detail',
   [BannerType.none]: void 0,
   [BannerType.miniprogram]: void 0,
+};
+
+export const notificationTypeMap: Record<NotificationType, string> = {
+  [NotificationType.activityAudit]: '活动审核',
 };

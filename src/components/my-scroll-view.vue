@@ -35,7 +35,7 @@ import { nanoid, throttleByRaf } from '@/utils';
 import lottie from 'lottie-miniprogram';
 import { useCOS } from '@/composables';
 
-const props = defineProps<{ height: number; refresher?: boolean; refreshHandler?: () => Promise<any>; }>();
+const props = defineProps<{ height: number; refresher?: boolean; refreshHandler?: () => Promise<any> }>();
 
 let animation: ReturnType<typeof lottie.loadAnimation>;
 

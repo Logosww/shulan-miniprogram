@@ -2,7 +2,7 @@
   <nut-popup
     transition="modal"
     pop-class="confirm-modal-wrapper"
-    :overlay-style="{ backgroundColor: 'rgba(0, 0, 0, .6)' }" 
+    :overlay-style="{ backgroundColor: 'rgba(0, 0, 0, .6)', backdropFilter: 'blur(2px)' }" 
     v-model:visible="modalVisible"
     :close-on-click-overlay="closeOnClickOverlay"
     :destroy-on-close="false"

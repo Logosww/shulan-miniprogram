@@ -11,6 +11,8 @@ import type {
   VolunteerWhitelistState,
   IdCardType,
   BannerType,
+  NotificationState,
+  NotificationType,
 } from '@/constants/value-enum';
 
 export interface ILoginResult {
@@ -87,6 +89,7 @@ export interface IWork {
 
 export interface IWorkData {
   workList: IWork[];
+  isMoney: boolean;
   signupEndAt: string;
 };
 
@@ -202,7 +205,7 @@ export interface ISignUpDetail {
     | 'addressDetailVo'
     | 'features'
     | 'isWorkInstruction'
-  >;
+  > & { isMoney: boolean };
   work: Omit<IWork, 'isFull'> & { description: string };
   checkin: {
     isChecked: boolean;
@@ -221,7 +224,7 @@ export interface ISignUpRecord {
     | 'startDate'
     | 'endDate'
     | 'avatarNameList'
-  > & { signupCancelAt: string };
+  > & { signupCancelAt: string; isMoney: boolean; };
   work: {
     id: number;
     name: string;
@@ -274,4 +277,39 @@ export interface IVolunteerCertificate {
   coverUrl: string;
   digest: string;
   yearMonth: string;
+};
+
+export interface IPayrollRecord {
+  id: number;
+  name: string;
+  coverUrl: string;
+  totalMoney: number;
+  workList: Array<{
+    id: number;
+    name: string;
+    money: number;
+    paidTime: string;
+  }>;
+};
+
+export interface IPayrollRecordYearItem {
+  year: number;
+  records: Array<{
+    month: number;
+    records: Array<IPayrollRecord>;
+  }>;
+};
+
+export interface INotification {
+  id: number;
+  title: string;
+  coverUrl: string;
+  digest: string;
+  readState: NotificationState;
+  type: NotificationType;
+  createAt: string;
+};
+
+export interface INotificationDetail extends Omit<INotification, 'digest' | 'readState'> {
+  content: string;
 };

@@ -6,25 +6,29 @@
         class="fixed top-0 w-full z-10"
         :title="navbarTitle"
         :style="{ '--nut-navbar-height': `${navbarHeight}px`, paddingTop: `${statusBarHeight}px` }"
-        :left-show="isShowBackBtn"
+        :left-show="isShowBackBtn || isFromShareCard"
         :placeholder="false"
         @click-back="Taro.navigateBack()"
       >
       <template #left-show>
-        <image class="w-[9px] h-[17px]" src="@/assets/icon/left.svg" :svg="true" />
+        <image class="w-[9px] h-[17px]" src="@/assets/icon/left.svg" mode="aspectFit" :svg="true" v-if="isShowBackBtn" />
+        <image class="w-[20px] h-[18px]" src="@/assets/icon/home.svg" mode="aspectFit" :svg="true" @tap="Taro.redirectTo({ url: '/pages/index/index' })" v-else-if="isFromShareCard" />
       </template>
       <template #left v-if="$slots['navbar-left']">
         <slot name="navbar-left"></slot>
       </template>
     </nut-navbar>
     <div class="fixed w-full z-10" :style="{ top: `${navbarHeight + statusBarHeight!}px` }" v-if="$slots['navbar-bottom']"><slot name="navbar-bottom"></slot></div>
-    <div :class="['container-content', props.tabbarPage ? 'is-tabbar-page' : '', contentClass]" :style="contentStyle" :id="contentId"><slot></slot></div>
+    <div :class="['container-content', props.tabbarPage ? 'is-tabbar-page' : '', contentClass]" :style="contentStyle" :id="contentId">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import Taro, { useLoad } from '@tarojs/taro';
+import { sharedPagePaths } from '@/constants';
 
 import type { CSSProperties } from 'vue';
 
@@ -57,6 +61,7 @@ const { statusBarHeight } = Taro.getSystemInfoSync();
 const navbarHeight = menuButtonHeight + (menuButtonTop - statusBarHeight!) * 2;
 
 const isShowBackBtn = ref(false);
+const isFromShareCard = ref(false);
 
 const shouldDisableBg = computed(() => props.bgStyle || !props.background);
 
@@ -84,6 +89,11 @@ const style = computed(() => {
 
 useLoad(() => {
   isShowBackBtn.value = Taro.getCurrentPages().length > 1;
+  const path = Taro.getCurrentInstance().router!.path!;
+  if(!sharedPagePaths.includes(path)) return;
+
+  const { shareTicket } = Taro.getLaunchOptionsSync();
+  isFromShareCard.value = !!shareTicket;
 });
 
 </script>

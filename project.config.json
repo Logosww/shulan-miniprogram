@@ -18,7 +18,8 @@
     "coverView": false,
     "showShadowRootInWxmlPanel": false,
     "packNpmRelationList": [],
-    "ignoreUploadUnusedFiles": true
+    "ignoreUploadUnusedFiles": true,
+    "swc": false
   },
   "compileType": "miniprogram",
   "srcMiniprogramRoot": "dist/",

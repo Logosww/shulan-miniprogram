@@ -12,7 +12,7 @@
     />
     <div class="flex justify-between">
       <div class="relative w-[88px] h-[120px] rounded-[4px] overflow-hidden mr-[10px] flex-shrink-0">
-        <image class="w-full h-full mr-[10px]" mode="aspectFill" :src="data.activity.coverUrl" />
+        <image class="w-full h-full mr-[10px]" mode="aspectFill" :src="data.activity.coverUrl" :fade-in="true" />
         <div class="absolute w-[48px] right-0 top-[10px] text-[#0D0F02] text-center text-[12px] font-bold leading-[20px] bg-[#51FE81]">
           {{ activityTypeMap[data.activity.type] }}
         </div>
@@ -41,13 +41,13 @@
           <div class="text-[#666] text-[12px] leading-[17px]">
             <div v-if="data.activityWorkVolunteerIdentity === VolunteerType.normal">
               <div class="flex items-center">
-                <image class="w-[14px] h-[14px] mr-[4px] flex-shrink-0" src="@/assets/icon/home/time.svg" :svg="true" />
+                <image class="w-[14px] h-[14px] mr-[4px] flex-shrink-0" src="@/assets/icon/home/time.svg" mode="aspectFit" :svg="true" />
                 工作时间：
               </div>
               {{ moment(data.work.startAt).format('YYYY.MM.DD HH:mm') }}—{{ moment(data.work.endAt).format('YYYY.MM.DD HH:mm') }}
             </div>
             <div class="flex items-center">
-              <image class="w-[14px] h-[14px] mr-[4px] flex-shrink-0" src="@/assets/icon/home/position_1.svg" :svg="true" />
+              <image class="w-[14px] h-[14px] mr-[4px] flex-shrink-0" src="@/assets/icon/home/position_1.svg" mode="aspectFit" :svg="true" />
               <div class="line-clamp-1 text-ellipsis">{{ data.activity.city }} | {{ data.activity.address }}</div>
             </div>
           </div>
@@ -57,7 +57,7 @@
         <div :class="(dangerStateMap.includes(data.activityWorkVolunteerState) && data.activityWorkVolunteerIdentity === VolunteerType.normal) ? 'text-[#E54B17]' : ''">
           {{ data.activityWorkVolunteerIdentity !== VolunteerType.normal ? '其他' : volunteerSignUpStateMap[data.activityWorkVolunteerState] }}
         </div>
-        <div class="text-[#0D0F02] text-[16px] font-bold leading-[22px] mt-[4px]">￥{{ data.work.money }}</div>
+        <div class="text-[#0D0F02] text-[16px] font-bold leading-[22px] mt-[4px]" v-if="data.activity.isMoney">￥{{ data.work.money }}</div>
       </div>
     </div>
     <div class="my-[10px] h-[1px] bg-[#E6E6E6]"></div>

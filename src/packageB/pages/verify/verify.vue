@@ -3,24 +3,24 @@
     <Container navbar-title="志愿者认证" disable-safe-bottom>
       <my-scroll-view
         class="bg-[#F7F7F7] px-[16px] box-border"
-        :height="scrollViewHeight"
+        :height="contentHeight"
       >
         <div class="mt-[24px] text-[#0D0F02] text-[20px] leading-[28px] font-bold">请扫描身份证件的正反面</div>
         <div class="mt-[4px] mb-[10px] text-[#0D0F02] leading-[20px] font-bold">正面为头像面</div>
         <div class="flex items-baseline">
-          <image class="w-[12px] h-[12px] mr-[6px]" src="@/assets/icon/verify/tip.svg" :svg="true" />
+          <image class="w-[12px] h-[12px] mr-[6px]" src="@/assets/icon/verify/tip.svg" mode="aspectFit" :svg="true" />
           <div class="text-[#0D0F02] text-[12px] leading-[17px]">请保证二代身份证（或港澳台通行证、护照）有效，并且头像文字清晰，四角对齐，无反光，无遮挡</div>
         </div>
         <div class="id-card" @tap="uploadImage(1, ([path], [key]) => (form.idCardNationalPath = path) && (idCardNationalKey = key))">
           <div class="id-card__circle" v-show="!form.idCardNationalPath">
-            <image class="id-card__icon-plus" src="@/assets/icon/verify/plus.svg" :svg="true" />
+            <image class="id-card__icon-plus" src="@/assets/icon/verify/plus.svg" mode="aspectFit" :svg="true" />
           </div>
           <image class="picture" mode="aspectFill" :src="form.idCardNationalPath" v-show="form.idCardNationalPath" />
         </div>
         <div class="mt-[12px] text-[#0D0F02] text-[16px] leading-[22px] font-[500] text-center">点击上传身份证件的正面</div>
         <div class="id-card" @tap="uploadImage(1, ([path], [key]) => (form.idCardPortraitPath = path) && (idCardPortraitKey = key))">
           <div class="id-card__circle" v-show="!form.idCardPortraitPath">
-            <image class="id-card__icon-plus" src="@/assets/icon/verify/plus.svg" :svg="true" />
+            <image class="id-card__icon-plus" src="@/assets/icon/verify/plus.svg" mode="aspectFit" :svg="true" />
           </div>
           <image class="picture" mode="aspectFill" :src="form.idCardPortraitPath" v-show="form.idCardPortraitPath" />
         </div>
@@ -33,10 +33,19 @@
           <div class="flex justify-between leading-[22px] text-[16px]">
             <div class="text-[#0D0F02] font-bold">姓名</div>
             <!-- <div class="text-[#ccc]">待证件扫描后自动录入</div> -->
-            <div class="flex text-[#404040] items-center" @tap="handleFieldInput({ title: '姓名', isShortField: true, max: 20, receiver: { form, field: 'name' }})">
+            <div 
+              class="flex text-[#404040] items-center" 
+              @tap="handleFieldInput({ 
+                title: '姓名',
+                isShortField: true,
+                max: 20,
+                receiver: { form, field: 'name' },
+                validator: nameValidator,
+              })"
+            >
               <div class="text-[#ccc]" v-show="!form.name">请输入中文</div>
               {{ form.name }}
-              <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+              <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
             </div>
           </div>
           <div class="flex justify-between leading-[22px] text-[16px]">
@@ -45,7 +54,7 @@
               <div class="flex text-[#404040] items-center">
                 <div class="text-[#ccc]" v-show="form.sex === void 0">请选择</div>
                 {{ genderMap[form.sex] }}
-                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
               </div>
             </picker>
           </div>
@@ -54,7 +63,7 @@
             <div class="flex text-[#404040] items-center" @tap="handleFieldInput({ title: '年龄', isShortField: true, max: 3, type: 'number', receiver: { form, field: 'age' }})">
               <div class="text-[#ccc]" v-show="form.age === void 0">请输入</div>
               {{ form.age }}
-              <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+              <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
             </div>
           </div>
           <div class="flex justify-between leading-[22px] text-[16px]">
@@ -63,7 +72,7 @@
               <div class="flex text-[#404040] items-center">
                 <div class="text-[#ccc]" v-show="form.idCardType === void 0">请选择</div>
                 {{ idCardTypeMap[form.idCardType] }}
-                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
               </div>
             </picker>
           </div>
@@ -73,7 +82,7 @@
             <div class="flex text-[#404040] items-center" @tap="handleFieldInput({ title: '证件号', isShortField: true, max: 18, receiver: { form, field: 'idCard' }})">
               <div class="text-[#ccc]" v-show="!form.idCard">请输入</div>
               {{ form.idCard }}
-              <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+              <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
             </div>
           </div>
           <!-- <div class="flex justify-between leading-[22px] text-[16px]">
@@ -83,7 +92,7 @@
               <div class="flex text-[#404040]">
                 <div class="text-[#ccc]" v-show="form.">请选择</div>
                 {{  }}
-                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
               </div>
             </picker>
           </div> -->
@@ -99,7 +108,7 @@
               <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(1, ([path], [key]) => (form.idPhotoPath = path) && (idPhotoKey = key))">
                 <div class="text-[#ccc]" v-show="!form.idPhotoPath">请上传一寸人像照片原件</div>
                 {{ form.idPhotoPath ? '已上传' : '' }}
-                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
               </div>
             </div>
             <div v-show="form.identity === VolunteerIdentity.student">
@@ -108,7 +117,7 @@
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="handleFieldInput({ title: '学校名称', isShortField: true, max: 30, receiver: { form, field: 'school' }})">
                   <div class="text-[#ccc]" v-show="!form.school">请填写您的学校名称</div>
                   <div class="max-w-[200px] truncate" v-show="form.school">{{ form.school }}</div>
-                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
                 </div>
               </div>
               <div class="form-cell is-required">
@@ -116,7 +125,7 @@
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="handleFieldInput({ title: '专业名称', isShortField: true, max: 30, receiver: { form, field: 'major' }})">
                   <div class="text-[#ccc]" v-show="!form.major">请填写您的专业名称</div>
                   <div class="max-w-[200px] truncate" v-show="form.major">{{ form.major }}</div>
-                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
                 </div>
               </div>
               <picker header-text="年级" :range="gradeRange" @change="({ detail: { value } }) => form.grade = gradeRange[value]">
@@ -125,7 +134,7 @@
                   <div class="flex text-[#404040] leading-[20px] items-center">
                     <div class="text-[#ccc]" v-show="!form.grade">请选择您的年级</div>
                     <div class="max-w-[200px] truncate" v-show="form.grade">{{ form.grade }}</div>
-                    <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                    <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
                   </div>
                 </div>
               </picker>
@@ -134,7 +143,7 @@
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.studentCardPaths = keys)">
                   <div class="text-[#ccc]" v-show="!form.studentCardPaths.length">5张以内照片</div>
                   {{ form.studentCardPaths.length ? '已上传' : '' }}
-                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
                 </div>
               </div>
             </div>
@@ -144,7 +153,7 @@
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="handleFieldInput({ title: '学校名称', isShortField: true, max: 30, receiver: { form, field: 'graduateSchool' }})">
                   <div class="text-[#ccc]" v-show="!form.graduateSchool">请填写您的毕业学校</div>
                   <div class="max-w-[200px] truncate" v-show="form.graduateSchool">{{ form.graduateSchool }}</div>
-                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
                 </div>
               </div>
               <div class="form-cell">
@@ -152,7 +161,7 @@
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="handleFieldInput({ title: '单位名称', isShortField: true, max: 30, receiver: { form, field: 'jobUnit' }})">
                   <div class="text-[#ccc]" v-show="!form.jobUnit">请填写您的入职单位，选填</div>
                   <div class="max-w-[200px] truncate" v-show="form.jobUnit">{{ form.jobUnit }}</div>
-                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
                 </div>
               </div>
               <div class="form-cell">
@@ -160,7 +169,7 @@
                 <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.joinUnitPaths = keys)">
                   <div class="text-[#ccc]" v-show="!form.joinUnitPaths.length">5张以内照片，选填</div>
                   {{ form.joinUnitPaths.length ? '已上传' : '' }}
-                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                  <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
                 </div>
               </div>
             </div>
@@ -169,7 +178,7 @@
               <div class="flex text-[#404040] leading-[20px] items-center" @tap="handleFieldInput({ title: '相关经历', max: 500, receiver: { form, field: 'experience' }})">
                 <div class="text-[#ccc]" v-show="!form.experience">请填写您的相关经历</div>
                 <div class="max-w-[200px] truncate" v-show="form.experience">{{ form.experience }}</div>
-                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
               </div>
             </div>
             <div class="form-cell">
@@ -177,31 +186,36 @@
               <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.experiencePaths = keys)">
                 <div class="text-[#ccc]" v-show="!form.experiencePaths.length">5张以内照片，选填</div>
                 {{ form.experiencePaths.length ? '已上传' : '' }}
-                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+                <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
               </div>
             </div>
           </div>
         </div>
-        <div class="h-[32px]"></div>
+        <div class="h-[80px]"></div>
+        <root-portal>
+          <div class="action-bar" v-if="store.role === Role.user">
+            <div class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[23px] border-[#41CC68] border-[1px] border-solid" @tap="setFormValues(form, initialValues)">清空填写信息</div>
+            <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[74px]" @tap="handleSubmit">
+              确认
+            </div>
+          </div>
+          <div class="action-bar" v-else>
+            <!-- <div class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[23px] border-[#41CC68] border-[1px] border-solid" @tap="cancelConfirmVisible = true">取消认证信息</div>
+            <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[42px]" @tap="modifyConfirmVisible = true">
+              修改认证信息
+            </div> -->
+            <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] text-center w-full" @tap="modifyConfirmVisible = true">
+              修改认证信息
+            </div>
+          </div>
+        </root-portal>
       </my-scroll-view>
-      <div class="action-bar" v-if="store.role === Role.user">
-        <div class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[23px] border-[#41CC68] border-[1px] border-solid" @tap="setFormValues(form, initialValues)">清空填写信息</div>
-        <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[74px]" @tap="handleSubmit">
-          确认
-        </div>
-      </div>
-      <div class="action-bar" v-else>
-        <div class="text-[#41CC68] text-[16px] leading-[44px] font-[500] rounded-[37px] px-[23px] border-[#41CC68] border-[1px] border-solid" @tap="cancelConfirmVisible = true">取消认证信息</div>
-        <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[42px]" @tap="modifyConfirmVisible = true">
-          修改认证信息
-        </div>
-      </div>
       <ConfirmModal title="更改认证消息" v-model="modifyConfirmVisible" v-if="store.role !== Role.user" @confirm="handleModify">
         <div class="text-[#666] text-[12px] leading-[17px] text-center">为降低账号安全风险，每一个月仅能更换一次，请您谨慎修改</div>
       </ConfirmModal>
-      <ConfirmModal title="取消认证信息" v-model="cancelConfirmVisible" v-if="store.role !== Role.user" @confirm="handleCancel">
+      <!-- <ConfirmModal title="取消认证信息" v-model="cancelConfirmVisible" v-if="store.role !== Role.user" @confirm="handleCancel">
         <div class="text-[#666] text-[12px] leading-[17px] text-center">身份认证一旦取消认证，原先记录将会丢失，无法找回</div>
-      </ConfirmModal>
+      </ConfirmModal> -->
       <ConfirmModal title="温馨提示" v-model="notifyModalVisible" just-notify>
         <div class="text-[#666] text-[12px] leading-[17px] text-center whitespace-pre-line">{{ notifyContent }}</div>
       </ConfirmModal>
@@ -211,16 +225,15 @@
 
 <script lang="ts" setup>
 import moment from 'moment';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive } from 'vue';
 import { setFormValues, isUrl, handleFieldInput } from '@/utils';
 import { Role, VolunteerIdentity, genderMap, idCardTypeMap } from '@/constants';
 import { 
   useCOS,
-  useElementHeight,
   useContentHeight,
   useGetVerifyData,
   useVerifyVolunteer,
-  useCancelVerify,
+  // useCancelVerify,
 } from '@/composables';
 import Taro from '@tarojs/taro';
 import { useStore } from '@/store';
@@ -263,21 +276,18 @@ let idPhotoKey = '', idCardNationalKey = '', idCardPortraitKey = '';
 const idCardTypeRange = Object.values(idCardTypeMap), genderRange = Object.values(genderMap);
 
 let thisYear = moment().year() - (moment().month() >= 9 ? 2000 : 2001);
-const gradeRange: string[] = [];
+const gradeRange: { text: string, value: string }[] = [];
 for(let i = 16; i <= thisYear; i++) gradeRange.push(`${i}级`);
 
 const notifyContent = ref('');
 const notifyModalVisible = ref(false);
 const modifyConfirmVisible = ref(false);
-const cancelConfirmVisible = ref(false);
+// const cancelConfirmVisible = ref(false);
 const form = reactive<IVerifyForm>(emptyForm);
 
 const store = useStore();
 const contentHeight = useContentHeight();
-const actionBarHeight = useElementHeight('.action-bar');
 const { upload } = useCOS();
-
-const scrollViewHeight = computed(() => contentHeight.value - actionBarHeight.value);
 
 store.role === Role.volunteer && useGetVerifyData().then(data => {
   setFormValues(form, data);
@@ -360,14 +370,14 @@ const handleModify = async () => {
     });
 };
 
-const handleCancel = () => useCancelVerify().then(() => {
-  store.role = Role.user;
-  setTimeout(() => Taro.showToast({ icon: 'success', title: '取消成功' }), 300);
-  Taro.navigateBack();
-}).catch(msg => {
-    notifyContent.value = msg;
-    notifyModalVisible.value = true;
-  });
+// const handleCancel = () => useCancelVerify().then(() => {
+//   store.role = Role.user;
+//   setTimeout(() => Taro.showToast({ icon: 'success', title: '取消成功' }), 300);
+//   Taro.navigateBack();
+// }).catch(msg => {
+//     notifyContent.value = msg;
+//     notifyModalVisible.value = true;
+//   });
 
 const handleSubmit = async () => {
   if(!validate()) {
@@ -390,6 +400,8 @@ const handleSubmit = async () => {
       notifyModalVisible.value = true;
     });
 };
+
+const nameValidator = (value: string) => /^[\u4e00-\u9fff]+$/.test(value) ? Promise.resolve() : Promise.reject(new Error('请输入中文'));
 </script>
 
 <style lang="scss">

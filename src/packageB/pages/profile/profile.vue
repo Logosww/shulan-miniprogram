@@ -3,13 +3,13 @@
     <Container navbar-title="基本信息" content-class="bg-[#F7F7F7]">
       <div class="mx-auto pt-[32px] relative w-[120px] h-[120px]" @tap="handleUploadAvatar">
         <image class="w-full h-full rounded-full overflow-hidden" :src="profile.avatarUrl" />
-        <image class="w-[28px] h-[28px] absolute bottom-[8px] right-0" src="@/assets/icon/profile/camera.svg" :svg="true" />
+        <image class="w-[28px] h-[28px] absolute bottom-[8px] right-0" src="@/assets/icon/profile/camera.svg" mode="aspectFit" :svg="true" />
       </div>
       <div class="p-[16px] flex justify-between text-[16px] leading-[22px] mt-[32px]">
         <div class="text-[#262626]">昵称</div>
         <div class="flex text-[#666] items-center" @tap="handleModifyNickname">
           {{ profile.nickname }}
-          <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" :svg="true" />
+          <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
         </div>
       </div>
       <div class="p-[16px] flex justify-between text-[16px] leading-[22px]">

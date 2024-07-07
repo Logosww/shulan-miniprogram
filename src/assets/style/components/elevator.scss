@@ -4,32 +4,26 @@
   overflow-anchor: auto;
   overflow-y: scroll;
 
-  .elevator-item {
-    .elevator-item__title {
-      position: sticky;
-      top: 0;
-      background-color: #F7F7F7;
-      padding-left: 16px;
-      color: #666;
-      font-size: 12px;
-      line-height: 28px;
-    }
+  .elevator-item__title {
+    position: sticky;
+    top: 0;
+    background-color: #F7F7F7;
+    padding-left: 16px;
+    color: #666;
+    font-size: 12px;
+    line-height: 28px;
+  }
 
-    .elevator-item__content {
-      background-color: #fff;
-      padding-left: 16px;
+  .elevator-item__content-item {
+    background-color: #fff;
+    padding-left: 12px;
+    line-height: 40px;
+    color: #0D0F02;
+    font-size: 14px;
+  }
 
-      .elevator-item__content-item {
-        padding-left: 12px;
-        line-height: 40px;
-        color: #0D0F02;
-        font-size: 14px;
-      }
-
-      .elevator-item__content-item + .elevator-item__content-item {
-        border-top: 1px solid #E6E6E6;
-      }
-    }
+  .elevator-item__content-item + .elevator-item__content-item {
+    border-top: 1px solid #E6E6E6;
   }
 }
 

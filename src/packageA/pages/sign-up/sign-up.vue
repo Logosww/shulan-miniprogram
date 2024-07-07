@@ -24,12 +24,12 @@
         </div>
         <my-scroll-view
           class="bg-[#F7F7F7] animation-fade-in"
-          :height="scrollViewHeight"
+          :height="contentHeight"
           v-else
         >
           <div class="bg-white py-[14px] px-[16px]">
             <div class="flex">
-              <image class="w-[50px] h-[68px] rounded-[7px] flex-shrink-0 mr-[12px]" mode="aspectFill" :src="data?.activity.coverUrl" />
+              <image class="w-[50px] h-[68px] rounded-[7px] flex-shrink-0 mr-[12px]" mode="aspectFill" :src="data?.activity.coverUrl" :fade-in="true" />
               <div class="pt-[4px] text-[#0D0F02] leading-[20px] font-bold line-clamp-3 text-ellipsis">
                 {{ data?.activity.city }} |【{{ data && activityTypeMap[data.activity.type] }}】{{ data?.activity.name }}
               </div>
@@ -67,14 +67,14 @@
               <div class="text-[#0D0F02] font-[500]">报名本次活动的原因</div>
               <div class="flex items-center" @tap="handleInputReason">
                 <div class="max-w-[182px] truncate">{{ reason || '请填写您的报名原因' }}</div>
-                <image class="w-[14px] h-[14px] ml-[8px]" src="@/assets/icon/sign-up/modify.svg" :svg="true" />
+                <image class="w-[14px] h-[14px] ml-[8px]" src="@/assets/icon/sign-up/modify.svg" mode="aspectFit" :svg="true" />
               </div>
             </div>
           </div>
           <div class="mt-[16px] mb-[12px] ml-[16px] text-[#262626] text-[16px] font-[500] leading-[20px]">温馨提示</div>
           <div class="bg-white mx-[16px] rounded-[12px] py-[16px] px-[12px] text-[#404040] leading-[20px]">
             <div class="flex items-baseline mb-[12px]">
-              <image class="w-[12px] h-[12px] mr-[8px] flex-shrink-0" src="@/assets/icon/verify/tip.svg" :svg="true" />
+              <image class="w-[12px] h-[12px] mr-[8px] flex-shrink-0" src="@/assets/icon/verify/tip.svg" mode="aspectFit" :svg="true" />
               <text class="text-[#404040] text-[12px] font-[500] leading-[18px]">
                 本活动取消报名截止时间为 
                 <text class="text-[13px] font-extrabold">{{ moment(data?.cancelAt.time).format('YYYY.MM.DD HH:mm') }}</text>，即报名截止前 <text class="text-[13px] font-extrabold">{{ data?.cancelAt.deadline }}</text> 天。 超时取消报名将被视为违规取消。
@@ -84,17 +84,19 @@
             <div>如有疑问可在微信公众号「不会上树的树懒」后台留言提问。</div>
             <div>最终解释权归「不会上树的树懒」所有。</div>
           </div>
-          <div class="h-[32px]"></div>
+          <div class="h-[80px]"></div>
+          <root-portal>
+            <div class="action-bar" :class="[isLoading ? 'is-hidden' : '']">
+              <div 
+                class="w-full text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] text-center"
+                :class="[data && reason ? '' : 'bg-[#F2F2F2] text-[#B3B3B3]']"
+                @tap="data ? handleValidate() : void 0"
+              >
+                确认报名
+              </div>
+            </div>
+          </root-portal>
         </my-scroll-view>
-        <div class="action-bar" :class="[isLoading ? 'is-hidden' : '']">
-          <div 
-            class="w-full text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] text-center"
-            :class="[data ? '' : 'bg-[#F2F2F2] text-[#B3B3B3]']"
-            @tap="data ? handleValidate() : void 0"
-          >
-            确认报名
-          </div>
-        </div>
       </div>
       <ConfirmModal title="温馨提示" v-model="confirmModalVisible" @confirm="handleSignUp">
         <div class="text-[#666] text-[12px] leading-[17px] text-center whitespace-pre-line">
@@ -105,6 +107,9 @@
       <ConfirmModal title="温馨提示" v-model="notifyModalVisible" just-notify @confirm="handleNotifyConfirm">
         <div class="text-[#666] text-[12px] leading-[17px] text-center whitespace-pre-line">{{ notifyContent }}</div>
       </ConfirmModal>
+      <ConfirmModal title="温馨提示" v-model="toLoginModalVisible" @confirm="Taro.navigateTo({ url: '/pages/login/login' })">
+        <div class="text-[#666] text-[12px] leading-[17px] text-center whitespace-pre-line">你还未登录，是否登录</div>
+      </ConfirmModal>
     </Container>
   </ConfigProvider>
 </template>
@@ -112,11 +117,11 @@
 <script lang="ts" setup>
 import moment from 'moment';
 import Taro, { useLoad, useReady, useDidShow } from '@tarojs/taro';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useStore } from '@/store';
 import { handleFieldInput } from '@/utils';
 import { genderMap, activityTypeMap, Role } from '@/constants';
-import { useContentHeight, useElementHeight, useGetSignUpPageData, useSignUp } from '@/composables';
+import { useContentHeight, useGetSignUpPageData, useSignUp } from '@/composables';
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
 import ConfirmModal from '@/components/confirm-modal.vue';
@@ -131,13 +136,11 @@ const notifyContent = ref('');
 const isLoading = ref(true);
 const confirmModalVisible = ref(false);
 const notifyModalVisible = ref(false);
+const toLoginModalVisible = ref(false);
 const data = ref<ISignUpPageData>();
 
 const store = useStore();
 const contentHeight = useContentHeight();
-const actionBarHeight = useElementHeight('.action-bar');
-
-const scrollViewHeight = computed(() => contentHeight.value - actionBarHeight.value);
 
 const handleInputReason = () => handleFieldInput({
   receiver: reason,
@@ -190,6 +193,8 @@ useLoad<{
 });
 
 useReady(() => {
+  if(!store.token) return toLoginModalVisible.value = true;
+  
   if(store.role === Role.user) {
     notifyContent.value = '您还没完成志愿者认证，请先前往进行认证';
     return notifyModalVisible.value = true;
@@ -200,10 +205,16 @@ useReady(() => {
   });
 });
 
-useDidShow(() => store.role !== Role.user && useGetSignUpPageData({ activityId, activityWorkIds }).then(_data => {
-  data.value = _data;
-  setTimeout(() => isLoading.value = false, 600);
-}));
+useDidShow(() => 
+  store.token 
+  && (store.role !== Role.user) 
+  && !data.value 
+  && useGetSignUpPageData({ activityId, activityWorkIds })
+    .then(_data => {
+      data.value = _data;
+      setTimeout(() => isLoading.value = false, 600);
+    })
+);
 
 </script>
 

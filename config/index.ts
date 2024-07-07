@@ -46,7 +46,7 @@ export default defineConfig(async (merge) => {
       // @ts-ignore
       prerender: {
         match: 'pages/login**',
-        include: ['pages/index/index'],
+        include: ['pages/index/index', 'packageB/pages/verify/verify'],
       },
       postcss: {
         pxtransform: {

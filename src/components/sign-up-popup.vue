@@ -1,6 +1,6 @@
 <template>
-  <Popup title="立即报名" v-model="popupVisible" :pop-style="{ backgroundColor: '#FAFAFA'}" @close="selectedWorks = []">
-    <div class="job-list space-y-[16px]">
+  <Popup title="立即报名" v-model="popupVisible" :pop-style="{ backgroundColor: '#FAFAFA' }" @close="selectedWorks = []">
+    <div class="job-list space-y-[16px] mb-[12px]">
       <div 
         :class="['job-card', item.isFull ? 'is-disabled' : '', selectedWorks.includes(item.id) ? 'is-active' : '']"
         v-for="item in data?.workList" :key="item.id"
@@ -13,15 +13,15 @@
         </div>
         <div class="job-card__reward">
           <div class="flex items-center">
-            <image class="w-[12px] h-[12px] ml-[4px]" src="@/assets/icon/integral.svg" :svg="true" />
+            <image class="w-[12px] h-[12px] ml-[4px]" src="@/assets/icon/integral.svg" mode="aspectFit" :svg="true" />
             +{{ item.integral }}
           </div>
-          ￥{{ item.money }}
+          <div v-if="data?.isMoney">￥{{ item.money }}</div>
         </div>
         <div class="job-card__checkbox"></div>
       </div>
     </div>
-    <div class="text-[12px] text-[#666] my-[12px] text-center leading-[14px]">具体薪资发放以现场实际为准</div>
+    <div class="text-[12px] text-[#666] mb-[12px] text-center leading-[14px]" v-if="data?.isMoney">具体薪资发放以现场实际为准</div>
     <div :class="['action-btn', (isAvailable && selectedWorks.length) ? '' : 'is-disabled']" @tap="handleSignUp">
       <div class="action-btn__title">立即报名</div>
       <div class="action-btn__extra" v-if="isAvailable">（{{ moment(data?.signupEndAt).format(' YYYY 年 MM 月 DD 日') }}截止）</div>
@@ -29,7 +29,7 @@
   </Popup>
   <ConfirmModal title="温馨提示" v-model="verifyModalVisible" just-notify @confirm="Taro.navigateTo({ url: '/packageB/pages/verify/verify' })" v-if="store.role === Role.user">
     <div class="text-[#666] text-[12px] leading-[17px] text-center whitespace-pre-line">
-      您还没完成志愿者认证，请先前往进行认证  
+      您还没完成志愿者认证，请先前往进行认证
     </div>
   </ConfirmModal>
 </template>

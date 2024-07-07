@@ -3,7 +3,7 @@
     class="bg-[#F7F7F7]"
     :height="height"
     :refresh-handler="() => fetchSignUpRecordList(1)"
-    @scrolltolower="getMoreRecords()"
+    @scrolltolower="fetchSignUpRecordList()"
     refresher
   >
     <div class="py-[16px] space-y-[12px]" v-if="recordList.length">
@@ -38,7 +38,7 @@ const recordList = ref<ISignUpRecord[]>([]);
 
 const eventBus = useEventBus(setSignUpRecordStateEventBusKey);
 
-const fetchSignUpRecordList = async (page?: number) => {
+const fetchSignUpRecordList = useThrottleFn(async (page?: number) => {
   if(page) current = page;
   current !== 1 && Taro.showLoading({ title: '加载中' });
   const { records } = await useGetSignUpRecords({ 
@@ -51,9 +51,7 @@ const fetchSignUpRecordList = async (page?: number) => {
 
   current === 1 ? (recordList.value = records) : recordList.value.push(...records);
   current++;
-};
-
-const getMoreRecords = useThrottleFn(fetchSignUpRecordList, 2000);
+}, 2000);
 
 const setRecordState = (id: number, state: VolunteerSignUpState) => {
   const index = recordList.value.findIndex(({ id: _id }) => _id === id);

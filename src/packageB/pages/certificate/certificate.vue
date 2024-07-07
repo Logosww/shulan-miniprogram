@@ -1,7 +1,7 @@
 <template>
   <ConfigProvider>
     <Container navbar-title="志愿者证书" :bg-style="{ backgroundColor: primaryColor }" :style="{ '--nut-navbar-color': isColdColor ? '#0D0F02' : '#eee' }" disable-safe-bottom>
-      <my-scroll-view :height="contentHeight" v-show="!isLoading">
+      <my-scroll-view class="animation-fade-in" :height="contentHeight" v-show="!isLoading">
         <snapshot id="snapshot" mode="view">
           <div class="relative w-full">
             <image class="w-full" mode="widthFix" :src="data?.coverUrl" :fade-in="true" :lazy-load="false" />
@@ -27,17 +27,25 @@
           </div>
         </snapshot>
         <div class="px-[16px]" :style="{ backgroundColor: bgColor }">
-          <div class="bg-white mb-[32px] rounded-[16px] p-[16px]">
+          <div class="bg-white rounded-[16px] p-[16px]">
             <div class="text-[#0D0F02] text-[16px] font-bold leading-[22px] mb-[8px]">工作服务记录证明须知：</div>
             <div class="text-[#0D0F02] text-[12px] leading-[16px] font-[500] space-y-[16px]">
-              <div>1.工作服务记录证明是由树懒提供的工作人员的工作服务时长电子产品。</div>
-              <div>2.所有者须为树懒的平台用户。</div>
+              <div>1.工作服务记录证明是由「不会上树的树懒」提供的工作人员的工作服务时长电子产品。</div>
+              <div>2.所有者须为小程序「树懒不会上树」的平台用户。</div>
               <div>3.该证明仅作为参加「不会上树的树懒平台」相关活动的有效凭证，不提供任何志愿时长。</div>
-              <div>4.请妥善保管，使用时请遵守相关规定和章程如有违法违规等行为，「不会上树的树懒」不承担法律后果。最终解释权归「不会上树的树懒所有」。</div>
+              <div>4.请妥善保管，使用时请遵守相关规定和章程如有违法违规等行为，「不会上树的树懒」不承担法律后果。</div>
+              <div>5.最终解释权归「不会上树的树懒」所有。</div>
             </div>
           </div>
-          <div class="flex justify-center pb-[32px]">
-            <div class="bg-white rounded-[37px] px-[64px] py-[11px] text-[16px] text-[#0D0F02] font-bold leading-[22px]" @click="handleCapture">下载我的志愿者工作证明</div>
+          <div class="h-[120px]"></div>
+        </div>
+        <div class="action-bar" :style="{ backgroundColor: bgAlphaColor }">
+          <div
+            class="bg-white mx-auto rounded-[37px] px-[64px] py-[11px] text-[16px] text-[#0D0F02] font-bold leading-[22px]"
+            :style="{ backgroundColor: bgDarkenColor, color: isColdColor ? '#0D0F02' : '#fff' }"
+            @click="handleCapture"
+          >
+            下载我的志愿者工作证明
           </div>
         </div>
       </my-scroll-view>
@@ -67,6 +75,8 @@ const isColdColor = computed(() =>
 const bgColor = computed(() => 
   primaryColor.value ? chroma(primaryColor.value).darken(1.3).hex() : ''
 );
+const bgAlphaColor = computed(() => bgColor.value ? `rgba(${chroma(bgColor.value).alpha(.8).rgba().join(',')})` : '');
+const bgDarkenColor = computed(() => bgColor.value ? chroma(bgColor.value).darken(1.1).hex() : '');
 const bgGradientStyle = computed(() =>
   bgColor.value
     ? `background-image: linear-gradient(180deg, ${primaryColor.value!} 0%, ${bgColor.value} 50%, ${bgColor.value} 100%)`
@@ -119,8 +129,7 @@ const handleCapture = () => {
   })
 };
 
-useLoad(async () => {
-  Taro.showLoading({ title: '加载中' });
+useLoad(() => {
   const { preloadData } = Taro.getCurrentInstance();
   if(!preloadData) return;
 
@@ -130,10 +139,7 @@ useLoad(async () => {
   Taro.loadFontFace({
     family: 'custom-font',
     source: 'https://common-1323578300.cos.ap-shanghai.myqcloud.com/shulan-wxmp/fontface.ttf',
-    success: () => {
-      isLoading.value = false;
-      setTimeout(Taro.hideLoading, 600);
-    },
+    success: () => setTimeout(() => isLoading.value = false),
     fail: console.error,
   });
 });;

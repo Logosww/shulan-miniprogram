@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 import { isRef } from 'vue';
 
 import type { Ref } from 'vue';
-import type{ InputType } from '@nutui/nutui-taro/dist/types/__VUE/input/type';
+import type { InputType } from '@nutui/nutui-taro/dist/types/__VUE/input/types';
 
 export type FieldInputOption = {
   isShortField?: boolean;
@@ -12,11 +12,12 @@ export type FieldInputOption = {
   receiver: {
     form: Record<string, any>;
     field: string;
-  } | Ref<string>
+  } | Ref<string>;
+  validator?: (value: string) => Promise<void>;
 };
 
 export const handleFieldInput = (option: FieldInputOption) => {
-  const { max, type, title, receiver, isShortField } = option;
+  const { max, type, title, receiver, isShortField, validator } = option;
   Taro.navigateTo({
     url: '/packageB/pages/input/input',
     success: res => {
@@ -26,7 +27,7 @@ export const handleFieldInput = (option: FieldInputOption) => {
         const { form, field } = receiver;
         content = form[field] ?? '';
       }
-      res.eventChannel.emit('initialize', { title, content, max, type, isShortField })
+      res.eventChannel.emit('initialize', { title, content, max, type, isShortField, validator })
     },
     events: {
       input: (content: string) => {

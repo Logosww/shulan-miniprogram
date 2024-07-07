@@ -6,7 +6,7 @@
       :lowerThreshold="0"
       :height="contentHeight - 48"
       :refresh-handler="() => fetchLiveList(1)"
-      @scrolltolower="getMoreActivities()"
+      @scrolltolower="fetchLiveList()"
       refresher
     >
       <div class="space-y-[12px]" v-if="liveList.length">
@@ -17,7 +17,7 @@
           @tap="Taro.navigateTo({ url: `/pages/live-detail/live-detail?id=${item.id}` })"
         >
           <div class="h-[135px] bg-slate-200 mb-[12px]">
-            <image class="w-full h-full" mode="aspectFill" :src="item.coverUrl" />
+            <image class="w-full h-full" mode="aspectFill" :src="item.coverUrl" :fade-in="true" />
           </div>
           <div class="relative px-[12px]">
             <div class="text-[#0D0F02] font-bold leading-[16px]">{{ item.title }}</div>
@@ -58,7 +58,7 @@ const liveList = ref<ILive[]>([]);
 
 const contentHeight = useContentHeight();
 
-const fetchLiveList = async (page?: number) => {
+const fetchLiveList = useThrottleFn(async (page?: number) => {
   const { city, type, activityAt, keyword } = fetchParams;
   if(page) current = page;
   current !== 1 && Taro.showLoading({ title: '加载中' });
@@ -75,9 +75,7 @@ const fetchLiveList = async (page?: number) => {
 
   current === 1 ? (liveList.value = records) : liveList.value.push(...records);
   current++;
-};
-
-const getMoreActivities = useThrottleFn(fetchLiveList, 2000);
+}, 2000);
 
 const handleFilter = (values : FetchParams) => (fetchParams = values) && fetchLiveList(1);
 

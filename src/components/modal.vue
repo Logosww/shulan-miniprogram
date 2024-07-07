@@ -2,7 +2,7 @@
   <nut-popup
     transition="modal"
     style="background-color: transparent; overflow: visible;"
-    :overlay-style="{ backgroundColor: 'rgba(0, 0, 0, .6)' }"
+    :overlay-style="{ backgroundColor: 'rgba(0, 0, 0, .6)', backdropFilter: 'blur(2px)' }"
     v-model:visible="modalVisible"
     :close-on-click-overlay="closeOnClickOverlay"
     :destroy-on-close="destroyOnClose"
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="modal-close-btn" v-if="rendered">
-      <image class="w-[40px] h-[40px]" src="@/assets/icon/close.svg" :svg="true" @tap="modalVisible = false" />
+      <image class="w-[40px] h-[40px]" src="@/assets/icon/close.svg" mode="aspectFit" :svg="true" @tap="modalVisible = false" />
     </div>
   </nut-popup>
 </template>
