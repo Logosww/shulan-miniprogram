@@ -4,9 +4,11 @@
       <my-scroll-view class="px-[16px]" :height="height">
         <div class="mt-[32px] text-[#999] text-center text-[10px] leading-[9px] mb-[12px]">{{ data?.createAt }}</div>
         <div class="flex items-start pr-[20px] mb-[32px]">
-          <image class="w-[44px] h-[44px] border border-[#41CC68] border-solid mr-[12px] flex-shrink-0 rounded-full" :src="data?.coverUrl" :fade-in="true" />
+          <div class="w-[44px] h-[44px] border border-[#41CC68] border-solid mr-[12px] flex-shrink-0 relative rounded-full overflow-hidden">
+            <image class="w-full h-full" mode="aspectFill" :src="data?.coverUrl" :fade-in="true" />
+          </div>
           <div class="bg-white p-[16px] rounded-[8px] flex-auto relative">
-            <div class="text-[#0D0F00] text-[15px] leading-[14px] font-bold mb-[12px]">{{ data?.title }}</div>
+            <div class="text-[#0D0F00] text-[15px] leading-[20px] font-bold mb-[12px]">{{ data?.title }}</div>
             <rich-text :nodes="data?.content" :user-select="true" />
           </div>
         </div>

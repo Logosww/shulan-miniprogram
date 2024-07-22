@@ -17,7 +17,7 @@
     <div class="flex justify-between">
       <div class="flex items-center">
         <div class="relative w-[60px] h-[60px] mr-[12px]" @tap="isLogin ? Taro.navigateTo({ url: '/packageB/pages/profile/profile' }) : void 0">
-          <image class="w-full h-full rounded-full overflow-hidden" mode="aspectFill" :src="profile?.avatarUrl" />
+          <image class="w-full h-full rounded-full" mode="aspectFill" :src="profile?.avatarUrl" />
           <image class="absolute right-0 bottom-0 w-[16px] h-[16px]" src="@/assets/icon/my/modify.svg" mode="aspectFit" :svg="true" />
         </div>
         <div>
@@ -70,14 +70,14 @@
       </div>
     </div>
     <div class="my-[16px] px-[27px] py-[14px] bg-white flex items-center rounded-[8px] divide-x divide-[#E6E6E6] divide-solid">
-      <div class="flex items-center py-[6px] pr-[26px] border-0" @tap="Taro.navigateTo({ url: '/packageA/pages/sign-up-record/sign-up-record' })">
+      <div class="flex items-center py-[6px] pr-[26px] border-[0]" @tap="Taro.navigateTo({ url: '/packageA/pages/sign-up-record/sign-up-record' })">
         <image class="w-[28px] h-[28px] mr-[16px]" src="@/assets/icon/my/record.svg" mode="aspectFit" :svg="true" />
         <div>
           <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[2px]">报名记录</div>
           <div class="text-[#666] text-[12px] leading-[14px] whitespace-nowrap">查看最近的报名</div>
         </div>
       </div>
-      <div class="flex items-center py-[6px] pl-[26px] border-0">
+      <div class="flex items-center py-[6px] pl-[26px] border-[0]">
         <image class="w-[28px] h-[28px] mr-[16px]" src="@/assets/icon/my/address.svg" mode="aspectFit" :svg="true" />
         <div>
           <div class="text-[#0D0F02] text-[16px] font-bold leading-[19px] mb-[2px]">地址管理</div>

@@ -1,7 +1,7 @@
 <template>
   <ConfigProvider>
-    <Container navbar-title="活动纪念" content-class="pt-[16px] px-[16px] overflow-y-auto" :bg-style="{ backgroundColor: '#F7F7F7' }" background>
-      <div class="space-y-[16px]" v-if="history.length">
+    <Container navbar-title="活动纪念" content-class="pt-[16px] px-[16px]" :bg-style="{ backgroundColor: '#F7F7F7' }" background>
+      <my-scroll-view class="space-y-[16px]" :height="height" v-if="history.length">
         <div class="history-item-year" v-for="(yearItem, yearIndex) in history" :key="yearIndex">
           <div class="history-item-year__title" @tap="yearItemCollapsedMap[yearIndex] = !yearItemCollapsedMap[yearIndex]">
             {{ yearItem.year }} 年
@@ -16,7 +16,7 @@
                     <div class="history-item-card">
                       <image class="history-item-card__cover" mode="aspectFill" :src="item.coverUrl" :fade-in="true" />
                       <div class="history-item-card__right overflow-hidden">
-                        <div class="text-[#333] text-[20px] leading-[28px] font-bold mb-[4px] truncate">{{ item.name }}</div>
+                        <text class="text-[#333] text-[20px] leading-[28px] font-bold mb-[4px]" overflow="ellipsis">{{ item.name }}</text>
                         <div class="text-[#666] text-[16px] leading-[22px]">{{ item.monthDay }}</div>
                       </div>
                     </div>
@@ -26,7 +26,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </my-scroll-view>
       <div class="w-full h-full flex items-center justify-center" v-else>
         <nut-empty description="暂无活动纪念" />
       </div>
@@ -38,15 +38,18 @@
 import { ref, onMounted } from 'vue';
 import Taro from '@tarojs/taro';
 import chroma from 'chroma-js';
-import { useGetCertificate } from '@/composables/use-api';
 import { getDominantColor } from '@/utils/color';
+import { useContentHeight, useGetCertificate } from '@/composables';
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
+import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { IVolunteerHistoryItem } from '@/composables';
 
 const history = ref<IVolunteerHistoryItem[]>([]);
 const yearItemCollapsedMap = ref<boolean[]>([]);
+
+const height = useContentHeight();
 
 const handleToCertificate = async (id: number) => {
   Taro.showLoading({ title: '加载中' });

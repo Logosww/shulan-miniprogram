@@ -13,6 +13,7 @@
     display: flex;
   
     .notification-item__avatar {
+      position: relative;
       width: 44px;
       height: 44px;
       border: 2px solid #41CC68;

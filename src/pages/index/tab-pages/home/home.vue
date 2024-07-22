@@ -163,8 +163,7 @@ const handleToSelectCity = async () => {
   Taro.getFuzzyLocation({
     type: 'wgs84',
     success: async params => {
-      const currentCity = await useDecodeGeography(params);
-      store.selectCity(currentCity);
+      const currentCity = await useDecodeGeography(params).catch(console.error);
       Taro.preload({ cityList, currentCity });
       Taro.navigateTo({ url: '/packageB/pages/select-city/select-city' });
     }, 

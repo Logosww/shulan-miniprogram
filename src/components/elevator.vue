@@ -18,8 +18,8 @@
         <div class="elevator-item__title" :id="item.title">{{ item.title }}</div>
       </sticky-header>
       <list-view :padding="[0, 0, 0, 16]">
-        <block v-for="_item in item.list" :key="_item.key ?? _item.value" @tap="emit('select', _item.value)">
-          <div class="elevator-item__content-item">{{ _item.label ?? _item.value }}</div>
+        <block v-for="_item in item.list" :key="_item.key ?? _item.value">
+          <div class="elevator-item__content-item" @tap="emit('select', _item.value)">{{ _item.label ?? _item.value }}</div>
         </block>
       </list-view>
     </sticky-section>

@@ -281,15 +281,11 @@ export interface IVolunteerCertificate {
 
 export interface IPayrollRecord {
   id: number;
-  name: string;
+  title: string;
   coverUrl: string;
-  totalMoney: number;
-  workList: Array<{
-    id: number;
-    name: string;
-    money: number;
-    paidTime: string;
-  }>;
+  monthDayTime: string;
+  transferMoney: number;
+  workName: string;
 };
 
 export interface IPayrollRecordYearItem {

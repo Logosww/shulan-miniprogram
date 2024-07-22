@@ -38,8 +38,6 @@ export default defineAppConfig({
       pages: [
         'pages/statement/statement',
         'pages/payroll/payroll',
-        'pages/address-manage/address-manage',
-        'pages/product-detail/product-detail',
       ]
     }
   ],

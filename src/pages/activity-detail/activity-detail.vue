@@ -109,7 +109,7 @@
               </div>
             </div>
             <div class="sticky top-0 px-[16px] z-10 backdrop">
-              <Anchor class="py-[16px] border-0 border-b-[1px] border-b-[#E9E9E9] border-solid" ref="anchorRef" container="#scrollview" :config="anchorConfig" @scroll-to="id => currentId = id" />
+              <Anchor class="py-[16px] border-[0] border-b-[1px] border-b-[#E9E9E9] border-solid" ref="anchorRef" container="#scrollview" :config="anchorConfig" @scroll-to="id => currentId = id" />
             </div>
             <div id="detail" class="bg-white px-[16px] pb-[16px] mb-[16px]">
               <div class="py-[12px] text-[#0D0F02] text-[16px] leading-[19px] font-bold">演出描述</div>
@@ -305,7 +305,7 @@ const getPageData = async () => {
   const detail = await useGetActivityDetail({ id: activityId });
   data.value = detail;
   setTimeout(() => {
-    isLoading.value && setTimeout(() => anouncementModalVisible.value = true, 350);
+    isLoading.value && setTimeout(() => (detail.state === ActivityState.activated) && (anouncementModalVisible.value = true), 350);
     isLoading.value = false;
   }, 600);
 };

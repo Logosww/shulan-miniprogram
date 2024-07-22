@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-white flex border-0" :class="[block ? 'py-[12px]' : 'p-[12px] rounded-[8px]']" @tap="Taro.navigateTo({ url: `/pages/activity-detail/activity-detail?id=${data.id}` })">
-    <div class="relative w-[88px] h-[120px] rounded-[4px] mr-[10px] overflow-hidden flex-shrink-0">
+  <div class="bg-white flex border-[0]" :class="[block ? 'py-[12px]' : 'p-[12px] rounded-[8px]']" @tap="Taro.navigateTo({ url: `/pages/activity-detail/activity-detail?id=${data.id}` })">
+    <div class="relative w-[88px] h-[120px] rounded-[6px] mr-[10px] overflow-hidden flex-shrink-0">
       <image class="w-full h-full bg-slate-100" mode="aspectFill" :src="data.coverUrl" :lazy-load="true" :fade-in="true" />
       <div class="absolute w-[48px] right-0 top-[10px] text-[#0D0F02] text-center text-[12px] font-bold leading-[20px] bg-[#51FE81]">{{ activityTypeMap[data.type] }}</div>
     </div>
@@ -26,7 +26,7 @@
             <div class="line-clamp-1 text-ellipsis">{{ data.city }} | {{ data.address }}</div>
           </div>
         </div>
-        <div class="pt-[8px] flex items-center justify-between border-0">
+        <div class="pt-[8px] flex items-center justify-between border-[0]">
           <div class="relative h-[16px] mr-[4px]">
             <div
               v-for="(avatar, index) in data.avatarNameList" 

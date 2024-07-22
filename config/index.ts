@@ -1,5 +1,5 @@
 import { defineConfig, type UserConfigExport } from '@tarojs/cli';
-import { UnifiedWebpackPluginV5 } from 'weapp-tailwindcss/webpack'
+import { UnifiedWebpackPluginV5 } from 'weapp-tailwindcss/webpack';
 import ComponentsPlugin from 'unplugin-vue-components/webpack';
 import NutUIResolver from '@nutui/auto-import-resolver';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
@@ -34,7 +34,7 @@ export default defineConfig(async (merge) => {
     framework: 'vue3',
     compiler: 'webpack5',
     cache: {
-      enable: false, // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
+      enable: true, // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
       buildDependencies: {
         config: [path.join('..', 'src/app.config.ts')]
       }

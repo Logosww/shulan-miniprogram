@@ -7,11 +7,13 @@
           @scrolltolower="fetchNotificationList()"
           refresher
         >
-          <div class="bg-white px-[16px]">
+          <div class="bg-white px-[16px]" v-if="notificationList.length">
             <div class="notification-item__wrapper" v-for="(item, index) in notificationList" :key="index">
               <open-container @tap="handleToNotificationDetail(item, index)">
                 <div class="notification-item">
-                  <image class="notification-item__avatar" :src="item.coverUrl" :fade-in="true" />
+                  <div class="notification-item__avatar">
+                    <image class="w-full h-full" mode="aspectFill" :src="item.coverUrl" :fade-in="true" />
+                  </div>
                   <div class="notification-item__content">
                     <div class="notification-item__content-top">
                       <text :class="['notification-item__title', item.readState === NotificationState.read ? 'is-read' : '']" overflow="ellipsis">{{ item.title }}</text>
@@ -26,6 +28,7 @@
               </open-container>
             </div>
           </div>
+          <nut-empty description="暂无数据" v-else />
         </my-scroll-view>
     </Container>
   </ConfigProvider>

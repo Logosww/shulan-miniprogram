@@ -35,7 +35,6 @@ declare module 'vue' {
     NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
     NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     Popup: typeof import('./src/components/popup.vue')['default']
-    ProfileForm: typeof import('./src/components/profile-form.vue')['default']
     SignUpPopup: typeof import('./src/components/sign-up-popup.vue')['default']
     Tabbar: typeof import('./src/components/tabbar.vue')['default']
     TabPage: typeof import('./src/components/tab-page.vue')['default']

@@ -114,7 +114,7 @@ export const useGetVolunteerHistory = () => get<IVolunteerHistoryItem[]>('/volun
 
 export const useGetCertificate = (params: { id: number }) => get<IVolunteerCertificate>('/volunteer/my/volunteerRecord/detail', params);
 
-export const useGetPayrollRecords = () => get<IPayrollRecordYearItem[]>('/payroll/record/list');
+export const useGetPayrollRecords = () => get<IPayrollRecordYearItem[]>('/wxmp/my/volunteer/transferOrder/record/list');
 
 export const useGetPagingNotifications = (params: IPagingParams) => post<IPagingResult<INotification>>('/wxmp/notice/pageSearch', params);
 
