@@ -275,8 +275,8 @@ let idPhotoKey = '', idCardNationalKey = '', idCardPortraitKey = '';
 
 const idCardTypeRange = Object.values(idCardTypeMap), genderRange = Object.values(genderMap);
 
-let thisYear = moment().year() - (moment().month() >= 9 ? 2000 : 2001);
-const gradeRange: { text: string, value: string }[] = [];
+let thisYear = moment().year() - (moment().month() >= 6 ? 2000 : 2001);
+const gradeRange: string[] = [];
 for(let i = 16; i <= thisYear; i++) gradeRange.push(`${i}级`);
 
 const notifyContent = ref('');
@@ -340,7 +340,7 @@ const transform = () => {
 };
 
 const validate = () => {
-  if(!(form.name && form.idCard && form.experience && form.idPhotoPath && (form.idCardType !== void 0) && form.idCardNationalPath && form.idCardPortraitPath)) return false;
+  if(!(form.name && form.idCard && form.age && form.experience && form.idPhotoPath && (form.sex !== void 0) && (form.idCardType !== void 0) && form.idCardNationalPath && form.idCardPortraitPath)) return false;
 
   if(form.identity === VolunteerIdentity.student) {
     if(!(form.school && form.grade && form.major && form.studentCardPaths.length)) return false;

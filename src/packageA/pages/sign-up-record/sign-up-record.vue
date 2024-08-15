@@ -21,7 +21,7 @@
           <text v-show="toBeCancelledRecordState === VolunteerSignUpState.awaitingAudit">
             {{ '您正在取消此次活动报名。\n' }}<text class="text-[#404040] font-bold">{{ cancelDeadline }}</text> 前，您共有 <text class="text-[#404040] font-bold">{{ leftCancelCount }}</text> 次取消机会，{{ '\n此后取消将视为违规取消' }}
           </text>
-          <text v-show="toBeCancelledRecordState === VolunteerSignUpState.auditPassed">
+          <text v-show="toBeCancelledRecordState === VolunteerSignUpState.auditPassed || toBeCancelledRecordState === VolunteerSignUpState.atWork">
             {{ '您已成功通过此次活动报名，\n' }}若坚持取消，将视为违规取消
           </text>
         </div>
@@ -98,7 +98,7 @@ const handleModalConfirm = () => {
 };
 
 const handleModalCanCel = () => {
-  if(toBeCancelledRecordState.value === VolunteerSignUpState.auditPassed)
+  if(toBeCancelledRecordState.value === VolunteerSignUpState.auditPassed || toBeCancelledRecordState.value === VolunteerSignUpState.atWork)
     doCancel();
 };
 </script>

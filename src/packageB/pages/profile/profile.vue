@@ -59,6 +59,7 @@ const handleModifyNickname = () => Taro.showModal({
   //@ts-ignore
   success({ confirm, content }) {
     if(!confirm || !content) return;
+    if(content.length >= 255) return Taro.showToast({ icon: 'none', title: '昵称长度超过限制' });
 
     profile.value.nickname = content;
   }
