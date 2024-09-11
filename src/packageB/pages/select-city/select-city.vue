@@ -22,15 +22,10 @@
             <div class="text-[12px] text-[#666] py-[9px] pl-[16px] bg-[#F7F7F7]">推荐访问</div>
           </sticky-header>
           <grid-view class="bg-white" :cross-axis-count="3" :cross-axis-gap="12" :main-axis-gap="12" :padding="[16, 47, 16, 16]">
-            <div class="city-option" @tap="handleSelectCity('北京')">北京</div>
+            <div class="city-option" @tap="handleSelectCity('杭州')">杭州</div>
             <div class="city-option" @tap="handleSelectCity('上海')">上海</div>
-            <div class="city-option" @tap="handleSelectCity('深圳')">深圳</div>
-            <div class="city-option" @tap="handleSelectCity('广州')">广州</div>
-            <div class="city-option" @tap="handleSelectCity('重庆')">重庆</div>
-            <div class="city-option" @tap="handleSelectCity('天津')">天津</div>
-            <div class="city-option" @tap="handleSelectCity('成都')">成都</div>
-            <div class="city-option" @tap="handleSelectCity('西安')">西安</div>
-            <div class="city-option" @tap="handleSelectCity('哈尔滨')">哈尔滨</div>
+            <div class="city-option" @tap="handleSelectCity('宁波')">宁波</div>
+            <div class="city-option" @tap="handleSelectCity('衢州')">衢州</div>
           </grid-view>
         </sticky-section>
       </Elevator>

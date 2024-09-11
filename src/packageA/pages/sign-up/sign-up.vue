@@ -168,8 +168,11 @@ const handleSignUp = async () => {
   return useSignUp({ activityId, activityWorkIds, reason: reason.value })
     .then(() => {
       Taro.hideLoading();
-      setTimeout(() => Taro.showToast({ icon: 'success', title: '报名成功' }), 300);
       Taro.navigateBack();
+      Taro.openEmbeddedMiniProgram({
+        appId: 'wxde8ac0a21135c07d',
+        path: '/index/pages/h5/mtlm/mtlm?mt=3&lm=MTgyNjEwNTgwNTQ3NzkyNDk0Mg%3D%3DNTM2%3D%3D%3D%3D&uid=436760&container=meituan_wxmini&lch=cps:x:0:b53e60c8964785ae4ad12ebca540b494:032:404:436760',
+      }).then(() => Taro.showToast({ icon: 'success', title: '报名成功' }));
     })
     .catch(msg => {
       Taro.hideLoading();

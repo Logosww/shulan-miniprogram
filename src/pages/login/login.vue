@@ -15,7 +15,7 @@
           >
           本机号码一键登录
         </nut-button>
-        <div class="mt-[16px] text-[#808080] font-medium leading-[16px]" @tap="Taro.navigateTo({ url: '/pages/login-sms/login-sms' })">使用其他手机号登录</div>
+        <!-- <div class="mt-[16px] text-[#808080] font-medium leading-[16px]" @tap="Taro.navigateTo({ url: '/pages/login-sms/login-sms' })">使用其他手机号登录</div> -->
         <nut-checkbox class="mt-[107px]" icon-size="12" v-model="isAgreeAccords">
           <text class="text-[#b3b3b3] text-[10px] leading-[14px]">
             我已阅读并同意 树懒<text class="text-[#666]" @tap="Taro.navigateTo({ url: '/packageC/pages/statement/statement' })">《用户协议》</text>和<text class="text-[#666]" @tap="Taro.navigateTo({ url: '/packageC/pages/statement/statement' })">《隐私政策》</text>
