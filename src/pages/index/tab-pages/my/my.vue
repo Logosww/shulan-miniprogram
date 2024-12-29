@@ -150,7 +150,7 @@
         <div class="expire is-forbidden">{{ moment(whiltelistInfo?.violateList.releaseAt).format('YYYY-MM-DD') }}</div>
         <div class="info">
           您当前总违规次数为 {{ whiltelistInfo?.violateList.violateCount }} 次，<br>
-          于 {{ moment(whiltelistInfo?.violateList.violateAt).format('YYYY 年 M 月 D 日') }} 开启封禁状态，<br>
+          于 {{ moment(whiltelistInfo?.violateList.violateAt).format('YYYY 年 M 月 D 日') }}开启封禁状态，<br>
           封禁期间禁止报名活动
         </div>
       </div>

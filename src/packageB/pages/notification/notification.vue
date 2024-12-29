@@ -65,7 +65,6 @@ const fetchNotificationList = useThrottleFn(async (page?: number) => {
   if(!records.length && current > 1) return;
 
   current === 1 ? (notificationList.value = records) : notificationList.value.push(...records);
-  console.log(current, notificationList.value)
   current++;
 }, 2000);
 

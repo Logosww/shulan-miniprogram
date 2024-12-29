@@ -1,6 +1,6 @@
 <template>
   <div class="animation-fade-in" v-for="(item, index) in list" :key="index" v-show="item.shouldShow">
-    <component :is="item.comp" v-if="item.shouldRender" />
+    <component :is="item.component" v-if="item.shouldRender" />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ const props = defineProps<{
 }>();
 
 const list = tabbarList.map(({ pageComponent }) => ({ 
-  comp: pageComponent,
+  component: pageComponent,
   shouldRender: false,
   shouldShow: false,
 }));
