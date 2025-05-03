@@ -7,19 +7,19 @@
     "enhance": false,
     "compileHotReLoad": false,
     "postcss": false,
-    "minified": false,
+    "minified": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
-    "minifyWXML": false,
-    "minifyWXSS": false,
+    "minifyWXML": true,
+    "minifyWXSS": true,
     "coverView": false,
     "showShadowRootInWxmlPanel": false,
     "packNpmRelationList": [],
     "ignoreUploadUnusedFiles": true,
-    "swc": false
+    "swc": true
   },
   "compileType": "miniprogram",
   "srcMiniprogramRoot": "dist/",

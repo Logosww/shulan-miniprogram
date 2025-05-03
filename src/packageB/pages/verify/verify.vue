@@ -11,20 +11,20 @@
           <image class="w-[12px] h-[12px] mr-[6px]" src="@/assets/icon/verify/tip.svg" mode="aspectFit" :svg="true" />
           <div class="text-[#0D0F02] text-[12px] leading-[17px]">请保证二代身份证（或港澳台通行证、护照）有效，并且头像文字清晰，四角对齐，无反光，无遮挡</div>
         </div>
-        <div class="id-card" @tap="uploadImage(1, ([path], [key]) => (form.idCardNationalPath = path) && (idCardNationalKey = key))">
+        <div class="id-card" @tap="uploadImage(1, ([path], [key]) => (form.idCardNationalPath = path) && (idCardNationalKey = key), form.idCardNationalPath, !!form.idCardNationalPath)">
           <div class="id-card__circle" v-show="!form.idCardNationalPath">
             <image class="id-card__icon-plus" src="@/assets/icon/verify/plus.svg" mode="aspectFit" :svg="true" />
           </div>
           <image class="picture" mode="aspectFill" :src="form.idCardNationalPath" v-show="form.idCardNationalPath" />
         </div>
-        <div class="mt-[12px] text-[#0D0F02] text-[16px] leading-[22px] font-[500] text-center">点击上传身份证件的正面</div>
-        <div class="id-card" @tap="uploadImage(1, ([path], [key]) => (form.idCardPortraitPath = path) && (idCardPortraitKey = key))">
+        <div class="mt-[12px] text-[#0D0F02] text-[16px] leading-[22px] font-[500] text-center">{{ form.idCardNationalPath ? '身份证件正面已上传，不支持修改' : '点击上传身份证件的正面' }}</div>
+        <div class="id-card" @tap="uploadImage(1, ([path], [key]) => (form.idCardPortraitPath = path) && (idCardPortraitKey = key), form.idCardPortraitPath, !!form.idCardPortraitPath)">
           <div class="id-card__circle" v-show="!form.idCardPortraitPath">
             <image class="id-card__icon-plus" src="@/assets/icon/verify/plus.svg" mode="aspectFit" :svg="true" />
           </div>
           <image class="picture" mode="aspectFill" :src="form.idCardPortraitPath" v-show="form.idCardPortraitPath" />
         </div>
-        <div class="mt-[12px] text-[#0D0F02] text-[16px] leading-[22px] font-[500] text-center">点击上传身份证件的反面</div>
+        <div class="mt-[12px] text-[#0D0F02] text-[16px] leading-[22px] font-[500] text-center">{{ form.idCardPortraitPath ? '身份证件反面已上传，不支持修改' : '点击上传身份证件的反面' }}</div>
         <div class="flex items-center mt-[24px] mb-[16px]">
           <div class="checkbox"></div>
           <div class="text-[#0D0F02] text-[18px] leading-[25px] font-[500]">请核对身份信息</div>
@@ -35,7 +35,7 @@
             <!-- <div class="text-[#ccc]">待证件扫描后自动录入</div> -->
             <div 
               class="flex text-[#404040] items-center" 
-              @tap="handleFieldInput({ 
+              @tap="!form.name && handleFieldInput({ 
                 title: '姓名',
                 isShortField: true,
                 max: 20,
@@ -60,7 +60,7 @@
           </div>
           <div class="flex justify-between leading-[22px] text-[16px]">
             <div class="text-[#0D0F02] font-bold">年龄</div>
-            <div class="flex text-[#404040] items-center" @tap="handleFieldInput({ title: '年龄', isShortField: true, max: 3, type: 'number', receiver: { form, field: 'age' }})">
+            <div class="flex text-[#404040] items-center" @tap="handleFieldInput({ title: '年龄', isShortField: true, max: 3, type: 'number', receiver: { form, field: 'age' }, validator: ageValidator })">
               <div class="text-[#ccc]" v-show="form.age === void 0">请输入</div>
               {{ form.age }}
               <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
@@ -68,7 +68,7 @@
           </div>
           <div class="flex justify-between leading-[22px] text-[16px]">
             <div class="text-[#0D0F02] font-bold">证件类型</div>
-            <picker header-text="证件类型" :range="idCardTypeRange" @change="({ detail: { value } }) => form.idCardType = parseInt(value)">
+            <picker header-text="证件类型" :range="idCardTypeRange" @change="({ detail: { value } }) => form.idCardType = parseInt(value)" :disabled="form.idCardType !== void 0">
               <div class="flex text-[#404040] items-center">
                 <div class="text-[#ccc]" v-show="form.idCardType === void 0">请选择</div>
                 {{ idCardTypeMap[form.idCardType] }}
@@ -79,7 +79,7 @@
           <div class="flex justify-between leading-[22px] text-[16px]">
             <div class="text-[#0D0F02] font-bold">证件号码</div>
             <!-- <div class="text-[#ccc]">待证件扫描后自动录入</div> -->
-            <div class="flex text-[#404040] items-center" @tap="handleFieldInput({ title: '证件号', isShortField: true, max: 18, receiver: { form, field: 'idCard' }})">
+            <div class="flex text-[#404040] items-center" @tap="!form.idCard && handleFieldInput({ title: '证件号', isShortField: true, max: 18, receiver: { form, field: 'idCard' }})">
               <div class="text-[#ccc]" v-show="!form.idCard">请输入</div>
               {{ form.idCard }}
               <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
@@ -105,7 +105,7 @@
           <div class="tab-pane">
             <div class="form-cell is-required">
               证件照片
-              <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(1, ([path], [key]) => (form.idPhotoPath = path) && (idPhotoKey = key))">
+              <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(1, ([path], [key]) => (form.idPhotoPath = path) && (idPhotoKey = key), form.idPhotoPath)">
                 <div class="text-[#ccc]" v-show="!form.idPhotoPath">请上传一寸人像照片原件</div>
                 {{ form.idPhotoPath ? '已上传' : '' }}
                 <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
@@ -140,7 +140,7 @@
               </picker>
               <div class="form-cell is-required">
                 学生证
-                <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.studentCardPaths = keys)">
+                <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.studentCardPaths = keys, form.studentCardPaths)">
                   <div class="text-[#ccc]" v-show="!form.studentCardPaths.length">5张以内照片</div>
                   {{ form.studentCardPaths.length ? '已上传' : '' }}
                   <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
@@ -166,7 +166,7 @@
               </div>
               <div class="form-cell">
                 入职单位证明
-                <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.joinUnitPaths = keys)">
+                <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.joinUnitPaths = keys, form.joinUnitPaths)">
                   <div class="text-[#ccc]" v-show="!form.joinUnitPaths.length">5张以内照片，选填</div>
                   {{ form.joinUnitPaths.length ? '已上传' : '' }}
                   <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
@@ -183,7 +183,7 @@
             </div>
             <div class="form-cell">
               相关经历证明
-              <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.experiencePaths = keys)">
+              <div class="flex text-[#404040] leading-[20px] items-center" @tap="uploadImage(5, (_, keys) => form.experiencePaths = keys, form.experiencePaths)">
                 <div class="text-[#ccc]" v-show="!form.experiencePaths.length">5张以内照片，选填</div>
                 {{ form.experiencePaths.length ? '已上传' : '' }}
                 <image class="w-[5px] h-[10px] ml-[8px]" src="@/assets/icon/activity-detail/right.svg" mode="aspectFit" :svg="true" />
@@ -204,15 +204,12 @@
             <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] px-[42px]" @tap="modifyConfirmVisible = true">
               修改认证信息
             </div> -->
-            <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] text-center w-full" @tap="modifyConfirmVisible = true">
+            <div class="text-[#0D0F02] text-[16px] leading-[44px] font-bold rounded-[37px] bg-[#51FE81] text-center w-full" @tap="handleModify">
               修改认证信息
             </div>
           </div>
         </root-portal>
       </my-scroll-view>
-      <ConfirmModal title="更改认证消息" v-model="modifyConfirmVisible" v-if="store.role !== Role.user" @confirm="handleModify">
-        <div class="text-[#666] text-[12px] leading-[17px] text-center">为降低账号安全风险，每一个月仅能更换一次，请您谨慎修改</div>
-      </ConfirmModal>
       <!-- <ConfirmModal title="取消认证信息" v-model="cancelConfirmVisible" v-if="store.role !== Role.user" @confirm="handleCancel">
         <div class="text-[#666] text-[12px] leading-[17px] text-center">身份认证一旦取消认证，原先记录将会丢失，无法找回</div>
       </ConfirmModal> -->
@@ -281,7 +278,6 @@ for(let i = 16; i <= thisYear; i++) gradeRange.push(`${i}级`);
 
 const notifyContent = ref('');
 const notifyModalVisible = ref(false);
-const modifyConfirmVisible = ref(false);
 // const cancelConfirmVisible = ref(false);
 const form = reactive<IVerifyForm>(emptyForm);
 
@@ -300,14 +296,53 @@ store.role === Role.volunteer && useGetVerifyData().then(data => {
   form.idCardPortraitPath = data.idCardPortraitUrl;
 });
 
-const uploadImage = async (count = 1, callback?: (filePaths: string[], keys: string[]) => void) => {
-  const { tempFiles } = await Taro.chooseMedia({
-    count,
-    mediaType: ['image'],
-    sizeType: ['compressed', 'compressed'],
-  });
-  const filePaths = tempFiles.map(({ tempFilePath }) => tempFilePath);
-  return doUpload(filePaths).then(keys => callback?.(filePaths, keys));
+const ageValidator = (value: string) => {
+  const age = parseInt(value);
+
+  if(isNaN(age)) return Promise.reject(new Error('请输入数字'));
+
+  if(age < 0 || age > 150) return Promise.reject(new Error('请输入正确的年龄'));
+  
+  return Promise.resolve();
+};
+
+const uploadImage = async (count = 1, callback?: (filePaths: string[], keys: string[]) => void, url?: string | string[], readonly?: boolean) => {
+  const _upload = async () => {
+    const { tempFiles } = await Taro.chooseMedia({
+      count,
+      mediaType: ['image'],
+      sizeType: ['compressed', 'compressed'],
+    });
+    const filePaths: string[] = [];
+    for(let file of tempFiles) {
+      const { size, tempFilePath } = file;
+      if(size >= 1024 * 1024) {
+        // image file limit: 1 MB
+        Taro.showToast({
+          icon: 'error',
+          title: '图片大小不可超过 1 MB',
+        });
+        throw new Error(`Image file size exceed: ${tempFilePath}, ${size} B`);
+      }
+      filePaths.push(tempFilePath);
+    }
+    doUpload(filePaths).then(keys => callback?.(filePaths, keys));
+  };
+
+  if(readonly) {
+    url && Taro.previewImage({ urls: Array.isArray(url)? url : [url] });
+    return;
+  }
+
+  const { tapIndex } = await Taro.showActionSheet({ itemList: ['查看原图', '上传图片'] });
+  switch(tapIndex) {
+    case 0:
+      url && Taro.previewImage({ urls: Array.isArray(url) ? url : [url] });
+      break;
+    case 1:
+      _upload();
+      break;
+  }
 };
 
 const doUpload = async (filePaths: string[]) => {
