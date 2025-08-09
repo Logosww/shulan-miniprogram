@@ -5,7 +5,20 @@
     "compileHotReLoad": true,
     "skylineRenderEnable": true,
     "urlCheck": false,
-    "preloadBackgroundData": false
+    "preloadBackgroundData": false,
+    "coverView": false,
+    "lazyloadPlaceholderEnable": false,
+    "autoAudits": false,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": false,
+    "useStaticServer": false,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "bigPackageSizeSupport": false
   },
-  "libVersion": "3.8.2"
+  "libVersion": "3.8.10",
+  "condition": {}
 }

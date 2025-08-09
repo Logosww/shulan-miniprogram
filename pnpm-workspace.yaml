@@ -1,0 +1,8 @@
+onlyBuiltDependencies:
+  - '@tarojs/binding'
+  - '@tarojs/cli'
+  - core-js
+  - core-js-pure
+  - cos-wx-sdk-v5
+  - vue-demi
+  - weapp-tailwindcss
