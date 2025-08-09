@@ -1,6 +1,6 @@
 <template>
   <ConfigProvider>
-    <Container navbar-title="用户协议" content-class="px-[16px]">
+    <Container navbar-title="用户协议" content-class="px-[16px] pb-[16px] overflow-y-auto" disable-safe-bottom>
       <h2 class="font-bold">树懒不会上树用户协议</h2>
       <h3>第一条 协议接受</h3>
       <p>
