@@ -15,9 +15,9 @@ import { useGetNotificationCount, useGetUserProfile } from '@/composables';
 import ConfigProvider from '@/components/config-provider.vue';
 import Tabbar from '@/components/tabbar.vue';
 import TabPage from '@/components/tab-page.vue';
+import { setFormValues } from '@/utils';
 
 import type { IUserProfile } from '@/composables/use-api-types';
-import { setFormValues } from '@/utils';
 
 const { params } = useRouter();
 const currentTabName = ref(params.tab ?? 'home');

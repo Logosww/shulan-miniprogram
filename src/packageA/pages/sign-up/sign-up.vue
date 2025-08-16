@@ -112,6 +112,8 @@
       </ConfirmModal>
     </Container>
   </ConfigProvider>
+  <student-verify @auth="handleStudentVerifyAuth" @close="handleStudentVerifyClose"
+    :show="studentVerifyModalVisible" :is-quick="true"></student-verify>
 </template>
 
 <script lang="ts" setup>
@@ -120,16 +122,17 @@ import Taro, { useLoad, useReady, useDidShow } from '@tarojs/taro';
 import { ref } from 'vue';
 import { useStore } from '@/store';
 import { handleFieldInput } from '@/utils';
-import { genderMap, activityTypeMap, Role } from '@/constants';
-import { useContentHeight, useGetSignUpPageData, useSignUp } from '@/composables';
+import { genderMap, activityTypeMap, Role, VolunteerIdentity } from '@/constants';
+import { useContentHeight, useGetSignUpPageData, useSignUp, useVerifyStudentAuth } from '@/composables';
 import ConfigProvider from '@/components/config-provider.vue';
 import Container from '@/components/container.vue';
 import ConfirmModal from '@/components/confirm-modal.vue';
 import MyScrollView from '@/components/my-scroll-view.vue';
 
 import type { ISignUpPageData } from '@/composables/use-api-types';
+import { useThrottleFn } from '@vueuse/core';
 
-let activityId: number, activityWorkIds: number[];
+let activityId: number, activityWorkIds: number[], isStudentVerified = false;
 
 const reason = ref('');
 const notifyContent = ref('');
@@ -137,6 +140,7 @@ const isLoading = ref(true);
 const confirmModalVisible = ref(false);
 const notifyModalVisible = ref(false);
 const toLoginModalVisible = ref(false);
+const studentVerifyModalVisible = ref(false);
 const data = ref<ISignUpPageData>();
 
 const store = useStore();
@@ -188,6 +192,53 @@ const handleNotifyConfirm = () => {
   Taro.navigateTo({ url: '/packageB/pages/verify/verify' });
 };
 
+const doVerifyStudentAuth = useThrottleFn(async () => {
+  if (!store.studentcheckCode) return;
+
+  Taro.showLoading({ title: '认证中' });
+  const isVerified = await useVerifyStudentAuth({ wxStudentCheckCode: store.studentcheckCode }).catch(() => {
+    Taro.hideLoading();
+    store.setStudentcheckCode(void 0);
+    Taro.showToast({ icon: 'error', title: '认证失败' });
+  });
+
+  Taro.hideLoading();
+  if (isVerified) {
+    isStudentVerified = true;
+    Taro.showToast({ icon: 'success', title: '认证成功' });
+  } else {
+    store.setStudentcheckCode(void 0);
+    Taro.showToast({ icon: 'error', title: '认证失败' });
+  }
+}, 1000);
+
+const checkStudentVerify = async (data: ISignUpPageData) => {
+  if(!(data.activity.isStudentVerify && data.volunteer.identity === VolunteerIdentity.student)) return;
+
+  if(store.studentcheckCode) {
+    const isVerified = await useVerifyStudentAuth({ wxStudentCheckCode: store.studentcheckCode }).catch(() => {
+      studentVerifyModalVisible.value = true;
+    });
+    if(!isVerified) studentVerifyModalVisible.value = true;
+  } else studentVerifyModalVisible.value = true;
+};
+
+const handleStudentVerifyAuth = (e: { detail: { wx_studentcheck_code: string } }) => {
+  const { detail: { wx_studentcheck_code: code } } = e;
+  if (!code) return Taro.showToast({ icon: 'error', title: '学生认证失败' });
+
+  store.setStudentcheckCode(code);
+  doVerifyStudentAuth();
+};
+
+const handleStudentVerifyClose = () => {
+  studentVerifyModalVisible.value = false;
+
+  if (!isStudentVerified) {
+    Taro.showToast({ icon: 'none', title: '取消认证，将无法报名本次活动' });
+  }
+};
+
 useLoad<{ 
   activityId: string;
   activityWorkIds: string;
@@ -203,10 +254,6 @@ useReady(() => {
     notifyContent.value = '您还没完成志愿者认证，请先前往进行认证';
     return notifyModalVisible.value = true;
   };
-  useGetSignUpPageData({ activityId, activityWorkIds }).then(_data => {
-    data.value = _data;
-    setTimeout(() => isLoading.value = false, 600);
-  });
 });
 
 useDidShow(() => 
@@ -217,7 +264,9 @@ useDidShow(() =>
     .then(_data => {
       data.value = _data;
       setTimeout(() => isLoading.value = false, 600);
-    })
+
+      return _data;
+    }).then(checkStudentVerify),
 );
 
 </script>

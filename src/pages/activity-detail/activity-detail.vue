@@ -268,7 +268,12 @@
         </Popup>
         <SignUpPopup v-model="signUpPopupVisible" :data="workData" @sign-up="handleSignUp" />
         <ConfirmModal title="活动公告" v-model="anouncementModalVisible" just-notify v-if="data?.announcement">
-          <div class="text-[#666] text-[12px] leading-[17px] whitespace-pre-line">{{ data?.announcement }}</div>
+          <div class="text-[#666] text-[12px] leading-[17px] font-bold underline" v-if="data?.isStudentVerify">
+            本活动仅限认证学生报名。
+          </div>
+          <div class="text-[#666] text-[12px] leading-[17px] whitespace-pre-line">
+            {{ data?.announcement }}
+          </div>
         </ConfirmModal>
       </div>
     </Container>

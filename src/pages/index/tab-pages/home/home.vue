@@ -97,6 +97,13 @@
       </div>
     </template>
   </Modal>
+  <ConfirmModal v-model="studentVerifyModalVisible" title="学生身份认证" just-notify @confirm="handleToVerify">
+    <div class="text-[#666] text-[12px] leading-[17px] text-center">
+      <text>
+        鉴于您当前的学生身份，<text class="font-bold underline">为了不影响后续报名</text>，请您前往认证信息页面进行大学生身份认证
+      </text>
+    </div>
+  </ConfirmModal>
 </template>
 
 <script lang="ts" setup>
@@ -104,8 +111,8 @@ import Taro, { useLoad } from '@tarojs/taro';
 import { ref } from 'vue';
 import { useStore } from '@/store';
 import { useThrottleFn } from '@vueuse/core';
-import { ActivityType, BannerType, bannerTypePathnameMap } from '@/constants';
-import { useContentHeight, useGetPagingActivities, useDecodeGeography, useGetBannerList, useCOS } from '@/composables';
+import { ActivityType, BannerType, bannerTypePathnameMap, VolunteerIdentity } from '@/constants';
+import { useContentHeight, useGetPagingActivities, useDecodeGeography, useGetBannerList, useCOS, useGetVerifyData } from '@/composables';
 import Container from '@/components/container.vue';
 import Modal from '@/components/modal.vue';
 import ActivityCard from '@/components/activity-card.vue';
@@ -119,6 +126,7 @@ let current = 1;
 
 const locationAuthModalVisible = ref(false);
 const showLocationAuthModal = ref(false);
+const studentVerifyModalVisible = ref(false);
 const currBannerIndex = ref(0);
 const bannerList = ref<IBanner[]>([]);
 const activityList = ref<IActivityPreview[]>([]);
@@ -217,7 +225,19 @@ const handleBannerTap = (banner: IBanner) => {
   Taro.navigateTo({ url: `/pages/${pathname}/${pathname}?id=${targetId}` });
 };
 
+const handleToVerify = () => {
+  Taro.navigateTo({
+    url: '/packageB/pages/verify/verify?notifyDisabled=true',
+  });
+};
+
 useLoad(() => {
+  useGetVerifyData().then(data => {
+    if(data.identity === VolunteerIdentity.student && !data.isStudentVerified) {
+      studentVerifyModalVisible.value = true;
+    }
+  });
+
   if(!store.showLocationAuthModal) return fetchActivityList();
 
   Taro.getSetting({

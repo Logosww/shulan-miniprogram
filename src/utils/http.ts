@@ -55,6 +55,7 @@ const request = <T = void>(
           switch(statusCode) {
             case 401: {
               Taro.showToast({ icon: 'error', title: '你还未登录' });
+              store.signOut();
               return reject('Unauthorized');
             }
             case 403: {

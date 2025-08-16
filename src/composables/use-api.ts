@@ -123,3 +123,5 @@ export const useGetNotificationDetail = (params: { id: number }) => get<INotific
 export const useReadNotification = (params: { id: number }) => put('/wxmp/notice/read', params);
 
 export const useGetNotificationCount = () => get<number>('/wxmp/notice/redDot');
+
+export const useVerifyStudentAuth = (params: { wxStudentCheckCode: string }) => put<boolean>('/wxmp/studentVerify', params);

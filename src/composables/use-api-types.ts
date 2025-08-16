@@ -1,29 +1,29 @@
-import type { 
+import type {
   ActivityFeature,
-  ActivityState, 
-  ActivityType, 
-  WorkTag, 
-  Gender, 
-  Role, 
-  VolunteerIdentity, 
-  VolunteerSignUpState, 
-  VolunteerType, 
+  ActivityState,
+  ActivityType,
+  WorkTag,
+  Gender,
+  Role,
+  VolunteerIdentity,
+  VolunteerSignUpState,
+  VolunteerType,
   VolunteerWhitelistState,
   IdCardType,
   BannerType,
   NotificationState,
   NotificationType,
-} from '@/constants/value-enum';
+} from "@/constants/value-enum";
 
 export interface ILoginResult {
   token: string;
   role: Role;
-};
+}
 
 export interface IPagingParams {
   page: number;
   size: number;
-};
+}
 
 export interface IPagingResult<T> {
   page: number;
@@ -33,7 +33,7 @@ export interface IPagingResult<T> {
   hasPrevious: boolean;
   hasNext: boolean;
   records: T[];
-};
+}
 
 export type NullableFilter<T> = {
   [K in keyof T]: T[K] | null;
@@ -55,9 +55,11 @@ export interface IActivityPreview {
     avatarUrl: string;
     name: string;
   }[];
-};
+  isStudentVerify: boolean;
+}
 
-export interface IActivityDetail extends Omit<IActivityPreview, 'avatarNameList'> {
+export interface IActivityDetail
+  extends Omit<IActivityPreview, "avatarNameList"> {
   announcement: string;
   description: string;
   signupStartAt: string;
@@ -74,8 +76,8 @@ export interface IActivityDetail extends Omit<IActivityPreview, 'avatarNameList'
     detail: string;
     longitude: string;
     latitude: string;
-  }
-};
+  };
+}
 
 export interface IWork {
   id: number;
@@ -85,13 +87,13 @@ export interface IWork {
   money: number;
   integral: number;
   isFull: boolean;
-};
+}
 
 export interface IWorkData {
   workList: IWork[];
   isMoney: boolean;
   signupEndAt: string;
-};
+}
 
 export interface IUserProfile {
   nickname: string;
@@ -99,7 +101,7 @@ export interface IUserProfile {
   desensitizedPhone?: string;
   activityCompleteCount?: number;
   volunteerState?: VolunteerWhitelistState;
-};
+}
 
 export interface IVerifyForm {
   sex: Gender;
@@ -119,23 +121,27 @@ export interface IVerifyForm {
   idCardPortraitPath: string;
   idCardNationalPath: string;
   identity: VolunteerIdentity;
-};
+  isStudentVerified: boolean;
+  householdRegister: string[];
+}
 
-export interface IVerifyData extends Omit<IVerifyForm,
-  | 'idPhotoPath'
-  | 'joinUnitPaths'
-  | 'experiencePaths'
-  | 'studentCardPaths'
-  | 'idCardPortraitPath'
-  | 'idCardNationalPath'
-> {
+export interface IVerifyData
+  extends Omit<
+    IVerifyForm,
+    | "idPhotoPath"
+    | "joinUnitPaths"
+    | "experiencePaths"
+    | "studentCardPaths"
+    | "idCardPortraitPath"
+    | "idCardNationalPath"
+  > {
   idPhotoUrl: string;
   joinUnitUrls: string[];
   experienceUrls: string[];
   studentCardUrls: string[];
   idCardPortraitUrl: string;
   idCardNationalUrl: string;
-};
+}
 
 export interface IVolunteerWhitelistInfo {
   normal: {
@@ -151,7 +157,7 @@ export interface IVolunteerWhitelistInfo {
     violateAt: string;
     violateCount: number;
   };
-};
+}
 
 export interface ICOSBucketCredentials {
   credentials: {
@@ -161,19 +167,23 @@ export interface ICOSBucketCredentials {
   };
   startTime: number;
   expiredTime: number;
-};
+}
 
 export interface ISignUpPageData {
-  activity: Pick<IActivityPreview, 'id' | 'name' | 'city' | 'type' | 'coverUrl'>;
-  workList: Omit<IWork, 'integral' | 'isFull' | 'money'>[];
-  volunteer: Pick<IVerifyForm, 
-    | 'name'
-    | 'experience'
-    | 'identity'
-    | 'school'
-    | 'major'
-    | 'grade'
-    | 'jobUnit'
+  activity: Pick<
+    IActivityPreview,
+    "id" | "name" | "city" | "type" | "coverUrl" | 'isStudentVerify'
+  >;
+  workList: Omit<IWork, "integral" | "isFull" | "money">[];
+  volunteer: Pick<
+    IVerifyForm,
+    | "name"
+    | "experience"
+    | "identity"
+    | "school"
+    | "major"
+    | "grade"
+    | "jobUnit"
   > & {
     id: number;
     sex: Gender;
@@ -187,44 +197,42 @@ export interface ISignUpPageData {
   cancelAt: {
     time: string;
     deadline: number;
-  }
-};
+  };
+}
 
 export interface ISignUpDetail {
   id: number;
   activityWorkVolunteerIdentity: VolunteerType;
-  activity: Pick<IActivityDetail,
-    | 'id'
-    | 'name'
-    | 'city'
-    | 'coverUrl'
-    | 'address'
-    | 'description'
-    | 'announcement'
-    | 'type'
-    | 'addressDetailVo'
-    | 'features'
-    | 'isWorkInstruction'
+  activity: Pick<
+    IActivityDetail,
+    | "id"
+    | "name"
+    | "city"
+    | "coverUrl"
+    | "address"
+    | "description"
+    | "announcement"
+    | "type"
+    | "addressDetailVo"
+    | "features"
+    | "isWorkInstruction"
   > & { isMoney: boolean };
-  work: Omit<IWork, 'isFull'> & { description: string };
+  work: Omit<IWork, "isFull"> & { description: string };
   checkin: {
     isChecked: boolean;
     qrCodeBase64?: string;
   };
-};
+}
 
 export interface ISignUpRecord {
   id: number;
   activityCancelCount: number;
   activityWorkVolunteerState: VolunteerSignUpState;
   activityWorkVolunteerIdentity: VolunteerType;
-  activity: Omit<IActivityPreview,
-    | 'state'
-    | 'label'
-    | 'startDate'
-    | 'endDate'
-    | 'avatarNameList'
-  > & { signupCancelAt: string; isMoney: boolean; };
+  activity: Omit<
+    IActivityPreview,
+    "state" | "label" | "startDate" | "endDate" | "avatarNameList"
+  > & { signupCancelAt: string; isMoney: boolean };
   work: {
     id: number;
     name: string;
@@ -233,7 +241,7 @@ export interface ISignUpRecord {
     money: number;
     label: WorkTag;
   };
-};
+}
 
 export interface IBanner {
   id: number;
@@ -242,7 +250,7 @@ export interface IBanner {
   coverUrl: string;
   miniProgramAppid: string;
   miniProgramPagePath: string;
-};
+}
 
 export interface ILive {
   id: number;
@@ -254,7 +262,7 @@ export interface ILive {
     type: ActivityType;
     name: string;
   };
-};
+}
 
 export interface IVolunteerHistoryItem {
   year: number;
@@ -277,7 +285,7 @@ export interface IVolunteerCertificate {
   coverUrl: string;
   digest: string;
   yearMonth: string;
-};
+}
 
 export interface IPayrollRecord {
   id: number;
@@ -286,7 +294,7 @@ export interface IPayrollRecord {
   monthDayTime: string;
   transferMoney: number;
   workName: string;
-};
+}
 
 export interface IPayrollRecordYearItem {
   year: number;
@@ -294,7 +302,7 @@ export interface IPayrollRecordYearItem {
     month: number;
     records: Array<IPayrollRecord>;
   }>;
-};
+}
 
 export interface INotification {
   id: number;
@@ -304,8 +312,9 @@ export interface INotification {
   readState: NotificationState;
   type: NotificationType;
   createAt: string;
-};
+}
 
-export interface INotificationDetail extends Omit<INotification, 'digest' | 'readState'> {
+export interface INotificationDetail
+  extends Omit<INotification, "digest" | "readState"> {
   content: string;
-};
+}

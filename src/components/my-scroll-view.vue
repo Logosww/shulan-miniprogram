@@ -5,6 +5,7 @@
     refresher-default-style="none"
     refresher-background="transparent"
     :style="{ height: `${height}px` }"
+    :scroll-into-view="scrollIntoView"
     :enhanced="true"
     :enable-passive="true"
     :scroll-y="true"
@@ -35,7 +36,7 @@ import { nanoid, throttleByRaf } from '@/utils';
 import lottie from 'lottie-miniprogram';
 import { useCOS } from '@/composables';
 
-const props = defineProps<{ height: number; refresher?: boolean; refreshHandler?: () => Promise<any> }>();
+const props = defineProps<{ height: number; refresher?: boolean; scrollIntoView?: string; refreshHandler?: () => Promise<any> }>();
 
 let animation: ReturnType<typeof lottie.loadAnimation>;
 
